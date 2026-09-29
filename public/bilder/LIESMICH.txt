@@ -1,0 +1,13 @@
+Hier gehören die Rezept-Illustrationen hinein.
+
+Dateiname = Rezept-ID, also so wie das Rezept in der URL steht:
+  neapolitanische-pizza.jpg
+  smoky-halloumi-burger.jpg
+
+Die IDs stehen in public/data/recipes.json im Feld "id".
+Erkannt werden .jpg, .jpeg, .png, .webp und .avif.
+
+Vor dem Commit einmal   python3 optimize_images.py   laufen lassen,
+danach                  python3 build.py
+
+icon-192.png wird für die Timer-Benachrichtigung gebraucht und bleibt hier.
