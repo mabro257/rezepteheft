@@ -1,0 +1,55 @@
+[build]
+  publish = "public"
+  # Der Sync holt Notion. Schlägt er fehl (Token falsch, Datenbank nicht freigegeben,
+  # Notion nicht erreichbar), baut Netlify aus den Markdown-Dateien im Repo weiter –
+  # die Seite bleibt dann auf dem letzten Stand, statt kaputt zu deployen.
+  # Der Grund steht im Deploy-Log.
+  command = """
+    python3 sync_notion.py --full || echo '!! Notion-Sync fehlgeschlagen – Build nutzt die Markdown-Dateien aus dem Repo (Grund siehe oben)';
+    python3 build.py
+  """
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+# NOTION_TOKEN gehört in die Netlify-Umgebungsvariablen, nicht in diese Datei.
+# NOTION_DATABASE_ID ist optional – die ID steckt als Standardwert in sync_notion.py.
+
+# Die URLs von CSS, JS und Daten tragen einen Inhalts-Hash (?v=...), den
+# build.py setzt. Dadurch kann lange und hart gecacht werden: ändert sich eine
+# Datei, ändert sich ihre URL. Ohne den Hash lieferte der Cache nach einem
+# Deploy bis zu eine Stunde altes JavaScript zu neuem HTML aus – die Seite blieb
+# dann leer, bis der Nutzer den Cache selbst leerte.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/bilder/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Der Service Worker darf nie aus dem Cache kommen, sonst bleibt eine alte
+# Fassung aktiv.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# HTML nie cachen – es verweist auf die jeweils aktuellen Hash-URLs.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
