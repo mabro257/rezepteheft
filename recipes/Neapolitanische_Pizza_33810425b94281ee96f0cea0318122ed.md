@@ -29,19 +29,19 @@ Zubereitungszeit: 60
 2. 30 Minuten bei Zimmertemperatur abgedeckt stehen lassen.
 3. Hefe im restlichen Wasser (50 ml) auflösen und gemeinsam mit Olivenöl in den Teig geben. Mit der Hand kneten.
 4. Salz hinzugeben.
-5. Mit der Hand kneten (insg. 10–15 Minuten). Eine große Kugel formen und auf Spannung bringen.
-6. Teig luftdicht abgedeckt über Nacht gehen lassen (12–24 Stunden).
+5. Mit der Hand kneten (insg. 10–15 Minuten), bis der Teig stabiler wird. Eine große Kugel formen und gut auf Spannung bringen.
+6. Teig luftdicht abgedeckt über Nacht im Kühlschrank gehen lassen (12–24 Stunden).
 
 **Tag 2:**
 
 1. Hartweizengrieß auf der Arbeitsplatte verteilen.
 2. Teig kurz durchkneten und in 6 Stücke à ca. 270 g teilen.
-3. Je eine Kugel formen und auf Spannung bringen.
-4. Kugeln über Nacht im Kühlschrank luftdicht lagern.
+3. Je eine Kugel formen und gut auf Spannung bringen.
+4. Kugeln über Nacht im Kühlschrank luftdicht lagern - Formen vorher ggf. leicht einölen.
 
 **Tag 3:**
 
-1. 3–4 Stunden vor Verarbeitung den Teig aus dem Kühlschrank nehmen.
+1. 3 Stunden vor Verarbeitung den Teig aus dem Kühlschrank nehmen und luftdicht bei Raumtemperatur gehen lassen.
 2. Ein üppiges Hartweizengrieß-Bett auslegen.
 3. Teigling darin wenden und aus der Mitte heraus eine Pizza formen – den Rand dabei auslassen.
 4. Sauce (2 große Löffel) von innen heraus verstreichen.
