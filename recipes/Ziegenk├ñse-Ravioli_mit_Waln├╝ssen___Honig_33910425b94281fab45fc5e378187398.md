@@ -13,12 +13,12 @@ Zubereitungszeit: 75
 
 | Menge | Zutat |
 | --- | --- |
-| 100 g | Ziegenfrischkäse |
-| 40 g | Parmesan, gerieben |
-| 35 g | Walnusskerne, fein gehackt |
-| 1 TL gestrichen | Mittelscharfer Senf |
-| ½ EL | Honig |
-| 1 | Knoblauchzehe |
+| 200 g | Ziegenfrischkäse |
+| 80 g | Parmesan, gerieben |
+| 70 g | Walnusskerne, fein gehackt |
+| 2 TL gestrichen | Mittelscharfer Senf |
+| 1 EL | Honig |
+| 2 | Knoblauchzehe |
 | nach Geschmack | Meersalz & schwarzer Pfeffer |
 
 **Außerdem:** 1 Portion Eiernudelteig (vgl. Eiernudelteig Grundrezept)
