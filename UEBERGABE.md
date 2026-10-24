@@ -201,6 +201,39 @@ einem `state`-Objekt, alles rendert aus `RECIPES`.
   Vorschläge nach Überschneidung sortiert
 - **Bring!-Import** je Rezept
 - **Änderungsvorschlag** je Rezept über Netlify Forms
+- **Essensplan** als eigener Bereich (`#/plan`), siehe 6.1
+
+### 6.1 Essensplan
+
+Eigener Bereich neben der Rezeptliste, erreichbar über den Knopf oben rechts
+(mobil) bzw. die Navigation in der Seitenleiste (Desktop), eigene Adresse
+`#/plan`.
+
+- Ein Eingabefeld für beides: steht dort der exakte Titel eines Rezepts
+  (`datalist` schlägt alle vor), wird der Eintrag mit dem Rezept verknüpft und
+  im Plan anklickbar. Alles andere wird freier Text („Pizza bestellen").
+- Zwei Haken je Eintrag: *eingekauft* und *gekocht*. **gekocht** ist der
+  Abschluss — der Eintrag wandert sofort ins Archiv, statt abgehakt stehen zu
+  bleiben. Zurück geht es über *Nochmal kochen* (setzt auch *eingekauft*
+  zurück).
+- **Kein Datum, keine Wochentage.** Ausdrückliche Vorgabe: geplant wird, *was*
+  es demnächst gibt, nicht wann. Nicht eigenmächtig Tage einbauen.
+- Keine Bring!-Kopplung. *eingekauft* ist nur ein Haken; der Bring!-Export
+  bleibt wie gehabt am einzelnen Rezept.
+- Ein Rezept kann nur einmal **offen** im Plan stehen, im Archiv beliebig oft.
+- In der Rezeptansicht gibt es *Einplanen* / *Im Essensplan ✓*, in der
+  Rezeptliste tragen geplante Rezepte ein kleines „geplant“ am Titel.
+
+**Speicherort:** `localStorage`, Schlüssel `essensplan.v1`, Struktur
+`[{id, recipe|null, title, bought, cooked, cookedAt}]`. Das ist eine bewusste
+Entscheidung: ohne Server bleibt die App eine rein statische Seite. Preis dafür
+ist, dass der Plan nur auf dem Gerät existiert, auf dem er entsteht. Soll er
+geteilt werden, braucht es eine Netlify Function plus Speicher (z. B. Netlify
+Blobs) — dann ist es keine rein statische Seite mehr.
+
+**Namensfalle:** `state.plan` / `planbar` / `togglePlan` gehören zu *Zusammen
+kochen*, nicht zum Essensplan. Der Essensplan heißt im Code durchgehend `menu`
+(`menuAdd`, `menuPatch`, `renderMenu`, `#menuview`).
 
 ### Entfernt (nicht versehentlich, sondern auf Wunsch)
 
@@ -233,6 +266,14 @@ Bring! importiert **Rezepte**, keine Listen, und holt sie serverseitig von einer
 `api.getbring.com/rest/bringrecipes/deeplink` mit `url`, `source=web`,
 `baseQuantity` und `requestedQuantity` auf — Bring rechnet die Mengen anhand der
 eingestellten Portionszahl selbst um.
+
+**Absolute URLs sind Pflicht.** Nachdem die Rezeptbilder dazukamen, stand im
+JSON-LD zuerst ein relativer Pfad (`../bilder/<id>.jpg`); Bring! meldete
+daraufhin „falsches Format". Der Parser läuft auf Bring-Servern und kann einen
+relativen Pfad nicht auflösen. `build.py` setzt `image` und `canonical` deshalb
+über die Konstante `SITE_URL` zusammen (liest Netlifys `URL` bzw.
+`DEPLOY_PRIME_URL`, sonst `https://rezepteheft.netlify.app`). Beim Umzug auf
+eine andere Domain nichts ändern müssen — Netlify liefert die Variable selbst.
 
 Funktioniert nur auf der öffentlichen Adresse, nicht lokal. Eine aggregierte
 Einkaufsliste über mehrere Rezepte ginge nur mit einer Netlify Function, die die

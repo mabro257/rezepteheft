@@ -812,6 +812,12 @@ def ingredient_line(item):
     return " ".join(parts)
 
 
+# Adresse der veröffentlichten Seite. Netlify setzt URL beim Build selbst;
+# lokal greift der Standardwert.
+SITE_URL = (os.environ.get("URL") or os.environ.get("DEPLOY_PRIME_URL")
+            or "https://rezepteheft.netlify.app").rstrip("/")
+
+
 def write_recipe_pages(recipes):
     """Erzeugt pro Rezept eine eigene Seite mit schema.org-Auszeichnung.
 
@@ -842,7 +848,11 @@ def write_recipe_pages(recipes):
             ],
         }
         if r.get("image"):
-            data["image"] = "../" + r["image"].split("?")[0]
+            # Absolute URL: schema.org erwartet unter "image" eine Adresse.
+            # Ein relativer Pfad ("../bilder/...") ließ den Bring!-Import mit
+            # "falsches Format" scheitern – der Parser läuft auf Bring-Servern
+            # und kann einen relativen Pfad nicht auflösen.
+            data["image"] = f"{SITE_URL}/{r['image'].split('?')[0]}"
         if r["kcal"]:
             data["nutrition"] = {"@type": "NutritionInformation",
                                  "calories": f"{r['kcal']} kcal"}
@@ -854,7 +864,7 @@ def write_recipe_pages(recipes):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc_html(r['title'])}</title>
-<link rel="canonical" href="../#/r/{r['id']}">
+<link rel="canonical" href="{SITE_URL}/#/r/{r['id']}">
 <script type="application/ld+json">
 {json.dumps(data, ensure_ascii=False, indent=1)}
 </script>
