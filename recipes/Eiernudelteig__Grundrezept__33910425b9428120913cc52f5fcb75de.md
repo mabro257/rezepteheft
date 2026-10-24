@@ -11,11 +11,11 @@ Zubereitungszeit: 45
 
 | Menge | Zutat |
 | --- | --- |
-| 200 g | Weizenmehl Type 405 |
-| 25 g | Hartweizengrieß |
-| 2 | Eier (Größe L) |
-| 1 EL | Olivenöl |
-| ½ TL | Salz |
+| 400 g | Weizenmehl Type 405 |
+| 50 g | Hartweizengrieß |
+| 4 | Eier (Größe L) |
+| 2 EL | Olivenöl |
+| 1 TL | Salz |
 
 ## 👨‍🍳 Zubereitung
 
