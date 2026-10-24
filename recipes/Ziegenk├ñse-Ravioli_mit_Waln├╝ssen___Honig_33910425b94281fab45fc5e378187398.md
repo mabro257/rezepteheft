@@ -25,7 +25,7 @@ Zubereitungszeit: 75
 
 ## 👨‍🍳 Zubereitung
 
-1. **Füllung vorbereiten:** Walnusskerne fein hacken. Ziegenfrieschkäse, Parmesan, Walnusskerne, Senf und Honig in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit Salz und Pfeffer abschmecken.
+1. **Füllung vorbereiten:** Walnusskerne fein hacken. Ziegenfrischkäse, Parmesan, Walnusskerne, Senf und Honig in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit Salz und Pfeffer abschmecken.
 2. **Teig ausrollen:** Den Eiernudelteig portionsweise auf der Nudelmaschine bis Stufe 8–9 ausrollen (ca. 0,5–1 mm). Teigbahn leicht mit Hartweizengrieß bestäuben.
 3. **Ravioli formen:** Teigbahn auf die Ravioliform legen, je ca. 1 TL Füllung in jede Mulde geben. Zweite Teigbahn auflegen und fest andrücken. Form öffnen, Ravioli lösen. Mit restlichem Teig wiederholen.
 4. **Kochen:** Reichlich Salzwasser in einem großen Topf zum Kochen bringen (Induktionsherd, Stufe P zum Aufkochen, dann auf 7 reduzieren). Ravioli hineingeben. Sobald sie an die Oberfläche steigen, noch 2–3 Minuten kochen, dann mit einem Schaumlöffel herausheben.
