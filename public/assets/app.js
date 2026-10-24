@@ -61,6 +61,7 @@ const state = {
   planning: false,
   plan: new Set(),
   sort: "title",
+  view: "list",        // "list" oder "plan"
   open: null,          // aktuelles Rezept
   servings: 0,
   checkedIng: new Set(),
@@ -243,7 +244,7 @@ function card(r) {
       <span class="card__cat">${esc(r.category)}</span>
       ${r.health ? `<span class="card__health">${esc(r.health)}</span>` : ""}
     </div>
-    <h3 class="card__title">${esc(r.title)}</h3>
+    <h3 class="card__title">${esc(r.title)}${onMenu(r.id) ? ` <span class="card__onmenu">geplant</span>` : ""}</h3>
     ${(r.tags || []).length ? `<p class="card__tags">${r.tags.slice(0, 3).map(t => `<span>${esc(t)}</span>`).join("")}</p>` : ""}
     <p class="card__spec">
       <span>${r.time} min</span><span class="card__sep">/</span>
@@ -362,6 +363,129 @@ function render() {
 
 
 /* =========================================================================
+   Essensplan
+
+   Eigener Bereich neben der Rezeptliste. Ein Eintrag ist entweder ein Rezept
+   aus der Sammlung oder nur ein Text ("Pizza bestellen") – kein Datum, keine
+   Wochentage: geplant wird, was es demnächst gibt, nicht wann.
+   Gespeichert wird allein im Browser dieses Geräts. Das ist bewusst so: ohne
+   Server bleibt die App eine reine statische Seite. Preis dafür ist, dass der
+   Plan nicht auf einem zweiten Gerät auftaucht.
+   ========================================================================= */
+const MENU_KEY = "essensplan.v1";
+let menu = store.get(MENU_KEY, []);
+if (!Array.isArray(menu)) menu = [];
+
+const saveMenu = () => store.set(MENU_KEY, menu);
+const menuOpen = () => menu.filter(e => !e.cooked);
+const menuDone = () => menu.filter(e => e.cooked).sort((a, b) => (b.cookedAt || 0) - (a.cookedAt || 0));
+const onMenu = id => menu.some(e => !e.cooked && e.recipe === id);
+
+function menuAdd(title, recipeId) {
+  title = String(title || "").trim();
+  if (!title) return false;
+  /* Dasselbe Rezept nicht zweimal offen führen – ein zweiter Haken bei
+     "eingekauft" wäre sonst sinnlos. */
+  if (recipeId && onMenu(recipeId)) return false;
+  menu.push({
+    id: "e" + Date.now() + Math.round(Math.random() * 1e4),
+    recipe: recipeId || null,
+    title,
+    bought: false,
+    cooked: false,
+    cookedAt: null,
+  });
+  saveMenu();
+  return true;
+}
+
+function menuPatch(id, patch) {
+  const e = menu.find(x => x.id === id);
+  if (!e) return;
+  Object.assign(e, patch);
+  saveMenu();
+  renderMenu();
+  if (state.view === "list") render();
+}
+
+function menuRemove(id) {
+  const i = menu.findIndex(x => x.id === id);
+  if (i > -1) menu.splice(i, 1);
+  saveMenu();
+  renderMenu();
+  if (state.view === "list") render();
+}
+
+function mealRow(e, archived) {
+  const name = e.recipe
+    ? `<button class="meal__title meal__title--link" data-open="${esc(e.recipe)}">${esc(e.title)}</button>`
+    : `<span class="meal__title">${esc(e.title)}</span>`;
+  const checks = archived ? `
+      <button class="ghost-btn" data-again="${e.id}">Nochmal kochen</button>` : `
+      <label class="check"><input type="checkbox" data-bought="${e.id}"${e.bought ? " checked" : ""}><span>eingekauft</span></label>
+      <label class="check"><input type="checkbox" data-cooked="${e.id}"><span>gekocht</span></label>`;
+  return `<li class="meal${archived ? " meal--done" : ""}${e.bought && !archived ? " meal--bought" : ""}">
+    ${name}
+    <div class="meal__actions">${checks}
+      <button class="meal__x" data-del="${e.id}" aria-label="Eintrag entfernen">${ICON_CLOSE}</button>
+    </div>
+  </li>`;
+}
+
+function renderMenu() {
+  const openHost = $("#menuOpen"), doneHost = $("#menuArchive");
+  const n = menuOpen().length;
+  [["#menuCount", n], ["#menuCountRail", n]].forEach(([sel, v]) =>
+    set(sel, el => { el.textContent = v; el.hidden = v === 0; }));
+  if (!openHost || !doneHost) return;
+
+  const list = menuOpen();
+  openHost.innerHTML = list.length
+    ? `<h2 class="block__title">Geplant <span class="menu__n">${list.length}</span></h2>
+       <ul class="meals">${list.map(e => mealRow(e, false)).join("")}</ul>`
+    : `<p class="menu__empty">Noch nichts geplant. Oben ein Rezept auswählen oder frei eintippen – der Plan bleibt auf diesem Gerät.</p>`;
+
+  const done = menuDone();
+  doneHost.innerHTML = done.length
+    ? `<h2 class="block__title menu__arch">Archiv <span class="menu__n">${done.length}</span></h2>
+       <ul class="meals meals--archive">${done.map(e => mealRow(e, true)).join("")}</ul>`
+    : "";
+
+  const host = $("#menuview");
+  host.querySelectorAll("[data-bought]").forEach(b =>
+    b.onchange = () => menuPatch(b.dataset.bought, { bought: b.checked }));
+  /* "gekocht" ist der Abschluss: der Eintrag wandert ins Archiv, statt in der
+     Liste als abgehakt stehen zu bleiben. */
+  host.querySelectorAll("[data-cooked]").forEach(b =>
+    b.onchange = () => menuPatch(b.dataset.cooked, { cooked: true, cookedAt: Date.now() }));
+  host.querySelectorAll("[data-again]").forEach(b =>
+    b.onclick = () => menuPatch(b.dataset.again, { cooked: false, cookedAt: null, bought: false }));
+  host.querySelectorAll("[data-del]").forEach(b =>
+    b.onclick = () => menuRemove(b.dataset.del));
+  host.querySelectorAll("[data-open]").forEach(b =>
+    b.onclick = () => openRecipe(b.dataset.open));
+}
+
+/* Bereich wechseln. Eigener Hash, damit der Zurück-Knopf des Handys aus dem
+   Plan zurück in die Liste führt statt die App zu verlassen. */
+function setView(view, skipHistory) {
+  state.view = view;
+  document.body.classList.toggle("view-plan", view === "plan");
+  set("#menuview", n => { n.hidden = view !== "plan"; });
+  set("#viewToggle", n => { n.firstChild.nodeValue = view === "plan" ? "Rezepte" : "Essensplan"; });
+  document.querySelectorAll("[data-view]").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+  $("#rail")?.classList.remove("open");
+  if (!skipHistory) {
+    const target = view === "plan" ? "#/plan" : location.pathname + location.search;
+    if (location.hash !== (view === "plan" ? "#/plan" : "")) history.pushState({ view }, "", target);
+  }
+  if (view === "plan") renderMenu();
+  window.scrollTo(0, 0);
+}
+
+
+/* =========================================================================
    Rezeptansicht
    ========================================================================= */
 function openRecipe(id) {
@@ -383,7 +507,9 @@ function closeRecipe(pop) {
   $("#sheet").innerHTML = "";
   document.body.classList.remove("locked");
   releaseWakeLock();
-  if (!pop) history.pushState({}, "", location.pathname + location.search);
+  if (!pop) history.pushState({}, "", state.view === "plan" ? "#/plan" : location.pathname + location.search);
+  if (state.view === "list") render();
+  else renderMenu();
 }
 
 function renderSheet() {
@@ -402,6 +528,7 @@ function renderSheet() {
     <div class="sheet__bar">
       <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
       <div class="sheet__bar-actions">
+        <button data-act="menu" class="ghost-btn nowrap" aria-pressed="${onMenu(r.id)}">${onMenu(r.id) ? "Im Essensplan ✓" : "Einplanen"}</button>
         <a class="ghost-btn nowrap bring" href="${bringLink(r)}" target="_blank" rel="noopener">In Bring! öffnen</a>
         <button data-act="cook" class="ghost-btn nowrap" aria-pressed="${state.cook}">Kochmodus${totalSteps ? ` (${doneSteps}/${totalSteps})` : ""}</button>
       </div>
@@ -553,6 +680,15 @@ function renderSheet() {
       if (!f.hidden) f.querySelector("textarea").focus();
     }
     if (a === "cook") { state.cook = !state.cook; state.cook ? requestWakeLock() : releaseWakeLock(); renderSheet(); }
+    /* Einmal drücken plant ein; ein zweites Mal nimmt den offenen Eintrag
+       wieder heraus. Archivierte Einträge bleiben unberührt. */
+    if (a === "menu") {
+      const open = menu.find(e => !e.cooked && e.recipe === r.id);
+      open ? menuRemove(open.id) : menuAdd(r.title, r.id);
+      renderMenu();
+      b.setAttribute("aria-pressed", String(onMenu(r.id)));
+      b.textContent = onMenu(r.id) ? "Im Essensplan ✓" : "Einplanen";
+    }
     if (a === "plus" || a === "minus") {
       state.servings = Math.min(24, Math.max(1, state.servings + (a === "plus" ? 1 : -1)));
       renderSheet();
@@ -768,6 +904,24 @@ set("#planToggle", n => n.addEventListener("click", () => {
 }));
 $("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
 $("#timeRange").addEventListener("input", e => { state.maxTime = +e.target.value; render(); });
+set("#viewToggle", n => n.addEventListener("click", () =>
+  setView(state.view === "plan" ? "list" : "plan")));
+document.querySelectorAll("[data-view]").forEach(b =>
+  b.addEventListener("click", () => setView(b.dataset.view)));
+
+/* Ein Feld für beides: Steht im Feld der Titel eines Rezepts, wird es
+   verknüpft (Klick im Plan öffnet es). Alles andere landet als freier Text. */
+set("#menuAdd", form => form.addEventListener("submit", e => {
+  e.preventDefault();
+  const input = $("#menuInput");
+  const typed = input.value.trim();
+  const hit = RECIPES.find(r => fold(r.title) === fold(typed));
+  menuAdd(hit ? hit.title : typed, hit ? hit.id : null);
+  input.value = "";
+  renderMenu();
+  input.focus();
+}));
+
 $("#filterToggle").addEventListener("click", e => {
   const open = $("#rail").classList.toggle("open");
   e.currentTarget.setAttribute("aria-expanded", String(open));
@@ -791,8 +945,9 @@ document.addEventListener("keydown", e => {
 
 window.addEventListener("popstate", () => {
   const m = location.hash.match(/^#\/r\/(.+)$/);
-  if (m) openRecipe(decodeURIComponent(m[1]));
-  else if (state.open) closeRecipe(true);
+  if (m) { openRecipe(decodeURIComponent(m[1])); return; }
+  if (state.open) closeRecipe(true);
+  setView(location.hash === "#/plan" ? "plan" : "list", true);
 });
 
 /* ---------- Start ----------
@@ -812,7 +967,12 @@ function resetFilters() {
 set("#resetBtn", n => n.addEventListener("click", () => { resetFilters(); render(); }));
 
 resetFilters();
+set("#recipeNames", n => {
+  n.innerHTML = RECIPES.map(r => `<option value="${esc(r.title)}">`).join("");
+});
 render();
+renderMenu();
+setView(location.hash === "#/plan" ? "plan" : "list", true);
 const initial = location.hash.match(/^#\/r\/(.+)$/);
 if (initial) openRecipe(decodeURIComponent(initial[1]));
 
