@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=7b786e45c6">
+<link rel="stylesheet" href="assets/style.css?v=b8eb951343">
 </head>
 <body>
 
@@ -19,7 +19,7 @@
 <header class="topbar">
   <button class="icon-btn" id="filterToggle" aria-expanded="false" aria-controls="rail">Filter</button>
   <span class="topbar__brand">Rezepte</span>
-  <span class="topbar__spacer"></span>
+  <button class="icon-btn nowrap" id="viewToggle">Essensplan<span class="pill" id="menuCount" hidden></span></button>
 </header>
 
 <div class="shell">
@@ -30,6 +30,11 @@
         <span class="brand__mark">R</span>
         <span class="brand__word">Rezepte</span>
       </div>
+
+      <nav class="navlist" aria-label="Bereiche">
+        <button class="navlist__item" data-view="list" aria-pressed="true">Rezepte</button>
+        <button class="navlist__item" data-view="plan" aria-pressed="false">Essensplan<span class="pill" id="menuCountRail" hidden></span></button>
+      </nav>
 
       <nav class="facet" aria-labelledby="f-tags">
         <h2 class="facet__title" id="f-tags">Tags</h2>
@@ -86,6 +91,26 @@
 
     <p class="empty" id="empty" hidden>Kein Rezept passt zu dieser Kombination. Suchbegriff kürzen oder einen Filter lösen.</p>
   </main>
+
+  <!-- Essensplan: eigener Bereich, wird statt der Rezeptliste eingeblendet -->
+  <section class="menu" id="menuview" aria-labelledby="menuTitle" hidden>
+    <div class="masthead">
+      <h1 class="masthead__title" id="menuTitle">Was gibt es <em>demnächst</em>?</h1>
+    </div>
+
+    <form class="menu__add" id="menuAdd" autocomplete="off">
+      <label class="menu__field">
+        <span class="facet__title">Gericht eintragen</span>
+        <input type="text" id="menuInput" list="recipeNames" required
+               placeholder="Rezept auswählen oder frei eintippen">
+      </label>
+      <datalist id="recipeNames"></datalist>
+      <button type="submit" class="ghost-btn">Hinzufügen</button>
+    </form>
+
+    <div id="menuOpen"></div>
+    <div id="menuArchive"></div>
+  </section>
 </div>
 
 <!-- Rezeptansicht -->
@@ -107,6 +132,6 @@
 <div class="timers" id="timers" aria-live="polite" hidden></div>
 
 <script src="data/recipes.js?v=227d95d3b4"></script>
-<script src="assets/app.js?v=7f4cdafa07"></script>
+<script src="assets/app.js?v=70a0b28796"></script>
 </body>
 </html>
