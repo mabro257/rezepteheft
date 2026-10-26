@@ -116,7 +116,17 @@ Die Regeln darin sind allesamt Antworten auf echte Fehler:
 | Mengen pro Stück (`à`, `je`, `pro`, `Patties`, …) skalieren nicht | „125 g große Patties" wurde zu 250 g |
 | Zeiten, Temperaturen, Stufen bleiben unberührt | Einheitenliste `UNIT_RE` enthält bewusst kein `Minuten`, `°C`, `cm` |
 
-Ergebnis heute: 326 verknüpfte Mengen über 50 Rezepte, ohne bekannte Fehlzuordnung.
+Ergebnis heute: 346 verknüpfte Mengen über 51 Rezepte, ohne bekannte Fehlzuordnung.
+
+**Hervorheben ohne Menge (Schritt 2c):** Jede weitere Nennung einer Zutat wird
+markiert, auch ohne Menge – optionale Zutaten, „nach Bedarf“, zweite
+Erwähnungen, mehrdeutige Treffer. Dafür gibt es eigene Suchwörter
+(`mention_tokens`), die Sammelzeilen wie „Salz, Pfeffer, Chili“ zerlegen und
+kurze Wörter (Öl, Ei) behalten. Für das Einsetzen von Mengen bleiben sie tabu.
+Regeln in `mention_hit`: nur großgeschriebene Wörter (sonst wären „salzen“,
+„pfeffern“, „garnieren“ Zutaten), kurze Wörter nur exakt (sonst trifft „In“ den
+Rotwein), Sammelwörter wie „Sauce“ oder „Füllung“ nur exakt (sonst wird „in die
+Sauce geben“ zur Worcestershiresauce).
 
 Im Frontend werden **Menge und Zutat gemeinsam** hervorgehoben — gleiche Schrift
 wie der Fließtext, fett, safranfarben unterlegt. Das war eine bewusste Abkehr
@@ -190,7 +200,13 @@ einem `state`-Objekt, alles rendert aus `RECIPES`.
 
 ### Funktionen
 
-- **Suche** über Titel, Kategorie, Tags, Zutaten, Schritte, Tipps
+- **Suche** über Titel, Kategorie, Tags, Zutaten, Schritte, Tipps. Mehrere
+  Wörter grenzen ein. Treffer sind nach Relevanz sortiert (Titel vor Tag vor
+  Zutat vor Fließtext), das Suchwort ist markiert, und jede Karte nennt, wo es
+  vorkommt („Zutat: veganer Feta“). Auf dem Handy klebt das Feld oben, und
+  Überschrift, Kategorien und Sortierleiste weichen, solange gesucht wird –
+  vorher verdeckte die Tastatur sämtliche Treffer. Trefferzahl und Leeren-Knopf
+  stehen im Feld.
 - **Kategorie-Schnellfilter** als Chips direkt unter der Suche
 - **Seitenleiste** mit Tags, Ernährung, Zeit-Regler, Zurücksetzen
 - **Sortierung** A–Z, Zeit, Kalorien, Anzahl Zutaten
@@ -325,7 +341,7 @@ command = "python3 build.py"
 
 ## 11. Zahlen zum Stand
 
-- 50 Rezepte: 27 Hauptspeise, 7 Zutat, 5 Backen, 5 Vorspeise, 5 Snack, 1 Dessert
+- 51 Rezepte: 28 Hauptspeise, 7 Zutat, 5 Backen, 5 Vorspeise, 5 Snack, 1 Dessert
 - 14 Tags, häufigste: Schnell 22, Ofengericht 20, Pfannengericht 20, Vegan 13, Meal Prep 13
 - 326 Mengen im Fließtext verknüpft
 - Alle Rezepte mit Nährwerten

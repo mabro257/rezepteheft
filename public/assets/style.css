@@ -220,6 +220,30 @@ input[type="range"]::-moz-range-thumb {
   font-size: 11px; color: var(--ink-3); background: var(--paper);
   transition: opacity .15s;
 }
+/* Trefferzahl und Leeren-Knopf stehen im Feld selbst – dort, wo der Blick
+   beim Tippen ohnehin ist. Das eingebaute Kreuz des Browsers entfällt dafür. */
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+body.has-query .search input { padding-right: 128px; }
+body.has-query .search__kbd { display: none; }
+.search__count {
+  position: absolute; right: 52px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); white-space: nowrap;
+}
+.search__clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border: 0; border-radius: 999px;
+  background: var(--paper); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+}
+.search__clear:hover { background: var(--line-soft); }
+
+mark.hit {
+  background: rgba(200, 138, 5, .3); color: inherit;
+  border-radius: 2px; padding: 0 1px;
+}
+.card__hit {
+  margin: 0; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2);
+}
+.card__hit mark.hit { color: var(--ink); }
 
 /* Kategorie-Schnellfilter unter der Suche */
 .quickfilter { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
@@ -561,6 +585,30 @@ body.locked { overflow: hidden; }
   .rail__inner { position: static; }
   .brand { display: none; }
   .masthead__title { font-size: clamp(32px, 9vw, 44px); }
+  /* Suchmodus auf dem Handy: Das Feld klebt oben, Überschrift, Kategorien und
+     Sortierleiste machen Platz – die Treffer stehen direkt darunter und bleiben
+     auch mit offener Tastatur sichtbar. */
+  .search {
+    position: sticky; top: 52px; z-index: 30;
+    margin: 0 -18px; padding: 0 18px 10px;
+    background: var(--paper);
+  }
+  /* Der Innenabstand des klebenden Felds verschiebt die Bezugskante – Zahl,
+     Kreuz und Tastenhinweis rücken entsprechend nach. */
+  .search__kbd, .search__count, .search__clear { top: calc(50% - 5px); }
+  .search__kbd { right: 32px; }
+  .search__count { right: 70px; }
+  .search__clear { right: 26px; }
+  body.searching .masthead__title,
+  body.searching .quickfilter,
+  body.has-query .masthead__title,
+  body.searching .toolbar,
+  body.has-query .toolbar { display: none; }
+  body.searching .masthead,
+  body.has-query .masthead { margin-bottom: 8px; }
+  body.has-query .quickfilter { margin-top: 6px; }
+  body.has-query .card__tags,
+  body.has-query .card__figure { display: none; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
   .sheet__wrap { padding: 26px 18px 110px; }
   .sheet__bar { padding: 10px 16px; }

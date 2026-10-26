@@ -25,7 +25,17 @@ const RECIPES = (window.RECIPES || []).map(r => ({
     ...r.tips
   ].join(" "),
 }));
-RECIPES.forEach(r => { r.search = fold(r.search); });
+RECIPES.forEach(r => {
+  r.search = fold(r.search);
+  /* Einzelne Felder für die Rangfolge und den Hinweis, warum ein Rezept
+     gefunden wurde – ein Treffer im Titel zählt mehr als einer im Fließtext. */
+  r.find = {
+    title: fold(r.title),
+    tags: fold([r.category, r.health, ...(r.tags || [])].join(" ")),
+    ingredients: r.ingredientGroups.flatMap(g => g.items.map(i => i.name)),
+    steps: fold(r.stepGroups.flatMap(g => g.items.map(s => s.label + " " + s.text)).join(" ")),
+  };
+});
 
 const ACCENTS = {
   "Hauptspeise": "var(--basil)",
@@ -54,6 +64,7 @@ const store = {
 /* ---------- Zustand ---------- */
 const state = {
   q: "",
+  terms: [],           // Suchwörter, gefaltet – alle müssen passen
   cat: null,
   health: new Set(),
   maxTime: 120,
@@ -172,8 +183,55 @@ function bringLink(r) {
 /* =========================================================================
    Filter + Liste
    ========================================================================= */
+/* =========================================================================
+   Suche
+   Mehrere Wörter grenzen ein ("feta paprika"). Während gesucht wird, steht
+   oben, was am besten passt, und jede Karte sagt, wo das Wort vorkommt –
+   sonst bleibt bei einem Treffer im Fließtext rätselhaft, warum das Rezept
+   in der Liste steht.
+   ========================================================================= */
+function score(r) {
+  return state.terms.reduce((sum, t) => {
+    if (r.find.title.startsWith(t) || r.find.title.includes(" " + t)) return sum + 120;
+    if (r.find.title.includes(t)) return sum + 100;
+    if (r.find.tags.includes(t)) return sum + 40;
+    if (r.find.ingredients.some(n => fold(n).includes(t))) return sum + 25;
+    if (r.find.steps.includes(t)) return sum + 8;
+    return sum + 2;
+  }, 0);
+}
+
+/* Wo kommt das Wort vor? Nur für Wörter, die nicht schon im Titel stehen. */
+function hitHint(r) {
+  const ings = [], tags = [], other = [];
+  const add = (list, v) => { if (!list.includes(v)) list.push(v); };
+  state.terms.forEach(t => {
+    if (r.find.title.includes(t)) return;
+    const ing = r.find.ingredients.find(n => fold(n).includes(t));
+    const tag = (r.tags || []).find(x => fold(x).includes(t));
+    if (ing) add(ings, mark(ing));
+    else if (tag) add(tags, mark(tag));
+    else add(other, r.find.steps.includes(t) ? "in der Zubereitung" : "in den Tipps");
+  });
+  return [
+    ings.length ? `${ings.length > 1 ? "Zutaten" : "Zutat"}: ${ings.join(", ")}` : "",
+    tags.length ? `Tag: ${tags.join(", ")}` : "",
+    ...other,
+  ].filter(Boolean).join(" · ");
+}
+
+/* Hebt ganze Wörter hervor, die ein Suchwort enthalten. Ganze Wörter, weil
+   fold() die Länge ändert ("ae" -> "a") und Zeichenpositionen sich deshalb
+   nicht auf den Originaltext übertragen lassen. */
+function mark(text) {
+  if (!state.terms.length) return esc(text);
+  return String(text).split(/([^\p{L}\p{N}]+)/u).map(w =>
+    w && state.terms.some(t => fold(w).includes(t)) ? `<mark class="hit">${esc(w)}</mark>` : esc(w)
+  ).join("");
+}
+
 function matches(r) {
-  if (state.q && !r.search.includes(state.q)) return false;
+  if (state.terms.length && !state.terms.every(t => r.search.includes(t))) return false;
   if (state.cat && r.category !== state.cat) return false;
   if (state.health.size && !state.health.has(r.health)) return false;
   if (r.time > state.maxTime) return false;
@@ -188,7 +246,10 @@ function sorted(list) {
     kcal: (a, b) => (a.kcal ?? 1e9) - (b.kcal ?? 1e9),
     ingredients: (a, b) => a.ingredientCount - b.ingredientCount
   };
-  return [...list].sort(by[state.sort] || by.title);
+  const base = by[state.sort] || by.title;
+  if (!state.terms.length) return [...list].sort(base);
+  const scores = new Map(list.map(r => [r.id, score(r)]));
+  return [...list].sort((a, b) => scores.get(b.id) - scores.get(a.id) || base(a, b));
 }
 
 function renderFacets() {
@@ -244,7 +305,8 @@ function card(r) {
       <span class="card__cat">${esc(r.category)}</span>
       ${r.health ? `<span class="card__health">${esc(r.health)}</span>` : ""}
     </div>
-    <h3 class="card__title">${esc(r.title)}${onMenu(r.id) ? ` <span class="card__onmenu">geplant</span>` : ""}</h3>
+    <h3 class="card__title">${mark(r.title)}${onMenu(r.id) ? ` <span class="card__onmenu">geplant</span>` : ""}</h3>
+    ${state.terms.length && hitHint(r) ? `<p class="card__hit">${hitHint(r)}</p>` : ""}
     ${(r.tags || []).length ? `<p class="card__tags">${r.tags.slice(0, 3).map(t => `<span>${esc(t)}</span>`).join("")}</p>` : ""}
     <p class="card__spec">
       <span>${r.time} min</span><span class="card__sep">/</span>
@@ -353,6 +415,12 @@ function render() {
       ? `${list.length} Rezepte`
       : `${list.length} von ${RECIPES.length} Rezepten`;
   });
+  set("#searchCount", n => {
+    n.hidden = !state.q;
+    n.textContent = list.length === 1 ? "1 Treffer" : `${list.length} Treffer`;
+  });
+  set("#searchClear", n => { n.hidden = !state.q; });
+  document.body.classList.toggle("has-query", !!state.q);
   set("#timeOut", n => { n.textContent = state.maxTime >= 120 ? "beliebig" : `${state.maxTime} min`; });
   set("#planToggle", n => {
     n.setAttribute("aria-pressed", String(state.planning));
@@ -892,11 +960,31 @@ function releaseWakeLock() { try { wakeLock?.release(); } catch {} wakeLock = nu
 
 /* ---------- Events ---------- */
 let searchTimer;
+const setQuery = raw => {
+  state.q = fold(raw.trim());
+  state.terms = state.q.split(/\s+/).filter(Boolean);
+  render();
+};
 $("#search").addEventListener("input", e => {
   clearTimeout(searchTimer);
-  const v = fold(e.target.value.trim());
-  searchTimer = setTimeout(() => { state.q = v; render(); }, 110);
+  const v = e.target.value;
+  searchTimer = setTimeout(() => setQuery(v), 110);
 });
+/* Auf dem Handy verdeckt die Tastatur die halbe Seite. Solange das Suchfeld
+   aktiv ist, rücken Überschrift und Kategorien weg und die Treffer direkt
+   unter das Feld. Enter schließt die Tastatur, damit man die Liste sieht. */
+$("#search").addEventListener("focus", () => document.body.classList.add("searching"));
+$("#search").addEventListener("blur", () => document.body.classList.remove("searching"));
+$("#search").addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); clearTimeout(searchTimer); setQuery(e.target.value); e.target.blur(); }
+  if (e.key === "Escape" && e.target.value) { e.stopPropagation(); e.target.value = ""; setQuery(""); }
+});
+set("#searchClear", n => n.addEventListener("click", () => {
+  const input = $("#search");
+  input.value = "";
+  setQuery("");
+  input.focus();
+}));
 set("#planToggle", n => n.addEventListener("click", () => {
   state.planning = !state.planning;
   if (!state.planning) state.plan.clear();
@@ -956,7 +1044,7 @@ window.addEventListener("popstate", () => {
    auseinander. Deshalb beim Aufruf alle Eingaben ausdrücklich auf Standard
    setzen, damit garantiert kein Filter aktiv ist. */
 function resetFilters() {
-  state.q = ""; state.cat = null; state.maxTime = 120; state.sort = "title";
+  state.q = ""; state.terms = []; state.cat = null; state.maxTime = 120; state.sort = "title";
   state.health.clear(); state.tags.clear();
   state.planning = false; state.plan.clear();
   set("#search", n => { n.value = ""; });

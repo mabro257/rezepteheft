@@ -278,7 +278,7 @@ TOKEN_STOP = {
 }
 
 
-def word_tokens(name):
+def word_tokens(name, min_len=4):
     """Suchbegriffe für eine Zutat – nur das Grundwort, nicht die Beschreibung.
 
     'Kaltes Leitungswasser'  -> {'leitungswasser'}
@@ -294,7 +294,42 @@ def word_tokens(name):
     while len(words) > 1 and words[-1][:1].islower():
         words.pop()
     head = words[-1].lower().replace("-", "") if words else ""
-    return {head} if len(head) >= 4 else set()
+    return {head} if len(head) >= min_len else set()
+
+
+def mention_tokens(name):
+    """Grundwörter einer Zutat, nur zum Hervorheben im Fließtext.
+
+    Anders als word_tokens zerlegt das Sammelzeilen ('Salz, Pfeffer, Chili'
+    -> salz, pfeffer, chili) und behält kurze Wörter wie 'Öl' oder 'Ei'. Für
+    das Einsetzen von Mengen taugt das nicht – dort bliebe offen, zu welchem
+    Teil der Zeile die Menge gehört."""
+    base = re.sub(r"\(.*?\)", " ", name)
+    parts = re.split(r",|/|&|\bund\b|\boder\b", base)
+    return {t for p in parts for t in word_tokens(p, min_len=2)}
+
+
+GENERIC_MENTIONS = {"sauce", "soße", "sosse", "dressing", "creme", "masse", "mischung",
+                    "füllung", "marinade", "dip"}
+
+
+def mention_hit(word, original, token):
+    """Nennt dieses Wort die Zutat? Nur Nomen, also großgeschriebene Wörter:
+    'salzen', 'pfeffern' oder 'garnieren' sind Tätigkeiten, keine Zutaten.
+    Kurze Wörter (Öl, Ei) zählen nur exakt oder als Plural – sonst trifft 'In'
+    den Rotwein. Einzige Ausnahme: 'Öl' steht im Text für das Olivenöl oder
+    Sesamöl der Liste."""
+    if not original[:1].isupper():
+        return False
+    # 'in die Sauce geben' meint die Sauce, die gerade entsteht – nicht die
+    # Worcestershiresauce aus der Liste. Solche Sammelwörter nur exakt.
+    if word in GENERIC_MENTIONS:
+        return word == token
+    if len(word) < 4:
+        if word in (token, token + "e", token + "er", token + "s"):
+            return True
+        return word == "öl" and token.endswith("öl")
+    return token_hit(word, token, inject=True)
 
 
 def token_hit(word, token, loose=False, inject=False):
@@ -355,8 +390,8 @@ def annotate_steps(step_groups, ingredient_groups, title=""):
       und nur, wenn dort eine echte Zahl steht (kein 'nach Bedarf').
     """
     ingredients = [
-        {"tokens": word_tokens(it["name"]), "name": it["name"],
-         "amount": it["amount"], "done": False}
+        {"tokens": word_tokens(it["name"]), "mentions": mention_tokens(it["name"]),
+         "name": it["name"], "amount": it["amount"], "done": False}
         for g in ingredient_groups for it in g["items"]
     ]
 
@@ -494,6 +529,21 @@ def annotate_steps(step_groups, ingredient_groups, title=""):
                 }))
                 spans.append((m.start(), m.end(),
                               {"type": "item", "value": m.group(0)}))
+
+            # 2c. Jede weitere Nennung einer Zutat wird hervorgehoben, auch ohne
+            #     Menge: optionale Zutaten, 'nach Bedarf', die zweite Erwähnung
+            #     oder mehrdeutige Treffer ('Tofu'). Beim Kochen sucht das Auge
+            #     die Zutaten im Text – eine fehlende Markierung sieht aus, als
+            #     gehöre das Wort nicht zur Liste.
+            # Alle Buchstaben, nicht nur deutsche: 'TK-Mantı' endet auf ein ı.
+            for m in re.finditer(r"[^\W\d_]+(?:-[^\W\d_]+)*", text):
+                if occupied(m.start(), m.end()):
+                    continue
+                original = m.group(0)
+                word = original.lower().replace("-", "")
+                if any(mention_hit(word, original, t)
+                       for ing in ingredients for t in ing["mentions"]):
+                    spans.append((m.start(), m.end(), {"type": "item", "value": original}))
 
             # 3. Zeitangaben – nur wo noch keine Menge markiert ist
             for m in TIME_RE.finditer(text):

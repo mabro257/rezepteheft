@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=b8eb951343">
+<link rel="stylesheet" href="assets/style.css?v=e465030286">
 </head>
 <body>
 
@@ -62,8 +62,10 @@
     <div class="masthead">
       <h1 class="masthead__title">Was <em>kochen</em> wir?</h1>
       <div class="search">
-        <input type="search" id="search" placeholder="Rezept, Zutat oder Technik suchen" autocomplete="off" aria-label="Rezepte durchsuchen">
+        <input type="search" id="search" placeholder="Rezept, Zutat oder Technik suchen" autocomplete="off" enterkeyhint="search" aria-label="Rezepte durchsuchen">
         <kbd class="search__kbd">/</kbd>
+        <span class="search__count" id="searchCount" role="status" hidden></span>
+        <button type="button" class="search__clear" id="searchClear" aria-label="Suche leeren" hidden>×</button>
       </div>
       <div class="quickfilter" id="catList" role="group" aria-label="Kategorie"></div>
     </div>
@@ -131,7 +133,7 @@
 
 <div class="timers" id="timers" aria-live="polite" hidden></div>
 
-<script src="data/recipes.js?v=227d95d3b4"></script>
-<script src="assets/app.js?v=70a0b28796"></script>
+<script src="data/recipes.js?v=2c0bfcb08f"></script>
+<script src="assets/app.js?v=bb0b8a707d"></script>
 </body>
 </html>

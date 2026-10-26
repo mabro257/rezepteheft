@@ -177,7 +177,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in dünne Streifen schneiden und mit den Gewürzen vermengen."
+        "value": " in dünne Streifen schneiden und mit den "
+       },
+       {
+        "type": "item",
+        "value": "Gewürzen"
+       },
+       {
+        "type": "text",
+        "value": " vermengen."
        }
       ]
      },
@@ -205,8 +213,12 @@ window.RECIPES = [
       "text": "Soja-Hack in einer Pfanne auf dem Induktionsherd bei Stufe 6–7 durchbraten.",
       "parts": [
        {
+        "type": "item",
+        "value": "Soja-Hack"
+       },
+       {
         "type": "text",
-        "value": "Soja-Hack in einer Pfanne auf dem Induktionsherd bei Stufe 6–7 durchbraten."
+        "value": " in einer Pfanne auf dem Induktionsherd bei Stufe 6–7 durchbraten."
        }
       ]
      },
@@ -356,7 +368,31 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Fertige Kartoffeln in eine Bowl geben und mit Cherrytomaten, Zwiebeln, "
+        "value": "Fertige "
+       },
+       {
+        "type": "item",
+        "value": "Kartoffeln"
+       },
+       {
+        "type": "text",
+        "value": " in eine Bowl geben und mit "
+       },
+       {
+        "type": "item",
+        "value": "Cherrytomaten"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Zwiebeln"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -411,7 +447,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Bowl kurz in die Mikrowelle oder in den Ofen (Grillfunktion, kurz) stellen, bis der Käse schmilzt."
+        "value": "Bowl kurz in die Mikrowelle oder in den Ofen (Grillfunktion, kurz) stellen, bis der "
+       },
+       {
+        "type": "item",
+        "value": "Käse"
+       },
+       {
+        "type": "text",
+        "value": " schmilzt."
        }
       ]
      },
@@ -457,7 +501,7 @@ window.RECIPES = [
    "Quark",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/big-mac-bowl-high-protein.jpg?v=0556f676",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",
@@ -666,7 +710,7 @@ window.RECIPES = [
   "nutritionNote": "pro Scheibe, ca. 12 Scheiben",
   "file": "Blitzbrot_33810425b94281aeae3cd73c59f3d72b.md",
   "fresh": [],
-  "image": "",
+  "image": "bilder/blitzbrot.jpg?v=fbf097c7",
   "tags": [
    "Brot & Teig",
    "Frühstück",
@@ -1101,7 +1145,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mischen. Zwei Drittel der Gewürzmischung zu den Tomaten geben, verrühren. Den Rest mit dem restlichen Olivenöl vermengen und den Blumenkohl damit marinieren."
+        "value": " mischen. Zwei Drittel der Gewürzmischung zu den "
+       },
+       {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
+        "type": "text",
+        "value": " geben, verrühren. Den Rest mit dem restlichen "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " vermengen und den "
+       },
+       {
+        "type": "item",
+        "value": "Blumenkohl"
+       },
+       {
+        "type": "text",
+        "value": " damit marinieren."
        }
       ]
      },
@@ -1122,7 +1190,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in die Sauce einrühren, alles gut vermischen. Marinierten Blumenkohl auf die Sauce geben und mit "
+        "value": " in die Sauce einrühren, alles gut vermischen. Marinierten "
+       },
+       {
+        "type": "item",
+        "value": "Blumenkohl"
+       },
+       {
+        "type": "text",
+        "value": " auf die Sauce geben und mit "
        },
        {
         "type": "amount",
@@ -1175,7 +1251,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in kleine Stücke zupfen. Die Hälfte davon mit dem restlichen Parmesan, "
+        "value": " in kleine Stücke zupfen. Die Hälfte davon mit dem restlichen "
+       },
+       {
+        "type": "item",
+        "value": "Parmesan"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -1190,7 +1274,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", restlichem Oregano und gehacktem "
+        "value": ", restlichem "
+       },
+       {
+        "type": "item",
+        "value": "Oregano"
+       },
+       {
+        "type": "text",
+        "value": " und gehacktem "
        },
        {
         "type": "amount",
@@ -1215,7 +1307,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Nach der Backzeit den Blumenkohl kurz in der Sauce verrühren. Restlichen Mozzarella zwischen die Röschen setzen und leicht untermengen."
+        "value": "Nach der Backzeit den "
+       },
+       {
+        "type": "item",
+        "value": "Blumenkohl"
+       },
+       {
+        "type": "text",
+        "value": " kurz in der Sauce verrühren. Restlichen "
+       },
+       {
+        "type": "item",
+        "value": "Mozzarella"
+       },
+       {
+        "type": "text",
+        "value": " zwischen die Röschen setzen und leicht untermengen."
        }
       ]
      },
@@ -1267,13 +1375,13 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro 100g",
-  "file": "Blumenkohl_aus_dem_Ofen_in_Tomate-Mozzarella_überb_3c210425b9428122bf93dece3c15139b.md",
+  "file": "Blumenkohl_aus_dem_Ofen_in_Tomate-Mozzarella_├╝berb_3c210425b9428122bf93dece3c15139b.md",
   "fresh": [
    "Basilikum",
    "Blumenkohl",
    "Mozzarella"
   ],
-  "image": "",
+  "image": "bilder/blumenkohl-aus-dem-ofen-in-tomate-mozzarella-ueberbacken.jpg?v=0c7c9671",
   "tags": [
    "Italienisch",
    "Ofengericht"
@@ -1579,7 +1687,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Eigelb und etwas Milch verquirlen, Brötchen damit bepinseln. Mit Sesam garnieren."
+        "value": "Eigelb und etwas "
+       },
+       {
+        "type": "item",
+        "value": "Milch"
+       },
+       {
+        "type": "text",
+        "value": " verquirlen, Brötchen damit bepinseln. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Sesam"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      },
@@ -1634,7 +1758,7 @@ window.RECIPES = [
    "Eier",
    "Milch"
   ],
-  "image": "",
+  "image": "bilder/brioche-burger-buns.jpg?v=4e46f866",
   "tags": [
    "Brot & Teig",
    "Burger",
@@ -1834,7 +1958,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Beides mit einer Prise Salz und Pfeffer auf einem Backblech verteilen."
+        "value": "Beides mit einer Prise "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " auf einem Backblech verteilen."
        }
       ]
      },
@@ -1933,7 +2073,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit Pfeffer, Salz und "
+        "value": " mit "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -2010,14 +2166,14 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion",
-  "file": "Buntes_Ofengemüse_mit_Halloumi_33810425b94281579fa1df1b98761c53.md",
+  "file": "Buntes_Ofengem├╝se_mit_Halloumi_33810425b94281579fa1df1b98761c53.md",
   "fresh": [
    "Avocado",
    "Halloumi",
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/buntes-ofengemuese-mit-halloumi.jpg?v=7e7d4646",
   "tags": [
    "Ofengericht",
    "Pfannengericht"
@@ -2257,7 +2413,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Gegrillte Pfirsiche um die Burrata drapieren."
+        "value": "Gegrillte "
+       },
+       {
+        "type": "item",
+        "value": "Pfirsiche"
+       },
+       {
+        "type": "text",
+        "value": " um die "
+       },
+       {
+        "type": "item",
+        "value": "Burrata"
+       },
+       {
+        "type": "text",
+        "value": " drapieren."
        }
       ]
      },
@@ -2282,7 +2454,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " beträufeln, Pistazien und Basilikum darüberstreuen."
+        "value": " beträufeln, "
+       },
+       {
+        "type": "item",
+        "value": "Pistazien"
+       },
+       {
+        "type": "text",
+        "value": " und Basilikum darüberstreuen."
        }
       ]
      },
@@ -2307,7 +2487,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " beträufeln, mit Zitronenabrieb, Salz und Pfeffer abschließen."
+        "value": " beträufeln, mit "
+       },
+       {
+        "type": "item",
+        "value": "Zitronenabrieb"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschließen."
        }
       ]
      }
@@ -2346,7 +2550,7 @@ window.RECIPES = [
    "Burrata",
    "Pfirsich"
   ],
-  "image": "",
+  "image": "bilder/burrata-mit-gegrilltem-pfirsich.jpg?v=20f54c7f",
   "tags": [
    "Grillen",
    "Pfannengericht",
@@ -2720,7 +2924,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Ciabatta mit Mojo Verde bestreichen, dann mit Avocado, Pattie und Tomate belegen. Deckel drauf und genießen."
+        "value": "Ciabatta mit Mojo Verde bestreichen, dann mit "
+       },
+       {
+        "type": "item",
+        "value": "Avocado"
+       },
+       {
+        "type": "text",
+        "value": ", Pattie und "
+       },
+       {
+        "type": "item",
+        "value": "Tomate"
+       },
+       {
+        "type": "text",
+        "value": " belegen. Deckel drauf und genießen."
        }
       ]
      }
@@ -2760,7 +2980,7 @@ window.RECIPES = [
    "Thymian",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/ciabatta-sandwich-mit-mojo-verde.jpg?v=73e7bd84",
   "tags": [
    "Brot & Teig",
    "Grillen",
@@ -3042,7 +3262,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " nach Packungsanleitung garen. Anschließend mit Chili-Öl und "
+        "value": " nach Packungsanleitung garen. Anschließend mit "
+       },
+       {
+        "type": "item",
+        "value": "Chili-Öl"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -3130,7 +3358,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " zeitgleich mit dem Reis backen."
+        "value": " zeitgleich mit dem "
+       },
+       {
+        "type": "item",
+        "value": "Reis"
+       },
+       {
+        "type": "text",
+        "value": " backen."
        }
       ]
      },
@@ -3202,7 +3438,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit kochendem Wasser übergießen, "
+        "value": " mit kochendem "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " übergießen, "
        },
        {
         "type": "time",
@@ -3221,7 +3465,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Alle Zutaten in einer Schüssel mit dem Pürierstab cremig rühren oder mit einer Gabel verquirlen. Mit Wasser auf die gewünschte Konsistenz bringen."
+        "value": "Alle Zutaten in einer Schüssel mit dem Pürierstab cremig rühren oder mit einer Gabel verquirlen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " auf die gewünschte Konsistenz bringen."
        }
       ]
      },
@@ -3231,7 +3483,31 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Crispy Reis als Basis, Tofu, Gemüse und Edamame drüber verteilen. Erdnusssauce darüber gießen und mit frischer "
+        "value": "Crispy "
+       },
+       {
+        "type": "item",
+        "value": "Reis"
+       },
+       {
+        "type": "text",
+        "value": " als Basis, "
+       },
+       {
+        "type": "item",
+        "value": "Tofu"
+       },
+       {
+        "type": "text",
+        "value": ", Gemüse und "
+       },
+       {
+        "type": "item",
+        "value": "Edamame"
+       },
+       {
+        "type": "text",
+        "value": " drüber verteilen. Erdnusssauce darüber gießen und mit frischer "
        },
        {
         "type": "amount",
@@ -3288,7 +3564,7 @@ window.RECIPES = [
    "Tofu",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/crispy-reis-bowl-mit-gebackenem-tofu-erdnusssauce.jpg?v=0e02537d",
   "tags": [
    "Asiatisch",
    "Bowl & Salat",
@@ -3561,7 +3837,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Sojasauce mischen. Flach auf einem Backblech verteilen und im vorgeheizten Ofen bei 230 °C Ober-/Unterhitze knusprig backen (ca. "
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Sojasauce"
+       },
+       {
+        "type": "text",
+        "value": " mischen. Flach auf einem Backblech verteilen und im vorgeheizten Ofen bei 230 °C Ober-/Unterhitze knusprig backen (ca. "
        },
        {
         "type": "time",
@@ -3579,8 +3863,12 @@ window.RECIPES = [
       "text": "Tofu (Natur- und Räuchertofu) raspeln, mit Paprikagewürz, Sojasauce und Ahornsirup mischen. Ebenfalls ca. 20 Minuten backen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Tofu"
+       },
+       {
         "type": "text",
-        "value": "Tofu (Natur- und "
+        "value": " (Natur- und "
        },
        {
         "type": "amount",
@@ -3595,7 +3883,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ") raspeln, mit Paprikagewürz, Sojasauce und Ahornsirup mischen. Ebenfalls ca. "
+        "value": ") raspeln, mit Paprikagewürz, "
+       },
+       {
+        "type": "item",
+        "value": "Sojasauce"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Ahornsirup"
+       },
+       {
+        "type": "text",
+        "value": " mischen. Ebenfalls ca. "
        },
        {
         "type": "time",
@@ -3614,7 +3918,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Währenddessen das Gemüse klein schneiden. TK-Edamame mit heißem Wasser übergießen, damit sie auftauen. Minzblätter fein hacken."
+        "value": "Währenddessen das Gemüse klein schneiden. TK-Edamame mit heißem "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " übergießen, damit sie auftauen. Minzblätter fein hacken."
        }
       ]
      },
@@ -3674,7 +3986,7 @@ window.RECIPES = [
    "Tofu",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/crispy-rice-salat.jpg?v=8eab356e",
   "tags": [
    "Asiatisch",
    "Bowl & Salat",
@@ -3850,8 +4162,12 @@ window.RECIPES = [
       "text": "Halloumi trocken tupfen und zwischen zwei Küchentüchern flach drücken.",
       "parts": [
        {
+        "type": "item",
+        "value": "Halloumi"
+       },
+       {
         "type": "text",
-        "value": "Halloumi trocken tupfen und zwischen zwei Küchentüchern flach drücken."
+        "value": " trocken tupfen und zwischen zwei Küchentüchern flach drücken."
        }
       ]
      },
@@ -3860,8 +4176,12 @@ window.RECIPES = [
       "text": "BBQ-Sauce und Honig verrühren, über den Halloumi streichen und in den zerkleinerten Maischips wenden.",
       "parts": [
        {
+        "type": "item",
+        "value": "BBQ-Sauce"
+       },
+       {
         "type": "text",
-        "value": "BBQ-Sauce und "
+        "value": " und "
        },
        {
         "type": "amount",
@@ -3876,7 +4196,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " verrühren, über den Halloumi streichen und in den zerkleinerten "
+        "value": " verrühren, über den "
+       },
+       {
+        "type": "item",
+        "value": "Halloumi"
+       },
+       {
+        "type": "text",
+        "value": " streichen und in den zerkleinerten "
        },
        {
         "type": "amount",
@@ -3901,7 +4229,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Backofen auf 220 °C Heißluft vorheizen. Halloumi auf ein mit Backpapier ausgelegtes Blech legen (mittlere Schiene) und ca. "
+        "value": "Backofen auf 220 °C Heißluft vorheizen. "
+       },
+       {
+        "type": "item",
+        "value": "Halloumi"
+       },
+       {
+        "type": "text",
+        "value": " auf ein mit Backpapier ausgelegtes Blech legen (mittlere Schiene) und ca. "
        },
        {
         "type": "time",
@@ -3929,7 +4265,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Die Burger-Brötchen in den letzten "
+        "value": "Die "
+       },
+       {
+        "type": "item",
+        "value": "Burger-Brötchen"
+       },
+       {
+        "type": "text",
+        "value": " in den letzten "
        },
        {
         "type": "time",
@@ -3947,8 +4291,28 @@ window.RECIPES = [
       "text": "Gurke abgießen (das Salz hat Wasser gezogen), Mayo und BBQ-Gewürz verrühren und unter die Gurke mischen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Gurke"
+       },
+       {
         "type": "text",
-        "value": "Gurke abgießen (das Salz hat Wasser gezogen), Mayo und BBQ-Gewürz verrühren und unter die Gurke mischen."
+        "value": " abgießen (das Salz hat Wasser gezogen), Mayo und "
+       },
+       {
+        "type": "item",
+        "value": "BBQ-Gewürz"
+       },
+       {
+        "type": "text",
+        "value": " verrühren und unter die "
+       },
+       {
+        "type": "item",
+        "value": "Gurke"
+       },
+       {
+        "type": "text",
+        "value": " mischen."
        }
       ]
      },
@@ -3994,7 +4358,7 @@ window.RECIPES = [
    "Gurke",
    "Halloumi"
   ],
-  "image": "",
+  "image": "bilder/crunchy-honey-bbq-halloumi-burger.jpg?v=6da4e2b3",
   "tags": [
    "Burger",
    "Ofengericht"
@@ -4177,7 +4541,7 @@ window.RECIPES = [
    "Frischkaese",
    "Sahne"
   ],
-  "image": "",
+  "image": "bilder/der-ultimative-dattel-dip.jpg?v=e449b479",
   "tags": [
    "Grillen",
    "Schnell"
@@ -4199,9 +4563,9 @@ window.RECIPES = [
     "items": [
      {
       "amount": {
-       "raw": "200 g",
+       "raw": "400 g",
        "prefix": "",
-       "qty": 200.0,
+       "qty": 400.0,
        "qtyTo": null,
        "unit": "g",
        "note": ""
@@ -4210,9 +4574,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "25 g",
+       "raw": "50 g",
        "prefix": "",
-       "qty": 25.0,
+       "qty": 50.0,
        "qtyTo": null,
        "unit": "g",
        "note": ""
@@ -4221,9 +4585,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "2",
+       "raw": "4",
        "prefix": "",
-       "qty": 2.0,
+       "qty": 4.0,
        "qtyTo": null,
        "unit": "",
        "note": ""
@@ -4232,9 +4596,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "1 EL",
+       "raw": "2 EL",
        "prefix": "",
-       "qty": 1.0,
+       "qty": 2.0,
        "qtyTo": null,
        "unit": "EL",
        "note": ""
@@ -4243,9 +4607,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "½ TL",
+       "raw": "1 TL",
        "prefix": "",
-       "qty": 0.5,
+       "qty": 1.0,
        "qtyTo": null,
        "unit": "TL",
        "note": ""
@@ -4319,7 +4683,7 @@ window.RECIPES = [
        },
        {
         "type": "amount",
-        "qty": 25.0,
+        "qty": 50.0,
         "qtyTo": null,
         "unit": "g",
         "added": true
@@ -4383,7 +4747,7 @@ window.RECIPES = [
   "fresh": [
    "Eier"
   ],
-  "image": "",
+  "image": "bilder/eiernudelteig-grundrezept.jpg?v=5846f97e",
   "tags": [
    "Brot & Teig"
   ]
@@ -4505,7 +4869,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Alle Zutaten mit dem Pürierstab vermengen. Nach Bedarf Wasser hinzufügen für die gewünschte Konsistenz."
+        "value": "Alle Zutaten mit dem Pürierstab vermengen. Nach Bedarf "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " hinzufügen für die gewünschte Konsistenz."
        }
       ]
      }
@@ -4540,7 +4912,7 @@ window.RECIPES = [
   "fresh": [
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/erdnusssauce.jpg?v=f916011f",
   "tags": [
    "Asiatisch",
    "Schnell",
@@ -4705,7 +5077,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " im Verhältnis 3:1 vermengen. Einen Spritzer Zitronensaft dazugeben."
+        "value": " im Verhältnis 3:1 vermengen. Einen Spritzer "
+       },
+       {
+        "type": "item",
+        "value": "Zitronensaft"
+       },
+       {
+        "type": "text",
+        "value": " dazugeben."
        }
       ]
      },
@@ -4715,7 +5095,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Burger braten, nach dem Wenden Brie auflegen und schmelzen lassen."
+        "value": "Burger braten, nach dem Wenden "
+       },
+       {
+        "type": "item",
+        "value": "Brie"
+       },
+       {
+        "type": "text",
+        "value": " auflegen und schmelzen lassen."
        }
       ]
      },
@@ -4725,7 +5113,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Burger von unten nach oben anrichten: Soße → Feldsalat → Rotweinzwiebeln → "
+        "value": "Burger von unten nach oben anrichten: Soße → "
+       },
+       {
+        "type": "item",
+        "value": "Feldsalat"
+       },
+       {
+        "type": "text",
+        "value": " → "
+       },
+       {
+        "type": "item",
+        "value": "Rotweinzwiebeln"
+       },
+       {
+        "type": "text",
+        "value": " → "
        },
        {
         "type": "amount",
@@ -4740,7 +5144,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit Brie → Preiselbeeren."
+        "value": " mit "
+       },
+       {
+        "type": "item",
+        "value": "Brie"
+       },
+       {
+        "type": "text",
+        "value": " → "
+       },
+       {
+        "type": "item",
+        "value": "Preiselbeeren"
+       },
+       {
+        "type": "text",
+        "value": "."
        }
       ]
      }
@@ -4771,13 +5191,13 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Burger",
-  "file": "Französische_Brie_Burger_33810425b9428176bb9dd3e7b2122794.md",
+  "file": "Franz├Âsische_Brie_Burger_33810425b9428176bb9dd3e7b2122794.md",
   "fresh": [
    "Blattsalat",
    "Brie",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/franzoesische-brie-burger.jpg?v=675379e9",
   "tags": [
    "Burger",
    "Meal Prep",
@@ -5085,7 +5505,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " halbieren, Kern entfernen. Schnittfläche dünn mit etwas Olivenöl bestreichen."
+        "value": " halbieren, Kern entfernen. Schnittfläche dünn mit etwas "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " bestreichen."
        }
       ]
      },
@@ -5114,7 +5542,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Avocadohälften mit der gegrillten Seite nach oben anrichten, die Mulde etwas vergrößern und großzügig mit dem Tomaten-Feta-Tatar füllen. Mit gerösteten Pinienkernen garnieren."
+        "value": "Avocadohälften mit der gegrillten Seite nach oben anrichten, die Mulde etwas vergrößern und großzügig mit dem Tomaten-Feta-Tatar füllen. Mit gerösteten "
+       },
+       {
+        "type": "item",
+        "value": "Pinienkernen"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      }
@@ -5153,7 +5589,7 @@ window.RECIPES = [
    "Limette",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/gegrillte-avocado-mit-tomate-feta-limette.jpg?v=c8be84ae",
   "tags": [
    "Grillen",
    "Pfannengericht",
@@ -5287,8 +5723,12 @@ window.RECIPES = [
       "text": "Kirschtomaten waschen, trocken tupfen. Knoblauch fein hacken oder in dünne Scheiben schneiden.",
       "parts": [
        {
+        "type": "item",
+        "value": "Kirschtomaten"
+       },
+       {
         "type": "text",
-        "value": "Kirschtomaten waschen, trocken tupfen. Knoblauch fein hacken oder in dünne Scheiben schneiden."
+        "value": " waschen, trocken tupfen. Knoblauch fein hacken oder in dünne Scheiben schneiden."
        }
       ]
      },
@@ -5331,8 +5771,12 @@ window.RECIPES = [
       "text": "Tomaten mit Olivenöl, Knoblauch, Salz und Pfeffer vermengen und auf der Plancha verteilen. 5–8 Minuten grillen, gelegentlich wenden, bis die Haut aufplatzt und leicht Röstaromen entstehen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
         "type": "text",
-        "value": "Tomaten mit "
+        "value": " mit "
        },
        {
         "type": "amount",
@@ -5347,7 +5791,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Knoblauch, Salz und Pfeffer vermengen und auf der Plancha verteilen. "
+        "value": ", Knoblauch, "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " vermengen und auf der Plancha verteilen. "
        },
        {
         "type": "time",
@@ -5387,7 +5847,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Die warmen, geplatzten Tomaten samt Bratsaft über und um die Burrata verteilen."
+        "value": "Die warmen, geplatzten "
+       },
+       {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
+        "type": "text",
+        "value": " samt Bratsaft über und um die "
+       },
+       {
+        "type": "item",
+        "value": "Burrata"
+       },
+       {
+        "type": "text",
+        "value": " verteilen."
        }
       ]
      },
@@ -5412,7 +5888,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und einem Schuss Olivenöl beträufeln."
+        "value": " und einem Schuss "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " beträufeln."
        }
       ]
      },
@@ -5433,7 +5917,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " zupfen, darüber geben, mit Zitronenabrieb, Salz und Pfeffer abschließen."
+        "value": " zupfen, darüber geben, mit "
+       },
+       {
+        "type": "item",
+        "value": "Zitronenabrieb"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschließen."
        }
       ]
      },
@@ -5482,7 +5990,7 @@ window.RECIPES = [
    "Burrata",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/gegrillte-tomaten-mit-burrata.jpg?v=20644bd4",
   "tags": [
    "Grillen",
    "Italienisch",
@@ -5781,7 +6289,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Salz und Pfeffer mischen. "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " mischen. "
        },
        {
         "type": "time",
@@ -5790,7 +6314,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " rösten, bis die Süßkartoffeln karamellisiert und die Kichererbsen knusprig sind."
+        "value": " rösten, bis die "
+       },
+       {
+        "type": "item",
+        "value": "Süßkartoffeln"
+       },
+       {
+        "type": "text",
+        "value": " karamellisiert und die "
+       },
+       {
+        "type": "item",
+        "value": "Kichererbsen"
+       },
+       {
+        "type": "text",
+        "value": " knusprig sind."
        }
       ]
      },
@@ -5826,7 +6366,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Salz mit dem Pürierstab oder einer Gabel glatt rühren. Mit "
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " mit dem Pürierstab oder einer Gabel glatt rühren. Mit "
        },
        {
         "type": "amount",
@@ -5886,8 +6434,12 @@ window.RECIPES = [
       "text": "Spinat oder Rucola als Basis, dann Süßkartoffeln, Kichererbsen, Avocado und Tomaten anrichten. Mit Granatapfelkernen toppen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Spinat"
+       },
+       {
         "type": "text",
-        "value": "Spinat oder "
+        "value": " oder "
        },
        {
         "type": "amount",
@@ -5902,7 +6454,39 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " als Basis, dann Süßkartoffeln, Kichererbsen, Avocado und Tomaten anrichten. Mit Granatapfelkernen toppen."
+        "value": " als Basis, dann "
+       },
+       {
+        "type": "item",
+        "value": "Süßkartoffeln"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Kichererbsen"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Avocado"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
+        "type": "text",
+        "value": " anrichten. Mit Granatapfelkernen toppen."
        }
       ]
      },
@@ -5948,7 +6532,7 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro 100 g",
-  "file": "Geröstete_Süßkartoffel-Bowl_mit_Kichererbsen___Tah_36110425b94281bcb42dc4b998daa348.md",
+  "file": "Ger├Âstete_S├╝├ƒkartoffel-Bowl_mit_Kichererbsen___Tah_36110425b94281bcb42dc4b998daa348.md",
   "fresh": [
    "Avocado",
    "Blattsalat",
@@ -5956,7 +6540,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/geroestete-suesskartoffel-bowl-mit-kichererbsen-tahini-zitronen-dressing.jpg?v=99136c7f",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",
@@ -6185,7 +6769,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Zitronensaft, Knoblauch, Cumin und "
+        "value": ", Zitronensaft, Knoblauch, "
+       },
+       {
+        "type": "item",
+        "value": "Cumin"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -6224,8 +6816,20 @@ window.RECIPES = [
       "text": "Gurke, Kichererbsen und Tomaten verteilen. Feta darüber zerbröckeln.",
       "parts": [
        {
+        "type": "item",
+        "value": "Gurke"
+       },
+       {
         "type": "text",
-        "value": "Gurke, Kichererbsen und "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Kichererbsen"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -6361,7 +6965,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/gurken-kichererbsen-bowl-mit-zitronen-tahini-dressing-und-minze.jpg?v=af515e36",
   "tags": [
    "Bowl & Salat",
    "Orientalisch",
@@ -6631,7 +7235,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", beiden Paprikapulvern, "
+        "value": ", beiden "
+       },
+       {
+        "type": "item",
+        "value": "Paprikapulvern"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -6710,7 +7322,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " weich und leicht karamellisiert und die Kichererbsen knusprig sind."
+        "value": " weich und leicht karamellisiert und die "
+       },
+       {
+        "type": "item",
+        "value": "Kichererbsen"
+       },
+       {
+        "type": "text",
+        "value": " knusprig sind."
        }
       ]
      },
@@ -6719,8 +7339,12 @@ window.RECIPES = [
       "text": "Perl-Couscous nach Packungsanweisung im Topf kochen, abgießen und etwas ausdampfen lassen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Perl-Couscous"
+       },
+       {
         "type": "text",
-        "value": "Perl-Couscous nach Packungsanweisung im Topf kochen, abgießen und etwas ausdampfen lassen."
+        "value": " nach Packungsanweisung im Topf kochen, abgießen und etwas ausdampfen lassen."
        }
       ]
      },
@@ -6775,7 +7399,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Harissa, "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Harissa"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -6790,7 +7422,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Salz mit dem Schneebesen cremig verrühren."
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " mit dem Schneebesen cremig verrühren."
        }
       ]
      },
@@ -6830,7 +7470,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Kürbis & Kichererbsen auf zwei Schalen verteilen. Mit Feta und "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Kürbis"
+       },
+       {
+        "type": "text",
+        "value": " & "
+       },
+       {
+        "type": "item",
+        "value": "Kichererbsen"
+       },
+       {
+        "type": "text",
+        "value": " auf zwei Schalen verteilen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Feta"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -6888,7 +7552,7 @@ window.RECIPES = [
    "Petersilie",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/hokkaido-kichererbsen-salat.jpg?v=9f064898",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",
@@ -7009,7 +7673,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ") in einen kleinen Topf geben. Bei niedriger bis mittlerer Stufe erhitzen – Agavendicksaft wird beim Erwärmen sehr schnell sehr flüssig und kann bei zu viel Hitze schaumig hochkochen, daher am Herd bleiben und kontinuierlich rühren."
+        "value": ") in einen kleinen Topf geben. Bei niedriger bis mittlerer Stufe erhitzen – "
+       },
+       {
+        "type": "item",
+        "value": "Agavendicksaft"
+       },
+       {
+        "type": "text",
+        "value": " wird beim Erwärmen sehr schnell sehr flüssig und kann bei zu viel Hitze schaumig hochkochen, daher am Herd bleiben und kontinuierlich rühren."
        }
       ]
      },
@@ -7072,7 +7744,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Sirup kurz im Topf abkühlen lassen, damit die Chiliflocken zu Boden sinken (falls nicht abgesiebt werden soll). In ein sauberes Schraubglas füllen."
+        "value": "Sirup kurz im Topf abkühlen lassen, damit die "
+       },
+       {
+        "type": "item",
+        "value": "Chiliflocken"
+       },
+       {
+        "type": "text",
+        "value": " zu Boden sinken (falls nicht abgesiebt werden soll). In ein sauberes Schraubglas füllen."
        }
       ]
      }
@@ -7105,7 +7785,7 @@ window.RECIPES = [
   "nutritionNote": "pro 100g",
   "file": "Hot_Agave_3c310425b94281aca4ebf9ff1a8e20a3.md",
   "fresh": [],
-  "image": "",
+  "image": "bilder/hot-agave.jpg?v=fab6f15c",
   "tags": [
    "Schnell",
    "Vegan"
@@ -7347,13 +8027,13 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion",
-  "file": "Hüttenkäsetaler_33810425b94281eebbfbd2e17c90c438.md",
+  "file": "H├╝ttenk├ñsetaler_33810425b94281eebbfbd2e17c90c438.md",
   "fresh": [
    "Frischkaese",
    "Schnittlauch",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/huettenkaesetaler.jpg?v=3a0b29e2",
   "tags": [
    "Meal Prep",
    "Ofengericht",
@@ -7601,7 +8281,31 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Kleine Mulde eindrücken, beide Seiten mit Salz, Pfeffer und Gewürzmischung einreiben."
+        "value": "Kleine Mulde eindrücken, beide Seiten mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Gewürzmischung"
+       },
+       {
+        "type": "text",
+        "value": " einreiben."
        }
       ]
      },
@@ -7632,7 +8336,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Patties angrillen, nach dem Wenden Mozzarella auflegen und schmelzen lassen."
+        "value": "Patties angrillen, nach dem Wenden "
+       },
+       {
+        "type": "item",
+        "value": "Mozzarella"
+       },
+       {
+        "type": "text",
+        "value": " auflegen und schmelzen lassen."
        }
       ]
      },
@@ -7657,7 +8369,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " → Getrocknete Tomaten → Pattie mit Mozzarella → optional nochmals Soße."
+        "value": " → Getrocknete "
+       },
+       {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
+        "type": "text",
+        "value": " → Pattie mit "
+       },
+       {
+        "type": "item",
+        "value": "Mozzarella"
+       },
+       {
+        "type": "text",
+        "value": " → optional nochmals Soße."
        }
       ]
      }
@@ -7694,7 +8422,7 @@ window.RECIPES = [
    "Mozzarella",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/italian-burger.jpg?v=58e8bd4b",
   "tags": [
    "Burger",
    "Grillen",
@@ -7893,7 +8621,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " kleinschneiden und in Chiliöl anschwitzen."
+        "value": " kleinschneiden und in "
+       },
+       {
+        "type": "item",
+        "value": "Chiliöl"
+       },
+       {
+        "type": "text",
+        "value": " anschwitzen."
        }
       ]
      },
@@ -7998,7 +8734,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Mit Parmesan und Kürbiskernen garnieren."
+        "value": "Mit "
+       },
+       {
+        "type": "item",
+        "value": "Parmesan"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Kürbiskernen"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      }
@@ -8029,11 +8781,11 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion",
-  "file": "Kürbispasta_33810425b94281c8b031f1cfaee8df38.md",
+  "file": "K├╝rbispasta_33810425b94281c8b031f1cfaee8df38.md",
   "fresh": [
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/kuerbispasta.jpg?v=af9a532b",
   "tags": [
    "Asiatisch",
    "Pasta",
@@ -8299,7 +9051,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Eine Schicht getränkte Biskuits in zwei Gläser oder eine kleine Form legen. Darauf die Hälfte der Quarkcreme verteilen. Zweite Lage Biskuits, dann restliche Creme darüber geben."
+        "value": "Eine Schicht getränkte "
+       },
+       {
+        "type": "item",
+        "value": "Biskuits"
+       },
+       {
+        "type": "text",
+        "value": " in zwei Gläser oder eine kleine Form legen. Darauf die Hälfte der Quarkcreme verteilen. Zweite Lage "
+       },
+       {
+        "type": "item",
+        "value": "Biskuits"
+       },
+       {
+        "type": "text",
+        "value": ", dann restliche Creme darüber geben."
        }
       ]
      },
@@ -8396,7 +9164,7 @@ window.RECIPES = [
    "Joghurt",
    "Quark"
   ],
-  "image": "",
+  "image": "bilder/leichtes-tiramisu.jpg?v=97556f1c",
   "tags": [
    "Schnell"
   ]
@@ -8561,8 +9329,12 @@ window.RECIPES = [
       "text": "TK-Mantı nach Packungsangabe in reichlich kochendem Salzwasser garen, bis sie an der Oberfläche schwimmen.",
       "parts": [
        {
+        "type": "item",
+        "value": "TK-Mantı"
+       },
+       {
         "type": "text",
-        "value": "TK-Mantı nach Packungsangabe in reichlich kochendem Salzwasser garen, bis sie an der Oberfläche schwimmen."
+        "value": " nach Packungsangabe in reichlich kochendem Salzwasser garen, bis sie an der Oberfläche schwimmen."
        }
       ]
      },
@@ -8572,7 +9344,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Für die Tomatensauce Butter in einem Topf warm machen, "
+        "value": "Für die Tomatensauce "
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": " in einem Topf warm machen, "
        },
        {
         "type": "amount",
@@ -8602,7 +9382,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " aufgießen, mit Salz und Pfeffer abschmecken."
+        "value": " aufgießen, mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken."
        }
       ]
      },
@@ -8627,7 +9423,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit Olivenöl/Butter, "
+        "value": " mit "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": "/"
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -8642,7 +9454,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Petersilie/Minze und Salz vermengen."
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Petersilie"
+       },
+       {
+        "type": "text",
+        "value": "/"
+       },
+       {
+        "type": "item",
+        "value": "Minze"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " vermengen."
        }
       ]
      },
@@ -8719,14 +9555,14 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro 100g",
-  "file": "Mantı_mit_Tomat-Butter-Sauce_und_Avocado-Joghurtsa_3c310425b94281b4883dcb096cba82a9.md",
+  "file": "Mant─▒_mit_Tomat-Butter-Sauce_und_Avocado-Joghurtsa_3c310425b94281b4883dcb096cba82a9.md",
   "fresh": [
    "Avocado",
    "Joghurt",
    "Minze",
    "Petersilie"
   ],
-  "image": "",
+  "image": "bilder/manti-mit-tomat-butter-sauce-und-avocado-joghurtsauce.jpg?v=f90d1fae",
   "tags": [
    "Pasta",
    "Schnell"
@@ -8965,7 +9801,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Alles zusammen mit Mie-Nudeln und "
+        "value": "Alles zusammen mit "
+       },
+       {
+        "type": "item",
+        "value": "Mie-Nudeln"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -9050,7 +9894,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Sriracha vermengen und köcheln, bis die "
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Sriracha"
+       },
+       {
+        "type": "text",
+        "value": " vermengen und köcheln, bis die "
        },
        {
         "type": "amount",
@@ -9075,7 +9927,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Anrichten und mit Sesam garnieren."
+        "value": "Anrichten und mit "
+       },
+       {
+        "type": "item",
+        "value": "Sesam"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      }
@@ -9106,12 +9966,12 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion",
-  "file": "Mie-Nudeln_mit_Erdnuss-Soße_33810425b942816799a1f1939cad4e5e.md",
+  "file": "Mie-Nudeln_mit_Erdnuss-So├ƒe_33810425b942816799a1f1939cad4e5e.md",
   "fresh": [
    "Ingwer",
    "Paprika"
   ],
-  "image": "",
+  "image": "bilder/mie-nudeln-mit-erdnuss-sosse.jpg?v=7fa208bc",
   "tags": [
    "Asiatisch",
    "Pasta",
@@ -9375,7 +10235,7 @@ window.RECIPES = [
      },
      {
       "label": "",
-      "text": "Mit der Hand kneten (insg. 10–15 Minuten). Eine große Kugel formen und auf Spannung bringen.",
+      "text": "Mit der Hand kneten (insg. 10–15 Minuten), bis der Teig stabiler wird. Eine große Kugel formen und gut auf Spannung bringen.",
       "parts": [
        {
         "type": "text",
@@ -9388,17 +10248,17 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": "). Eine große Kugel formen und auf Spannung bringen."
+        "value": "), bis der Teig stabiler wird. Eine große Kugel formen und gut auf Spannung bringen."
        }
       ]
      },
      {
       "label": "",
-      "text": "Teig luftdicht abgedeckt über Nacht gehen lassen (12–24 Stunden).",
+      "text": "Teig luftdicht abgedeckt über Nacht im Kühlschrank gehen lassen (12–24 Stunden).",
       "parts": [
        {
         "type": "text",
-        "value": "Teig luftdicht abgedeckt über Nacht gehen lassen ("
+        "value": "Teig luftdicht abgedeckt über Nacht im Kühlschrank gehen lassen ("
        },
        {
         "type": "time",
@@ -9421,8 +10281,12 @@ window.RECIPES = [
       "text": "Hartweizengrieß auf der Arbeitsplatte verteilen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Hartweizengrieß"
+       },
+       {
         "type": "text",
-        "value": "Hartweizengrieß auf der Arbeitsplatte verteilen."
+        "value": " auf der Arbeitsplatte verteilen."
        }
       ]
      },
@@ -9438,21 +10302,21 @@ window.RECIPES = [
      },
      {
       "label": "",
-      "text": "Je eine Kugel formen und auf Spannung bringen.",
+      "text": "Je eine Kugel formen und gut auf Spannung bringen.",
       "parts": [
        {
         "type": "text",
-        "value": "Je eine Kugel formen und auf Spannung bringen."
+        "value": "Je eine Kugel formen und gut auf Spannung bringen."
        }
       ]
      },
      {
       "label": "",
-      "text": "Kugeln über Nacht im Kühlschrank luftdicht lagern.",
+      "text": "Kugeln über Nacht im Kühlschrank luftdicht lagern - Formen vorher ggf. leicht einölen.",
       "parts": [
        {
         "type": "text",
-        "value": "Kugeln über Nacht im Kühlschrank luftdicht lagern."
+        "value": "Kugeln über Nacht im Kühlschrank luftdicht lagern - Formen vorher ggf. leicht einölen."
        }
       ]
      }
@@ -9463,16 +10327,16 @@ window.RECIPES = [
     "items": [
      {
       "label": "",
-      "text": "3–4 Stunden vor Verarbeitung den Teig aus dem Kühlschrank nehmen.",
+      "text": "3 Stunden vor Verarbeitung den Teig aus dem Kühlschrank nehmen und luftdicht bei Raumtemperatur gehen lassen.",
       "parts": [
        {
         "type": "time",
         "seconds": 10800,
-        "value": "3–4 Stunden"
+        "value": "3 Stunden"
        },
        {
         "type": "text",
-        "value": " vor Verarbeitung den Teig aus dem Kühlschrank nehmen."
+        "value": " vor Verarbeitung den Teig aus dem Kühlschrank nehmen und luftdicht bei Raumtemperatur gehen lassen."
        }
       ]
      },
@@ -9512,7 +10376,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Optional Olivenöl drüber."
+        "value": "Optional "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " drüber."
        }
       ]
      },
@@ -9553,7 +10425,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Mit Basilikum und etwas Öl garnieren."
+        "value": "Mit "
+       },
+       {
+        "type": "item",
+        "value": "Basilikum"
+       },
+       {
+        "type": "text",
+        "value": " und etwas "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      }
@@ -9589,7 +10477,7 @@ window.RECIPES = [
    "Basilikum",
    "Mozzarella"
   ],
-  "image": "",
+  "image": "bilder/neapolitanische-pizza.jpg?v=991db6bf",
   "tags": [
    "Brot & Teig",
    "Grillen",
@@ -9791,7 +10679,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Knoblauch, Zucchini und Paprika dazugeben und weitere "
+        "value": "Knoblauch, "
+       },
+       {
+        "type": "item",
+        "value": "Zucchini"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Paprika"
+       },
+       {
+        "type": "text",
+        "value": " dazugeben und weitere "
        },
        {
         "type": "time",
@@ -9849,7 +10753,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " vor Ende der Kochzeit die Kirschtomaten unterheben."
+        "value": " vor Ende der Kochzeit die "
+       },
+       {
+        "type": "item",
+        "value": "Kirschtomaten"
+       },
+       {
+        "type": "text",
+        "value": " unterheben."
        }
       ]
      },
@@ -9859,7 +10771,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Mit Salz, Pfeffer und "
+        "value": "Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -9913,7 +10841,7 @@ window.RECIPES = [
    "Zitrone",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/one-pot-pasta-asian-style.jpg?v=f24d4773",
   "tags": [
    "Asiatisch",
    "Pasta",
@@ -10180,8 +11108,12 @@ window.RECIPES = [
       "text": "Öl in der Pfanne erhitzen, Knoblauch gemeinsam mit Kreuzkümmel, Kurkuma, Tomatenmark und Paprika anschwitzen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
         "type": "text",
-        "value": "Öl in der Pfanne erhitzen, "
+        "value": " in der Pfanne erhitzen, "
        },
        {
         "type": "amount",
@@ -10266,7 +11198,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Gehackte Walnusskerne, "
+        "value": "Gehackte "
+       },
+       {
+        "type": "item",
+        "value": "Walnusskerne"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -10371,7 +11311,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Salz, Pfeffer und Chili hinzufügen und "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Chili"
+       },
+       {
+        "type": "text",
+        "value": " hinzufügen und "
        },
        {
         "type": "time",
@@ -10390,7 +11354,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Mit Feta, Granatapfelkernen, "
+        "value": "Mit "
+       },
+       {
+        "type": "item",
+        "value": "Feta"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Granatapfelkernen"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -10405,7 +11385,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Minze anrichten."
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Minze"
+       },
+       {
+        "type": "text",
+        "value": " anrichten."
        }
       ]
      }
@@ -10446,7 +11434,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/orientalische-bulgur-feta-pfanne.jpg?v=9632e3cf",
   "tags": [
    "Meal Prep",
    "Orientalisch",
@@ -10841,7 +11829,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ") in dem Öl anrösten, bis es duftet – dabei rühren."
+        "value": ") in dem "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " anrösten, bis es duftet – dabei rühren."
        }
       ]
      },
@@ -10850,8 +11846,20 @@ window.RECIPES = [
       "text": "Zwiebeln und Knoblauch zu den Gewürzen geben, bei Stufe 5 ca. 3 Min. anschwitzen bis die Zwiebeln glasig sind.",
       "parts": [
        {
+        "type": "item",
+        "value": "Zwiebeln"
+       },
+       {
         "type": "text",
-        "value": "Zwiebeln und Knoblauch zu den Gewürzen geben, bei Stufe 5 ca. "
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Knoblauch"
+       },
+       {
+        "type": "text",
+        "value": " zu den Gewürzen geben, bei Stufe 5 ca. "
        },
        {
         "type": "time",
@@ -10860,7 +11868,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " anschwitzen bis die Zwiebeln glasig sind."
+        "value": " anschwitzen bis die "
+       },
+       {
+        "type": "item",
+        "value": "Zwiebeln"
+       },
+       {
+        "type": "text",
+        "value": " glasig sind."
        }
       ]
      },
@@ -10898,7 +11914,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " köcheln lassen, bis die Süßkartoffel weich ist."
+        "value": " köcheln lassen, bis die "
+       },
+       {
+        "type": "item",
+        "value": "Süßkartoffel"
+       },
+       {
+        "type": "text",
+        "value": " weich ist."
        }
       ]
      },
@@ -10985,7 +12009,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " bei Stufe 5 erhitzen und alles gut vermengen. Mit Salz, Pfeffer und Zitronensaft abschmecken."
+        "value": " bei Stufe 5 erhitzen und alles gut vermengen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " und Zitronensaft abschmecken."
        }
       ]
      },
@@ -10994,8 +12034,12 @@ window.RECIPES = [
       "text": "Couscous auf tiefe Teller geben, Gemüse-Kichererbsen-Mischung darüber verteilen. Mit Feta-Krümeln, Granatapfelkernen und gehackter Petersilie garnieren.",
       "parts": [
        {
+        "type": "item",
+        "value": "Couscous"
+       },
+       {
         "type": "text",
-        "value": "Couscous auf tiefe Teller geben, Gemüse-Kichererbsen-Mischung darüber verteilen. Mit Feta-Krümeln, "
+        "value": " auf tiefe Teller geben, Gemüse-Kichererbsen-Mischung darüber verteilen. Mit Feta-Krümeln, "
        },
        {
         "type": "amount",
@@ -11070,7 +12114,7 @@ window.RECIPES = [
    "Petersilie",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/orientalische-couscous-pfanne.jpg?v=35fb2a7a",
   "tags": [
    "Meal Prep",
    "Orientalisch",
@@ -11257,7 +12301,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in etwas Öl anbraten."
+        "value": " in etwas "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " anbraten."
        }
       ]
      },
@@ -11327,7 +12379,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " dazugeben und weiter köcheln, bis die Nudeln gar sind."
+        "value": " dazugeben und weiter köcheln, bis die "
+       },
+       {
+        "type": "item",
+        "value": "Nudeln"
+       },
+       {
+        "type": "text",
+        "value": " gar sind."
        }
       ]
      },
@@ -11337,7 +12397,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Mit Parmesan, Schnittlauch und "
+        "value": "Mit "
+       },
+       {
+        "type": "item",
+        "value": "Parmesan"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Schnittlauch"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -11389,7 +12465,7 @@ window.RECIPES = [
    "Schnittlauch",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/orzo-risotto.jpg?v=aa99326f",
   "tags": [
    "Italienisch",
    "Pasta",
@@ -11580,7 +12656,7 @@ window.RECIPES = [
   "nutritionNote": "pro 100 g, roh, geschätzt",
   "file": "Pasta-Teig_mit_Hartweizengriess_33810425b94280f4b663fd04f539cb4f.md",
   "fresh": [],
-  "image": "",
+  "image": "bilder/pasta-teig-mit-hartweizengriess.jpg?v=5846f97e",
   "tags": [
    "Brot & Teig",
    "Pasta",
@@ -11821,7 +12897,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " leicht ankochen (das Backpulver rauht die Oberfläche an – so werden sie im Ofen extra knusprig)."
+        "value": " leicht ankochen (das "
+       },
+       {
+        "type": "item",
+        "value": "Backpulver"
+       },
+       {
+        "type": "text",
+        "value": " rauht die Oberfläche an – so werden sie im Ofen extra knusprig)."
        }
       ]
      },
@@ -11830,8 +12914,28 @@ window.RECIPES = [
       "text": "Kartoffeln abgießen, kurz ausdampfen lassen und in der Schüssel einmal kräftig durchschütteln, damit die Oberfläche aufraut. Mit Olivenöl und Salz vermengen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Kartoffeln"
+       },
+       {
         "type": "text",
-        "value": "Kartoffeln abgießen, kurz ausdampfen lassen und in der Schüssel einmal kräftig durchschütteln, damit die Oberfläche aufraut. Mit Olivenöl und Salz vermengen."
+        "value": " abgießen, kurz ausdampfen lassen und in der Schüssel einmal kräftig durchschütteln, damit die Oberfläche aufraut. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " vermengen."
        }
       ]
      },
@@ -11875,7 +12979,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " und Knoblauch fein hacken. In einer Pfanne auf dem Induktionsherd bei Stufe 5–6 in Olivenöl glasig anschwitzen."
+        "value": " und Knoblauch fein hacken. In einer Pfanne auf dem Induktionsherd bei Stufe 5–6 in "
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " glasig anschwitzen."
        }
       ]
      },
@@ -11885,7 +12997,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Beide Paprikapulver sowie "
+        "value": "Beide "
+       },
+       {
+        "type": "item",
+        "value": "Paprikapulver"
+       },
+       {
+        "type": "text",
+        "value": " sowie "
        },
        {
         "type": "amount",
@@ -11959,7 +13079,23 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Sauce mit dem Pürierstab fein pürieren, mit Salz und einem Spritzer Zitronensaft abschmecken."
+        "value": "Sauce mit dem Pürierstab fein pürieren, mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und einem Spritzer "
+       },
+       {
+        "type": "item",
+        "value": "Zitronensaft"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken."
        }
       ]
      },
@@ -11968,8 +13104,12 @@ window.RECIPES = [
       "text": "Kartoffeln anrichten und mit der Bravas-Sauce beträufeln oder separat als Dip servieren.",
       "parts": [
        {
+        "type": "item",
+        "value": "Kartoffeln"
+       },
+       {
         "type": "text",
-        "value": "Kartoffeln anrichten und mit der Bravas-Sauce beträufeln oder separat als Dip servieren."
+        "value": " anrichten und mit der Bravas-Sauce beträufeln oder separat als Dip servieren."
        }
       ]
      }
@@ -12004,7 +13144,7 @@ window.RECIPES = [
   "fresh": [
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/patatas-bravas-mit-rauchiger-bravas-sauce.jpg?v=abf48f2b",
   "tags": [
    "Ofengericht",
    "Pfannengericht",
@@ -12175,7 +13315,7 @@ window.RECIPES = [
    "Basilikum",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/pistazien-pesto.jpg?v=055b3c9b",
   "tags": [
    "Italienisch",
    "Schnell"
@@ -12331,11 +13471,11 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion, 2 EL",
-  "file": "Pizza-Soße_33810425b942817e8398f04b651084b1.md",
+  "file": "Pizza-So├ƒe_33810425b942817e8398f04b651084b1.md",
   "fresh": [
    "Basilikum"
   ],
-  "image": "",
+  "image": "bilder/pizza-sosse.jpg?v=c0e6358e",
   "tags": [
    "Schnell",
    "Vegan"
@@ -12488,7 +13628,7 @@ window.RECIPES = [
   "fresh": [
    "Quark"
   ],
-  "image": "",
+  "image": "bilder/protein-quarkstangen.jpg?v=d1738d8c",
   "tags": [
    "Frühstück",
    "Meal Prep",
@@ -12710,7 +13850,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Am Gasgrill: 1 Brenner auf niedrig, die anderen beiden aus – das ergibt eine indirekte Zone bei ca. 120–150 °C. Räucherbox mit Holzchips einsetzen und die Pilze darüber "
+        "value": "Am Gasgrill: 1 Brenner auf niedrig, die anderen beiden aus – das ergibt eine indirekte Zone bei ca. 120–150 °C. Räucherbox mit Holzchips einsetzen und die "
+       },
+       {
+        "type": "item",
+        "value": "Pilze"
+       },
+       {
+        "type": "text",
+        "value": " darüber "
        },
        {
         "type": "time",
@@ -12764,7 +13912,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " bei Stufe 6–7 erhitzen, Zwiebel und Knoblauch "
+        "value": " bei Stufe 6–7 erhitzen, "
+       },
+       {
+        "type": "item",
+        "value": "Zwiebel"
+       },
+       {
+        "type": "text",
+        "value": " und Knoblauch "
        },
        {
         "type": "time",
@@ -12967,7 +14123,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Geräucherte Pilze mit zwei Gabeln grob zerzupfen und in die Sauce geben. Weitere "
+        "value": "Geräucherte "
+       },
+       {
+        "type": "item",
+        "value": "Pilze"
+       },
+       {
+        "type": "text",
+        "value": " mit zwei Gabeln grob zerzupfen und in die Sauce geben. Weitere "
        },
        {
         "type": "time",
@@ -13012,7 +14176,7 @@ window.RECIPES = [
   "fresh": [
    "Pilze"
   ],
-  "image": "",
+  "image": "bilder/pulled-pork-aus-austernpilzen.jpg?v=bb4a5627",
   "tags": [
    "Grillen",
    "Meal Prep",
@@ -13167,8 +14331,20 @@ window.RECIPES = [
       "text": "Wrap mit allen Zutaten belegen – darauf achten, dass der Käse später außen ist.",
       "parts": [
        {
+        "type": "item",
+        "value": "Wrap"
+       },
+       {
         "type": "text",
-        "value": "Wrap mit allen Zutaten belegen – darauf achten, dass der Käse später außen ist."
+        "value": " mit allen Zutaten belegen – darauf achten, dass der "
+       },
+       {
+        "type": "item",
+        "value": "Käse"
+       },
+       {
+        "type": "text",
+        "value": " später außen ist."
        }
       ]
      },
@@ -13177,8 +14353,12 @@ window.RECIPES = [
       "text": "Wrap Viertel für Viertel einklappen, sodass eine Döner-Form entsteht.",
       "parts": [
        {
+        "type": "item",
+        "value": "Wrap"
+       },
+       {
         "type": "text",
-        "value": "Wrap Viertel für Viertel einklappen, sodass eine Döner-Form entsteht."
+        "value": " Viertel für Viertel einklappen, sodass eine Döner-Form entsteht."
        }
       ]
      },
@@ -13188,7 +14368,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "In etwas Öl von beiden Seiten anbraten."
+        "value": "In etwas "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " von beiden Seiten anbraten."
        }
       ]
      }
@@ -13221,7 +14409,7 @@ window.RECIPES = [
   "nutritionNote": "pro Portion",
   "file": "Quartals-Quesadillas_33810425b94281e99672e01e6892c0ae.md",
   "fresh": [],
-  "image": "",
+  "image": "bilder/quartals-quesadillas.jpg?v=c4318dcf",
   "tags": [
    "Pfannengericht",
    "Schnell"
@@ -13462,7 +14650,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in einer Schüssel vermengen. Mit Salz und Pfeffer abschmecken. Die Masse sollte fest genug sein, um nicht zu verlaufen."
+        "value": " in einer Schüssel vermengen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken. Die Masse sollte fest genug sein, um nicht zu verlaufen."
        }
       ]
      },
@@ -13535,7 +14739,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " bei Stufe 6–7 schmelzen. Weitererhitzen bis die Butter schäumt und sich goldbraune Flocken am Boden bilden. Sofort vom Herd nehmen. "
+        "value": " bei Stufe 6–7 schmelzen. Weitererhitzen bis die "
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": " schäumt und sich goldbraune Flocken am Boden bilden. Sofort vom Herd nehmen. "
        },
        {
         "type": "amount",
@@ -13550,7 +14762,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " kurz in der braunen Butter schwenken."
+        "value": " kurz in der braunen "
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": " schwenken."
        }
       ]
      },
@@ -13589,7 +14809,39 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Ravioli auf vorgewärmten Tellern anrichten, braune Butter mit Pistazien darüber, frischen Thymian und optional extra Parmesan garnieren."
+        "value": "Ravioli auf vorgewärmten Tellern anrichten, braune "
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": " mit "
+       },
+       {
+        "type": "item",
+        "value": "Pistazien"
+       },
+       {
+        "type": "text",
+        "value": " darüber, frischen "
+       },
+       {
+        "type": "item",
+        "value": "Thymian"
+       },
+       {
+        "type": "text",
+        "value": " und optional extra "
+       },
+       {
+        "type": "item",
+        "value": "Parmesan"
+       },
+       {
+        "type": "text",
+        "value": " garnieren."
        }
       ]
      }
@@ -13628,7 +14880,7 @@ window.RECIPES = [
    "Thymian",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/ricotta-ravioli-mit-brauner-butter-pistazien-honig.jpg?v=3e693edc",
   "tags": [
    "Italienisch",
    "Pasta",
@@ -13818,7 +15070,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Salz und Pfeffer hinzufügen. Ca. "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " hinzufügen. Ca. "
        },
        {
         "type": "time",
@@ -13871,7 +15139,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " sollte der Wein eingekocht sein. Dann Rosmarin und Thymian hinzugeben."
+        "value": " sollte der "
+       },
+       {
+        "type": "item",
+        "value": "Wein"
+       },
+       {
+        "type": "text",
+        "value": " eingekocht sein. Dann "
+       },
+       {
+        "type": "item",
+        "value": "Rosmarin"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Thymian"
+       },
+       {
+        "type": "text",
+        "value": " hinzugeben."
        }
       ]
      }
@@ -13907,7 +15199,7 @@ window.RECIPES = [
    "Rosmarin",
    "Thymian"
   ],
-  "image": "bilder/rotweinzwiebeln.jpg?v=82fe7f98",
+  "image": "bilder/rotweinzwiebeln.jpg?v=51266733",
   "tags": [
    "Pfannengericht"
   ]
@@ -14168,7 +15460,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": "). Ist der Teig zu feucht, esslöffelweise etwas Mehl ergänzen."
+        "value": "). Ist der Teig zu feucht, esslöffelweise etwas "
+       },
+       {
+        "type": "item",
+        "value": "Mehl"
+       },
+       {
+        "type": "text",
+        "value": " ergänzen."
        }
       ]
      },
@@ -14242,7 +15542,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Optional mit Eigelb-Mandelmilch-Mischung oder Apfelmark bepinseln."
+        "value": "Optional mit Eigelb-Mandelmilch-Mischung oder "
+       },
+       {
+        "type": "item",
+        "value": "Apfelmark"
+       },
+       {
+        "type": "text",
+        "value": " bepinseln."
        }
       ]
      },
@@ -14292,11 +15600,11 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Brötchen, geschätzt",
-  "file": "Skyr_Schokobrötchen_3c410425b94281e2b650e8a784d1bfde.md",
+  "file": "Skyr_Schokobr├Âtchen_3c410425b94281e2b650e8a784d1bfde.md",
   "fresh": [
    "Joghurt"
   ],
-  "image": "",
+  "image": "bilder/skyr-schokobroetchen.jpg?v=61649570",
   "tags": [
    "Brot & Teig",
    "Frühstück",
@@ -14700,7 +16008,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Sesamöl, "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Sesamöl"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -14739,7 +16055,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " ziehen lassen. Vor dem Servieren mit Sesam bestreuen."
+        "value": " ziehen lassen. Vor dem Servieren mit "
+       },
+       {
+        "type": "item",
+        "value": "Sesam"
+       },
+       {
+        "type": "text",
+        "value": " bestreuen."
        }
       ]
      },
@@ -14844,7 +16168,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " köcheln lassen bis es leicht eindickt. Mit Salz abschmecken, beiseitestellen."
+        "value": " köcheln lassen bis es leicht eindickt. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken, beiseitestellen."
        }
       ]
      },
@@ -14948,7 +16280,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " pro Seite grillen, bis eine tiefbraune Kruste entsteht. Nicht zu früh wenden – der Halloumi löst sich von selbst."
+        "value": " pro Seite grillen, bis eine tiefbraune Kruste entsteht. Nicht zu früh wenden – der "
+       },
+       {
+        "type": "item",
+        "value": "Halloumi"
+       },
+       {
+        "type": "text",
+        "value": " löst sich von selbst."
        }
       ]
      },
@@ -15056,7 +16396,7 @@ window.RECIPES = [
    "Mango",
    "Weisskohl"
   ],
-  "image": "",
+  "image": "bilder/smoky-halloumi-burger.jpg?v=456ab034",
   "tags": [
    "Asiatisch",
    "Burger",
@@ -15249,7 +16589,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Arbeitsfläche mit Mehl bestäuben und Teig darauf ausbreiten."
+        "value": "Arbeitsfläche mit "
+       },
+       {
+        "type": "item",
+        "value": "Mehl"
+       },
+       {
+        "type": "text",
+        "value": " bestäuben und Teig darauf ausbreiten."
        }
       ]
      },
@@ -15329,9 +16677,9 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Brötchen",
-  "file": "Sonntagsbrötchen_33810425b94281efaf91e7b26e7911d3.md",
+  "file": "Sonntagsbr├Âtchen_33810425b94281efaf91e7b26e7911d3.md",
   "fresh": [],
-  "image": "",
+  "image": "bilder/sonntagsbroetchen.jpg?v=4f386846",
   "tags": [
    "Brot & Teig",
    "Frühstück",
@@ -15539,7 +16887,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Salz und Pfeffer vermengen."
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " vermengen."
        }
       ]
      },
@@ -15597,7 +16961,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit Limettensaft, -abrieb, gehacktem Koriander und Salz verrühren. Kalt stellen."
+        "value": " mit Limettensaft, -abrieb, gehacktem "
+       },
+       {
+        "type": "item",
+        "value": "Koriander"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " verrühren. Kalt stellen."
        }
       ]
      },
@@ -15643,13 +17023,13 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro Portion",
-  "file": "Süßkartoffel-Wedges_mit_Limetten-Koriander-Dip_33910425b94281cd8ebef0628dd516e5.md",
+  "file": "S├╝├ƒkartoffel-Wedges_mit_Limetten-Koriander-Dip_33910425b94281cd8ebef0628dd516e5.md",
   "fresh": [
    "Koriander",
    "Limette",
    "Sahne"
   ],
-  "image": "",
+  "image": "bilder/suesskartoffel-wedges-mit-limetten-koriander-dip.jpg?v=8e2770e7",
   "tags": [
    "Ofengericht"
   ]
@@ -15836,7 +17216,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " fein reiben, mit etwas Salz bestreuen, ca. "
+        "value": " fein reiben, mit etwas "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " bestreuen, ca. "
        },
        {
         "type": "time",
@@ -15870,7 +17258,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " mit der ausgedrückten Gurke, gepresstem Knoblauch, Dill, "
+        "value": " mit der ausgedrückten "
+       },
+       {
+        "type": "item",
+        "value": "Gurke"
+       },
+       {
+        "type": "text",
+        "value": ", gepresstem Knoblauch, "
+       },
+       {
+        "type": "item",
+        "value": "Dill"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
@@ -15885,7 +17289,31 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Zitronensaft, Salz und Pfeffer zu einem Tzatziki-Dressing verrühren."
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Zitronensaft"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " zu einem Tzatziki-Dressing verrühren."
        }
       ]
      },
@@ -15895,7 +17323,39 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Die abgekühlten Nudeln (und optional Tomaten, Oliven oder Feta) unter das Dressing heben."
+        "value": "Die abgekühlten "
+       },
+       {
+        "type": "item",
+        "value": "Nudeln"
+       },
+       {
+        "type": "text",
+        "value": " (und optional "
+       },
+       {
+        "type": "item",
+        "value": "Tomaten"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Oliven"
+       },
+       {
+        "type": "text",
+        "value": " oder "
+       },
+       {
+        "type": "item",
+        "value": "Feta"
+       },
+       {
+        "type": "text",
+        "value": ") unter das Dressing heben."
        }
       ]
      },
@@ -15955,10 +17415,803 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/tzatziki-nudelsalat.jpg?v=b8eb91df",
   "tags": [
    "Pasta",
    "Schnell"
+  ]
+ },
+ {
+  "id": "tuerkische-goezleme",
+  "title": "Türkische Gözleme",
+  "category": "Hauptspeise",
+  "health": "Ausgewogen",
+  "healthIcon": "⚖️",
+  "servings": 2,
+  "time": 60,
+  "source": "Bianca Zapatka (biancazapatka.com)",
+  "kcal": 925,
+  "ingredientGroups": [
+   {
+    "name": "Teig",
+    "items": [
+     {
+      "amount": {
+       "raw": "300 g",
+       "prefix": "",
+       "qty": 300.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "Weizenmehl"
+     },
+     {
+      "amount": {
+       "raw": "1 TL",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Salz"
+     },
+     {
+      "amount": {
+       "raw": "1 EL",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Öl"
+     },
+     {
+      "amount": {
+       "raw": "150 ml",
+       "prefix": "",
+       "qty": 150.0,
+       "qtyTo": null,
+       "unit": "ml",
+       "note": ""
+      },
+      "name": "Wasser"
+     }
+    ]
+   },
+   {
+    "name": "Füllung",
+    "items": [
+     {
+      "amount": {
+       "raw": "1 Packung",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "Packung",
+       "note": ""
+      },
+      "name": "Sonnenblumenhack (oder anderes veganes Hack)"
+     },
+     {
+      "amount": {
+       "raw": "240 ml",
+       "prefix": "",
+       "qty": 240.0,
+       "qtyTo": null,
+       "unit": "ml",
+       "note": ""
+      },
+      "name": "heiße Gemüsebrühe"
+     },
+     {
+      "amount": {
+       "raw": "2 EL",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Olivenöl"
+     },
+     {
+      "amount": {
+       "raw": "2",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Zwiebeln"
+     },
+     {
+      "amount": {
+       "raw": "3 Zehen",
+       "prefix": "",
+       "qty": 3.0,
+       "qtyTo": null,
+       "unit": "Zehen",
+       "note": ""
+      },
+      "name": "Knoblauch"
+     },
+     {
+      "amount": {
+       "raw": "1",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Rote Paprika"
+     },
+     {
+      "amount": {
+       "raw": "2 EL",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Tomatenmark"
+     },
+     {
+      "amount": {
+       "raw": "1½ TL",
+       "prefix": "",
+       "qty": 1.5,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Kreuzkümmel"
+     },
+     {
+      "amount": {
+       "raw": "1½ TL",
+       "prefix": "",
+       "qty": 1.5,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Paprikapulver"
+     },
+     {
+      "amount": {
+       "raw": "½ TL",
+       "prefix": "",
+       "qty": 0.5,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Chiliflocken (optional)"
+     },
+     {
+      "amount": {
+       "raw": "½ TL",
+       "prefix": "",
+       "qty": 0.5,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Salz"
+     },
+     {
+      "amount": {
+       "raw": "½ TL",
+       "prefix": "",
+       "qty": 0.5,
+       "qtyTo": null,
+       "unit": "TL",
+       "note": ""
+      },
+      "name": "Pfeffer"
+     },
+     {
+      "amount": {
+       "raw": "60 g",
+       "prefix": "",
+       "qty": 60.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "Spinat"
+     },
+     {
+      "amount": {
+       "raw": "½ Bund",
+       "prefix": "",
+       "qty": 0.5,
+       "qtyTo": null,
+       "unit": "Bund",
+       "note": ""
+      },
+      "name": "Petersilie"
+     },
+     {
+      "amount": {
+       "raw": "120 g",
+       "prefix": "",
+       "qty": 120.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "veganer Feta"
+     },
+     {
+      "amount": {
+       "raw": "1 Handvoll",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "Handvoll",
+       "note": ""
+      },
+      "name": "veganer Reibekäse (optional)"
+     }
+    ]
+   },
+   {
+    "name": "Zum Ausbacken",
+    "items": [
+     {
+      "amount": {
+       "raw": "etwas",
+       "prefix": "",
+       "qty": null,
+       "qtyTo": null,
+       "unit": "etwas",
+       "note": ""
+      },
+      "name": "Öl"
+     }
+    ]
+   }
+  ],
+  "ingredientNotes": [
+   "💡 Ergibt 4 gefüllte Teigtaschen – 2 pro Portion."
+  ],
+  "ingredientCount": 21,
+  "stepGroups": [
+   {
+    "name": "",
+    "items": [
+     {
+      "label": "Teig",
+      "text": "Mehl und Salz in einer Schüssel mischen, 1 EL Öl und 150 ml Wasser dazugeben und mit einer Gabel verrühren, bis das Wasser aufgenommen ist. Mit den Händen 3–5 Minuten zu einem glatten, weichen Teig kneten (ist er zu trocken, noch etwas Wasser ergänzen). Zur Kugel formen, abdecken und 20–30 Minuten ruhen lassen.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 300.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Mehl"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " in einer Schüssel mischen, "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": false
+       },
+       {
+        "type": "text",
+        "value": " "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 150.0,
+        "qtyTo": null,
+        "unit": "ml",
+        "added": false
+       },
+       {
+        "type": "text",
+        "value": " "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " dazugeben und mit einer Gabel verrühren, bis das "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " aufgenommen ist. Mit den Händen "
+       },
+       {
+        "type": "time",
+        "seconds": 180,
+        "value": "3–5 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " zu einem glatten, weichen Teig kneten (ist er zu trocken, noch etwas "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " ergänzen). Zur Kugel formen, abdecken und "
+       },
+       {
+        "type": "time",
+        "seconds": 1200,
+        "value": "20–30 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " ruhen lassen."
+       }
+      ]
+     },
+     {
+      "label": "Hack einweichen",
+      "text": "Sonnenblumenhack in der Gemüsebrühe 5–10 Minuten quellen lassen, dann abgießen und gut ausdrücken. Bei Tofu oder fertigem Hack entfällt dieser Schritt.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "Packung",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Sonnenblumenhack"
+       },
+       {
+        "type": "text",
+        "value": " in der "
+       },
+       {
+        "type": "amount",
+        "qty": 240.0,
+        "qtyTo": null,
+        "unit": "ml",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Gemüsebrühe"
+       },
+       {
+        "type": "text",
+        "value": " "
+       },
+       {
+        "type": "time",
+        "seconds": 300,
+        "value": "5–10 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " quellen lassen, dann abgießen und gut ausdrücken. Bei Tofu oder fertigem "
+       },
+       {
+        "type": "item",
+        "value": "Hack"
+       },
+       {
+        "type": "text",
+        "value": " entfällt dieser Schritt."
+       }
+      ]
+     },
+     {
+      "label": "Füllung braten",
+      "text": "Zwiebeln und Knoblauch fein hacken, Paprika würfeln, Spinat und Petersilie grob bzw. fein hacken. Olivenöl in einer Pfanne erhitzen, Zwiebeln darin etwa 3 Minuten anbraten, Knoblauch 1 Minute mitbraten. Paprika, Tomatenmark, Kreuzkümmel, Paprikapulver, Chiliflocken, Salz und Pfeffer zugeben und kurz weiterbraten.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Zwiebeln"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 3.0,
+        "qtyTo": null,
+        "unit": "Zehen",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Knoblauch"
+       },
+       {
+        "type": "text",
+        "value": " fein hacken, "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Paprika"
+       },
+       {
+        "type": "text",
+        "value": " würfeln, "
+       },
+       {
+        "type": "amount",
+        "qty": 60.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Spinat"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 0.5,
+        "qtyTo": null,
+        "unit": "Bund",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Petersilie"
+       },
+       {
+        "type": "text",
+        "value": " grob bzw. fein hacken. "
+       },
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " in einer Pfanne erhitzen, "
+       },
+       {
+        "type": "item",
+        "value": "Zwiebeln"
+       },
+       {
+        "type": "text",
+        "value": " darin etwa "
+       },
+       {
+        "type": "time",
+        "seconds": 180,
+        "value": "3 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " anbraten, "
+       },
+       {
+        "type": "item",
+        "value": "Knoblauch"
+       },
+       {
+        "type": "text",
+        "value": " 1 Minute mitbraten. "
+       },
+       {
+        "type": "item",
+        "value": "Paprika"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Tomatenmark"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 1.5,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Kreuzkümmel"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 1.5,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Paprikapulver"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 0.5,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Chiliflocken"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 0.5,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 0.5,
+        "qtyTo": null,
+        "unit": "TL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " zugeben und kurz weiterbraten."
+       }
+      ]
+     },
+     {
+      "label": "Füllung fertigstellen",
+      "text": "Hack, Spinat und Petersilie unterrühren, Pfanne abdecken, vom Herd nehmen und kurz ziehen lassen. Feta zerbröseln, untermischen und abschmecken.",
+      "parts": [
+       {
+        "type": "item",
+        "value": "Hack"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Spinat"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Petersilie"
+       },
+       {
+        "type": "text",
+        "value": " unterrühren, Pfanne abdecken, vom Herd nehmen und kurz ziehen lassen. "
+       },
+       {
+        "type": "amount",
+        "qty": 120.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Feta"
+       },
+       {
+        "type": "text",
+        "value": " zerbröseln, untermischen und abschmecken."
+       }
+      ]
+     },
+     {
+      "label": "Formen",
+      "text": "Teig in 4 gleich große Stücke teilen und zu Kugeln formen. Jede Kugel auf leicht bemehlter Fläche dünn zu einem großen Kreis ausrollen.",
+      "parts": [
+       {
+        "type": "text",
+        "value": "Teig in 4 gleich große Stücke teilen und zu Kugeln formen. Jede Kugel auf leicht bemehlter Fläche dünn zu einem großen Kreis ausrollen."
+       }
+      ]
+     },
+     {
+      "label": "Füllen",
+      "text": "Ein Viertel der Füllung auf eine Hälfte des Kreises geben, rundum 1–1,5 cm Rand frei lassen und nach Wunsch Reibekäse darüberstreuen. Rand mit etwas Wasser befeuchten, die zweite Hälfte darüberklappen und die Ränder fest andrücken.",
+      "parts": [
+       {
+        "type": "text",
+        "value": "Ein Viertel der Füllung auf eine Hälfte des Kreises geben, rundum 1–1,5 cm Rand frei lassen und nach Wunsch "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "Handvoll",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Reibekäse"
+       },
+       {
+        "type": "text",
+        "value": " darüberstreuen. Rand mit etwas "
+       },
+       {
+        "type": "item",
+        "value": "Wasser"
+       },
+       {
+        "type": "text",
+        "value": " befeuchten, die zweite Hälfte darüberklappen und die Ränder fest andrücken."
+       }
+      ]
+     },
+     {
+      "label": "Ausbacken",
+      "text": "Öl in einer großen Pfanne bei mittlerer Hitze erhitzen. Die Gözleme einzeln oder zu zweit goldbraun backen, dabei die Ränder mit dem Pfannenwender andrücken. Wenden und auch die zweite Seite knusprig backen. Auf einem Gitter ablegen, damit sie knusprig bleiben.",
+      "parts": [
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " in einer großen Pfanne bei mittlerer Hitze erhitzen. Die Gözleme einzeln oder zu zweit goldbraun backen, dabei die Ränder mit dem Pfannenwender andrücken. Wenden und auch die zweite Seite knusprig backen. Auf einem Gitter ablegen, damit sie knusprig bleiben."
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Erst kurz vor dem Ausbacken füllen – sonst weicht die Füllung den Teig auf.",
+   "Teig und Füllung lassen sich 1–2 Tage vorher zubereiten. Den Teig in Folie im Kühlschrank lagern und vor dem Ausrollen etwa 45 Minuten bei Raumtemperatur ruhen lassen; die Füllung schmeckt am nächsten Tag sogar intensiver.",
+   "Statt Sonnenblumenhack passen 200 g gepresster, zerbröselter Tofu, Sojagranulat, gebratene Pilze oder grob zerdrückte Bohnen.",
+   "Abkürzung: Yufka-Teig oder Tortillas statt selbstgemachtem Teig.",
+   "Dazu passt veganes Tzatziki, ein Kräuter-Dip oder Guacamole."
+  ],
+  "nutrition": [
+   {
+    "label": "Kalorien",
+    "value": "ca. 925 kcal"
+   },
+   {
+    "label": "Kohlenhydrate",
+    "value": "140g"
+   },
+   {
+    "label": "Protein",
+    "value": "25g"
+   },
+   {
+    "label": "Fett",
+    "value": "19g"
+   }
+  ],
+  "nutritionNote": "pro Portion, 2 Gözleme, geschätzt",
+  "file": "Türkische_Gözleme.md",
+  "fresh": [
+   "Blattsalat",
+   "Feta",
+   "Paprika",
+   "Petersilie"
+  ],
+  "image": "",
+  "tags": [
+   "Brot & Teig",
+   "Meal Prep",
+   "Orientalisch",
+   "Pfannengericht",
+   "Vegan"
   ]
  },
  {
@@ -16338,7 +18591,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Röschen aus dem Ofen holen, in BBQ-Sauce tunken oder gleichmäßig bestreichen. Für mehr Schärfe "
+        "value": "Röschen aus dem Ofen holen, in "
+       },
+       {
+        "type": "item",
+        "value": "BBQ-Sauce"
+       },
+       {
+        "type": "text",
+        "value": " tunken oder gleichmäßig bestreichen. Für mehr Schärfe "
        },
        {
         "type": "amount",
@@ -16398,7 +18659,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in Ringe schneiden. Wings mit Limettensaft, Frühlingszwiebeln und "
+        "value": " in Ringe schneiden. Wings mit Limettensaft, "
+       },
+       {
+        "type": "item",
+        "value": "Frühlingszwiebeln"
+       },
+       {
+        "type": "text",
+        "value": " und "
        },
        {
         "type": "amount",
@@ -16466,7 +18735,7 @@ window.RECIPES = [
    "Koriander",
    "Limette"
   ],
-  "image": "",
+  "image": "bilder/vegane-chicken-wings-aus-blumenkohl.jpg?v=decf777f",
   "tags": [
    "Ofengericht",
    "Vegan"
@@ -16488,9 +18757,9 @@ window.RECIPES = [
     "items": [
      {
       "amount": {
-       "raw": "100 g",
+       "raw": "200 g",
        "prefix": "",
-       "qty": 100.0,
+       "qty": 200.0,
        "qtyTo": null,
        "unit": "g",
        "note": ""
@@ -16499,9 +18768,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "40 g",
+       "raw": "80 g",
        "prefix": "",
-       "qty": 40.0,
+       "qty": 80.0,
        "qtyTo": null,
        "unit": "g",
        "note": ""
@@ -16510,9 +18779,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "35 g",
+       "raw": "70 g",
        "prefix": "",
-       "qty": 35.0,
+       "qty": 70.0,
        "qtyTo": null,
        "unit": "g",
        "note": ""
@@ -16521,9 +18790,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "1 TL gestrichen",
+       "raw": "2 TL gestrichen",
        "prefix": "",
-       "qty": 1.0,
+       "qty": 2.0,
        "qtyTo": null,
        "unit": "TL gestrichen",
        "note": ""
@@ -16532,9 +18801,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "½ EL",
+       "raw": "1 EL",
        "prefix": "",
-       "qty": 0.5,
+       "qty": 1.0,
        "qtyTo": null,
        "unit": "EL",
        "note": ""
@@ -16543,9 +18812,9 @@ window.RECIPES = [
      },
      {
       "amount": {
-       "raw": "1",
+       "raw": "2",
        "prefix": "",
-       "qty": 1.0,
+       "qty": 2.0,
        "qtyTo": null,
        "unit": "",
        "note": ""
@@ -16576,11 +18845,11 @@ window.RECIPES = [
     "items": [
      {
       "label": "Füllung vorbereiten",
-      "text": "Walnusskerne fein hacken. Ziegenfrieschkäse, Parmesan, Walnusskerne, Senf und Honig in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit Salz und Pfeffer abschmecken.",
+      "text": "Walnusskerne fein hacken. Ziegenfrischkäse, Parmesan, Walnusskerne, Senf und Honig in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit Salz und Pfeffer abschmecken.",
       "parts": [
        {
         "type": "amount",
-        "qty": 35.0,
+        "qty": 70.0,
         "qtyTo": null,
         "unit": "g",
         "added": true
@@ -16591,11 +18860,26 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " fein hacken. Ziegenfrieschkäse, "
+        "value": " fein hacken. "
        },
        {
         "type": "amount",
-        "qty": 40.0,
+        "qty": 200.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Ziegenfrischkäse"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 80.0,
         "qtyTo": null,
         "unit": "g",
         "added": true
@@ -16606,11 +18890,19 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Walnusskerne, "
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Walnusskerne"
+       },
+       {
+        "type": "text",
+        "value": ", "
        },
        {
         "type": "amount",
-        "qty": 1.0,
+        "qty": 2.0,
         "qtyTo": null,
         "unit": "TL gestrichen",
         "added": true
@@ -16625,7 +18917,7 @@ window.RECIPES = [
        },
        {
         "type": "amount",
-        "qty": 0.5,
+        "qty": 1.0,
         "qtyTo": null,
         "unit": "EL",
         "added": true
@@ -16636,7 +18928,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit Salz und Pfeffer abschmecken."
+        "value": " in einer Schüssel glatt verrühren. Knoblauch pressen und unterrühren. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken."
        }
       ]
      },
@@ -16724,11 +19032,11 @@ window.RECIPES = [
    }
   ],
   "nutritionNote": "pro 100 g, inkl. Teig, gekocht",
-  "file": "Ziegenkäse-Ravioli_mit_Walnüssen___Honig_33910425b94281fab45fc5e378187398.md",
+  "file": "Ziegenk├ñse-Ravioli_mit_Waln├╝ssen___Honig_33910425b94281fab45fc5e378187398.md",
   "fresh": [
    "Frischkaese"
   ],
-  "image": "",
+  "image": "bilder/ziegenkaese-ravioli-mit-walnuessen-honig.jpg?v=26513722",
   "tags": [
    "Meal Prep",
    "Pasta"
@@ -16951,8 +19259,12 @@ window.RECIPES = [
       "text": "Sahne und Zitronensaft in die Zitronenbutter geben, bei Stufe 3 kurz einkochen lassen. Mit etwas Nudelwasser die gewünschte Konsistenz einstellen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Sahne"
+       },
+       {
         "type": "text",
-        "value": "Sahne und Zitronensaft in die Zitronenbutter geben, bei Stufe 3 kurz einkochen lassen. Mit etwas Nudelwasser die gewünschte Konsistenz einstellen."
+        "value": " und Zitronensaft in die Zitronenbutter geben, bei Stufe 3 kurz einkochen lassen. Mit etwas Nudelwasser die gewünschte Konsistenz einstellen."
        }
       ]
      },
@@ -16962,7 +19274,15 @@ window.RECIPES = [
       "parts": [
        {
         "type": "text",
-        "value": "Abgetropfte Nudeln in die Pfanne geben, vom Herd nehmen und "
+        "value": "Abgetropfte "
+       },
+       {
+        "type": "item",
+        "value": "Nudeln"
+       },
+       {
+        "type": "text",
+        "value": " in die Pfanne geben, vom Herd nehmen und "
        },
        {
         "type": "amount",
@@ -16977,7 +19297,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " nach und nach unterheben – das verhindert Klumpen. Mit Salz und reichlich schwarzem Pfeffer abschmecken."
+        "value": " nach und nach unterheben – das verhindert Klumpen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und reichlich schwarzem "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken."
        }
       ]
      },
@@ -17002,7 +19338,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": ", Basilikum, Parmesan-Spänen (Sparschäler) und etwas frischem Zitronenabrieb toppen."
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Basilikum"
+       },
+       {
+        "type": "text",
+        "value": ", Parmesan-Spänen (Sparschäler) und etwas frischem Zitronenabrieb toppen."
        }
       ]
      }
@@ -17040,7 +19384,7 @@ window.RECIPES = [
    "Sahne",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/zitronenpasta-mit-pinienkernen-basilikum.jpg?v=31bb117f",
   "tags": [
    "Italienisch",
    "Pasta",
@@ -17333,7 +19677,23 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " nach und nach einrühren und schmelzen lassen. Mit Salz und Pfeffer abschmecken."
+        "value": " nach und nach einrühren und schmelzen lassen. Mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " abschmecken."
        }
       ]
      },
@@ -17358,7 +19718,15 @@ window.RECIPES = [
        },
        {
         "type": "text",
-        "value": " ohne Öl in einer kleinen Pfanne rösten, bis sie goldbraun duften."
+        "value": " ohne "
+       },
+       {
+        "type": "item",
+        "value": "Öl"
+       },
+       {
+        "type": "text",
+        "value": " in einer kleinen Pfanne rösten, bis sie goldbraun duften."
        }
       ]
      },
@@ -17367,8 +19735,20 @@ window.RECIPES = [
       "text": "Halloumi zurück in die Sauce geben, Nudeln unterheben, in tiefen Tellern anrichten und mit den gerösteten Pinienkernen toppen.",
       "parts": [
        {
+        "type": "item",
+        "value": "Halloumi"
+       },
+       {
         "type": "text",
-        "value": "Halloumi zurück in die Sauce geben, Nudeln unterheben, in tiefen Tellern anrichten und mit den gerösteten Pinienkernen toppen."
+        "value": " zurück in die Sauce geben, Nudeln unterheben, in tiefen Tellern anrichten und mit den gerösteten "
+       },
+       {
+        "type": "item",
+        "value": "Pinienkernen"
+       },
+       {
+        "type": "text",
+        "value": " toppen."
        }
       ]
      }
@@ -17405,7 +19785,7 @@ window.RECIPES = [
    "Sahne",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/zucchini-parmesan-pasta-mit-halloumi-und-pinienkernen.jpg?v=d353b541",
   "tags": [
    "Pasta",
    "Pfannengericht",
@@ -17562,7 +19942,7 @@ window.RECIPES = [
    "Eier",
    "Quark"
   ],
-  "image": "",
+  "image": "bilder/zwiebelbrot.jpg?v=68088afe",
   "tags": [
    "Brot & Teig",
    "Frühstück",
