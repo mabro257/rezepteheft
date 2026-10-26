@@ -18205,7 +18205,7 @@ window.RECIPES = [
    "Paprika",
    "Petersilie"
   ],
-  "image": "",
+  "image": "bilder/tuerkische-goezleme.jpg?v=2476a8c6",
   "tags": [
    "Brot & Teig",
    "Meal Prep",
