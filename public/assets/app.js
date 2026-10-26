@@ -256,6 +256,9 @@ function renderFacets() {
   const cats = [...new Set(RECIPES.map(r => r.category))].sort((a, b) => a.localeCompare(b, "de"));
   const catList = $("#catList");
   if (!catList) return;
+  /* Mobil scrollt die Leiste seitlich. Ohne das Merken spränge sie bei jedem
+     Klick an den Anfang, und die gerade gewählte Kategorie wäre weg. */
+  const scrolled = catList.scrollLeft;
   catList.innerHTML = "";
   const mk = (label, value, n, dot) => {
     const b = el("button", "quickchip",
@@ -266,6 +269,7 @@ function renderFacets() {
   };
   catList.append(mk("Alle", null, RECIPES.length, "var(--ink)"));
   cats.forEach(c => catList.append(mk(c, c, RECIPES.filter(r => r.category === c).length, accent(c))));
+  catList.scrollLeft = scrolled;
 
   const chips = (host, values, chosen) => {
     if (!host) return;

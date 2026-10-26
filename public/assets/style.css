@@ -698,6 +698,22 @@ body.locked { overflow: hidden; }
   .hide-sm { display: none; }
 }
 
+/* Kategorien mobil in einer Zeile zum Wischen statt drei Zeilen Umbruch.
+   Die Leiste läuft bis an den Rand, der Verlauf rechts zeigt, dass es weitergeht.
+   Steht bewusst nach dem 520px-Block, der die Chips sonst wieder umbricht. */
+@media (max-width: 900px) {
+  .quickfilter {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    margin: 12px -18px 0; padding: 2px 18px;
+    scroll-padding-inline: 18px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  }
+  .quickfilter::-webkit-scrollbar { display: none; }
+  .quickchip { flex: 0 0 auto; padding: 6px 12px; font-size: 13.5px; }
+  body.has-query .quickfilter { margin-top: 2px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   .card:hover { transform: none; }
