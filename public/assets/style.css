@@ -608,7 +608,8 @@ body.locked { overflow: hidden; }
   body.has-query .masthead { margin-bottom: 8px; }
   body.has-query .quickfilter { margin-top: 6px; }
   body.has-query .card__tags,
-  body.has-query .card__figure { display: none; }
+  body.has-query .card__figure,
+  body.has-query .card__spec { display: none; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
   .sheet__wrap { padding: 26px 18px 110px; }
   .sheet__bar { padding: 10px 16px; }

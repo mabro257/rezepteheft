@@ -1,8 +1,8 @@
 // Automatisch erzeugt von build.py – nicht manuell bearbeiten.
 window.RECIPES = [
  {
-  "id": "big-mac-bowl-high-protein",
-  "title": "Big Mac Bowl (High Protein)",
+  "id": "big-mac-bowl",
+  "title": "Big Mac Bowl",
   "category": "Hauptspeise",
   "health": "Ausgewogen",
   "healthIcon": "⚖️",
@@ -501,7 +501,7 @@ window.RECIPES = [
    "Quark",
    "Tomaten"
   ],
-  "image": "bilder/big-mac-bowl-high-protein.jpg?v=0556f676",
+  "image": "bilder/big-mac-bowl.jpg?v=0556f676",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",

@@ -1,4 +1,4 @@
-# Big Mac Bowl (High Protein)
+# Big Mac Bowl
 
 Gesundheitswert: ⚖️ Ausgewogen
 Kategorie: Hauptspeise
