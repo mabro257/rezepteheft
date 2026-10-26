@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=11bc2efd13">
+<link rel="stylesheet" href="assets/style.css?v=f5397341c7">
 </head>
 <body>
 
@@ -56,6 +56,7 @@
         <button class="ghost-btn" id="resetBtn">Filter zurücksetzen</button>
       </div>
     </div>
+    <button type="button" class="rail__done" id="railDone">Rezepte anzeigen</button>
   </aside>
 
   <main class="main">
@@ -68,6 +69,7 @@
         <button type="button" class="search__clear" id="searchClear" aria-label="Suche leeren" hidden>×</button>
       </div>
       <div class="quickfilter" id="catList" role="group" aria-label="Kategorie"></div>
+      <div class="activefilters" id="activeFilters" aria-label="Aktive Filter" hidden></div>
     </div>
 
     <div class="toolbar">
@@ -75,19 +77,15 @@
       <div class="toolbar__actions">
         <label class="select">
           <span>Sortieren</span>
-          <select id="sort">
+          <select id="sort" aria-label="Sortieren">
             <option value="title">A–Z</option>
             <option value="time">Zeit aufsteigend</option>
             <option value="kcal">Kalorien aufsteigend</option>
             <option value="ingredients">Wenigste Zutaten</option>
           </select>
         </label>
-        <button class="ghost-btn" id="planToggle" aria-pressed="false">Zusammen kochen</button>
       </div>
     </div>
-
-    <section class="planbar" id="planbar" hidden></section>
-    <section class="suggest" id="suggest" hidden></section>
 
     <section class="grid" id="grid" aria-live="polite"></section>
 
@@ -111,6 +109,7 @@
     </form>
 
     <div id="menuOpen"></div>
+    <div id="menuSuggest"></div>
     <div id="menuArchive"></div>
   </section>
 </div>
@@ -132,8 +131,9 @@
 </form>
 
 <div class="timers" id="timers" aria-live="polite" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="data/recipes.js?v=fc1b5be1b4"></script>
-<script src="assets/app.js?v=46af8ac87a"></script>
+<script src="assets/app.js?v=5dc4b2f5ee"></script>
 </body>
 </html>

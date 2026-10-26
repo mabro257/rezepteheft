@@ -157,7 +157,7 @@ passiert scheinbar nichts. Das ist schon zweimal passiert.
 
 ### 5.4 Frische Zutaten (`fresh_ingredients`)
 
-Grundlage für den Modus „Zusammen kochen". **Whitelist** statt Ausschlussliste:
+Grundlage für „Zusammen kochen“ im Essensplan. **Whitelist** statt Ausschlussliste:
 Nur was in `FRESH_INGREDIENTS` steht, gilt als schnell verderblich — Mehl,
 Nudeln, Kichererbsen, Gewürze und Konserven müssen deshalb nirgends aufgezählt
 werden. Links steht ein gemeinsamer Name, damit Kirschtomaten, Cherrytomaten und
@@ -206,15 +206,25 @@ einem `state`-Objekt, alles rendert aus `RECIPES`.
   vorkommt („Zutat: veganer Feta“). Auf dem Handy klebt das Feld oben, und
   Überschrift, Kategorien und Sortierleiste weichen, solange gesucht wird –
   vorher verdeckte die Tastatur sämtliche Treffer. Trefferzahl und Leeren-Knopf
-  stehen im Feld.
-- **Kategorie-Schnellfilter** als Chips direkt unter der Suche
-- **Seitenleiste** mit Tags, Ernährung, Zeit-Regler, Zurücksetzen
+  stehen im Feld. Ganze Wörter zählen mehr als Wortteile („kartoffel“ bringt
+  erst Kartoffeln, dann Süßkartoffeln). Kleine Synonymliste `SYNONYMS`
+  (Nudeln/Pasta/Ravioli, Soße/Sauce …) – bewusst kurz, jeder Eintrag erweitert
+  die Treffer. Ohne Treffer schlägt die App ein Wort der Sammlung mit einem
+  Buchstaben Abstand vor („Meintest du Zucchini?“).
+- **Kategorie-Schnellfilter** als Chips direkt unter der Suche, mobil als
+  wischbare Leiste
+- **Seitenleiste** mit Tags, Ernährung, Zeit-Regler, Zurücksetzen. Mobil zeigt
+  der Knopf die Zahl aktiver Filter („Filter · 2“), unter der Suche stehen sie
+  als lösbare Chips, und unten in der Leiste schließt „N Rezepte anzeigen“.
 - **Sortierung** A–Z, Zeit, Kalorien, Anzahl Zutaten
-- **Rezeptansicht** als Vollbild-Sheet mit eigener URL (`#/r/<id>`)
+- **Rezeptansicht** als Vollbild-Sheet mit eigener URL (`#/r/<id>`). Mobil nur
+  Zurück und Kochmodus in der Leiste, Einplanen / Bring! / Teilen hinter „⋯“;
+  Sprungmarken zu Zutaten, Zubereitung, Nährwerten; Bild klein neben dem Titel.
+- **Teilen** über das Teilen-Menü des Handys, sonst Link in die Zwischenablage
 - **Portionsregler**, der Zutatenliste *und* Fließtext live umrechnet
-- **Kochmodus**: größere Schrift, abhakbare Schritte, Display bleibt an (Wake Lock)
-- **Zusammen kochen**: Rezepte markieren, gemeinsame frische Zutaten sehen,
-  Vorschläge nach Überschneidung sortiert
+- **Kochmodus**: größere Schrift, abhakbare Schritte, Display bleibt an (Wake Lock).
+  Haken, Portionen und Kochmodus bleiben pro Rezept für die Sitzung erhalten
+  (`progress`), wer zwischendurch ein anderes Rezept ansieht, verliert nichts.
 - **Bring!-Import** je Rezept
 - **Änderungsvorschlag** je Rezept über Netlify Forms
 - **Essensplan** als eigener Bereich (`#/plan`), siehe 6.1
@@ -239,6 +249,12 @@ Eigener Bereich neben der Rezeptliste, erreichbar über den Knopf oben rechts
 - Ein Rezept kann nur einmal **offen** im Plan stehen, im Archiv beliebig oft.
 - In der Rezeptansicht gibt es *Einplanen* / *Im Essensplan ✓*, in der
   Rezeptliste tragen geplante Rezepte ein kleines „geplant“ am Titel.
+- Entfernen geht ohne Rückfrage, dafür mit *Rückgängig* in einer Meldung.
+- **Zusammen kochen ist Teil des Plans.** Unter den offenen Einträgen stehen
+  die frischen Zutaten aller geplanten Rezepte und bis zu sechs Vorschläge, die
+  dieselben Zutaten aufbrauchen, jeweils mit *+ Einplanen*. Früher war das ein
+  eigener Auswahlmodus in der Rezeptliste, der vom Plan nichts wusste – und
+  dessen Rückmeldung oben erschien, während man unten eine Karte antippte.
 
 **Speicherort:** `localStorage`, Schlüssel `essensplan.v1`, Struktur
 `[{id, recipe|null, title, bought, cooked, cookedAt}]`. Das ist eine bewusste
@@ -247,9 +263,10 @@ ist, dass der Plan nur auf dem Gerät existiert, auf dem er entsteht. Soll er
 geteilt werden, braucht es eine Netlify Function plus Speicher (z. B. Netlify
 Blobs) — dann ist es keine rein statische Seite mehr.
 
-**Namensfalle:** `state.plan` / `planbar` / `togglePlan` gehören zu *Zusammen
-kochen*, nicht zum Essensplan. Der Essensplan heißt im Code durchgehend `menu`
-(`menuAdd`, `menuPatch`, `renderMenu`, `#menuview`).
+**Namen im Code:** Der Essensplan heißt durchgehend `menu` (`menuAdd`,
+`menuPatch`, `renderMenu`, `#menuview`), Zusammen kochen darin `menuFresh` /
+`menuSuggestions`. Die früheren `state.plan`, `planbar` und `togglePlan` gibt
+es nicht mehr.
 
 ### Entfernt (nicht versehentlich, sondern auf Wunsch)
 

@@ -69,8 +69,6 @@ const state = {
   health: new Set(),
   maxTime: 120,
   tags: new Set(),
-  planning: false,
-  plan: new Set(),
   sort: "title",
   view: "list",        // "list" oder "plan"
   open: null,          // aktuelles Rezept
@@ -190,28 +188,56 @@ function bringLink(r) {
    sonst bleibt bei einem Treffer im Fließtext rätselhaft, warum das Rezept
    in der Liste steht.
    ========================================================================= */
-function score(r) {
-  return state.terms.reduce((sum, t) => {
-    if (r.find.title.startsWith(t) || r.find.title.includes(" " + t)) return sum + 120;
-    if (r.find.title.includes(t)) return sum + 100;
-    if (r.find.tags.includes(t)) return sum + 40;
-    if (r.find.ingredients.some(n => fold(n).includes(t))) return sum + 25;
-    if (r.find.steps.includes(t)) return sum + 8;
-    return sum + 2;
-  }, 0);
+/* Gleiche Sache, anderes Wort. Gefaltet geschrieben (siehe fold). Bewusst
+   kurz gehalten: Jeder Eintrag erweitert die Treffer, ein zu großzügiger
+   ("hack" trifft "gehackt") macht die Suche unbrauchbar. */
+const SYNONYMS = [
+  ["nudeln", "pasta", "spaghetti", "penne", "fusilli", "tagliatelle", "orzo", "ravioli"],
+  ["sosse", "sauce"],
+  ["chili", "chilli"],
+  ["joghurt", "yoghurt", "jogurt"],
+  ["brotchen", "buns"],
+  ["burger", "patty", "patties"],
+];
+
+/* Ein Suchwort und seine Synonyme. "nudeln" findet so auch die Ravioli. */
+function alts(term) {
+  const group = SYNONYMS.find(g => g.includes(term));
+  return group ? [term, ...group.filter(x => x !== term)] : [term];
 }
+
+const words = text => fold(text).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+const startsWord = (text, t) => words(text).some(w => w.startsWith(t));
+
+/* Ein ganzes Wort zählt mehr als ein Wortteil: "kartoffel" soll die
+   Kartoffeln der Patatas Bravas vor der Süßkartoffel im Titel finden. */
+function termScore(r, t) {
+  if (startsWord(r.title, t)) return 120;
+  if (r.find.tags.includes(t)) return 50;
+  if (r.find.ingredients.some(n => startsWord(n, t))) return 60;
+  if (r.find.title.includes(t)) return 30;
+  if (r.find.ingredients.some(n => fold(n).includes(t))) return 20;
+  if (r.find.steps.includes(t)) return 8;
+  return r.search.includes(t) ? 2 : 0;
+}
+
+function score(r) {
+  return state.terms.reduce((sum, t) => sum + Math.max(...alts(t).map(a => termScore(r, a))), 0);
+}
+
+const termIn = (text, t) => alts(t).some(a => fold(text).includes(a));
 
 /* Wo kommt das Wort vor? Nur für Wörter, die nicht schon im Titel stehen. */
 function hitHint(r) {
   const ings = [], tags = [], other = [];
   const add = (list, v) => { if (!list.includes(v)) list.push(v); };
   state.terms.forEach(t => {
-    if (r.find.title.includes(t)) return;
-    const ing = r.find.ingredients.find(n => fold(n).includes(t));
-    const tag = (r.tags || []).find(x => fold(x).includes(t));
+    if (termIn(r.title, t)) return;
+    const ing = r.find.ingredients.find(n => termIn(n, t));
+    const tag = (r.tags || []).find(x => termIn(x, t));
     if (ing) add(ings, mark(ing));
     else if (tag) add(tags, mark(tag));
-    else add(other, r.find.steps.includes(t) ? "in der Zubereitung" : "in den Tipps");
+    else add(other, termIn(r.find.steps, t) ? "in der Zubereitung" : "in den Tipps");
   });
   return [
     ings.length ? `${ings.length > 1 ? "Zutaten" : "Zutat"}: ${ings.join(", ")}` : "",
@@ -226,12 +252,72 @@ function hitHint(r) {
 function mark(text) {
   if (!state.terms.length) return esc(text);
   return String(text).split(/([^\p{L}\p{N}]+)/u).map(w =>
-    w && state.terms.some(t => fold(w).includes(t)) ? `<mark class="hit">${esc(w)}</mark>` : esc(w)
+    w && state.terms.some(t => termIn(w, t)) ? `<mark class="hit">${esc(w)}</mark>` : esc(w)
   ).join("");
 }
 
+/* "Meintest du …?" – für Tippfehler wie "zuchini". Verglichen wird mit allen
+   Wörtern der Sammlung; ein Buchstabe Abstand, bei langen Wörtern zwei. */
+let vocabulary = null;
+function vocab() {
+  if (vocabulary) return vocabulary;
+  vocabulary = new Map();
+  RECIPES.forEach(r => {
+    const text = [r.title, ...(r.tags || []), ...r.find.ingredients,
+      ...r.stepGroups.flatMap(g => g.items.map(s => s.text))].join(" ");
+    text.split(/[^\p{L}]+/u).forEach(w => {
+      if (w.length >= 4 && !vocabulary.has(fold(w))) vocabulary.set(fold(w), w);
+    });
+  });
+  return vocabulary;
+}
+
+function distance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    if (Math.min(...cur) > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+function correction(term) {
+  if (term.length < 4 || RECIPES.some(r => alts(term).some(a => r.search.includes(a)))) return null;
+  const max = term.length >= 8 ? 2 : 1;
+  let best = null, bestD = max + 1;
+  vocab().forEach((original, w) => {
+    const d = distance(term, w, max);
+    if (d < bestD) { best = original; bestD = d; }
+  });
+  return best;
+}
+
+function renderEmpty(count) {
+  const host = $("#empty");
+  if (!host) return;
+  host.hidden = count > 0;
+  if (count > 0) return;
+  const fixes = state.terms.map(t => ({ t, fix: correction(t) })).filter(x => x.fix);
+  if (!fixes.length) {
+    host.textContent = "Kein Rezept passt zu dieser Kombination. Suchbegriff kürzen oder einen Filter lösen.";
+    return;
+  }
+  const fixed = state.terms.map(t => fixes.find(x => x.t === t)?.fix || t).join(" ");
+  host.innerHTML = `Nichts gefunden. Meintest du <button type="button" class="empty__fix">${esc(fixed)}</button>?`;
+  host.querySelector("button").onclick = () => {
+    const input = $("#search");
+    input.value = fixed;
+    setQuery(fixed);
+  };
+}
+
 function matches(r) {
-  if (state.terms.length && !state.terms.every(t => r.search.includes(t))) return false;
+  if (state.terms.length && !state.terms.every(t => alts(t).some(a => r.search.includes(a)))) return false;
   if (state.cat && r.category !== state.cat) return false;
   if (state.health.size && !state.health.has(r.health)) return false;
   if (r.time > state.maxTime) return false;
@@ -319,92 +405,54 @@ function card(r) {
       ${r.kcal ? `<span class="card__sep">/</span><span>${r.kcal} kcal${
         kcalUnit(r.nutritionNote) ? `<span class="card__per">/${esc(kcalUnit(r.nutritionNote))}</span>` : ""}</span>` : ""}
     </p>`;
-  if (state.planning) {
-    const planned = state.plan.has(r.id);
-    const b = el("button", "plan-btn", planned ? "Geplant ✓" : "+ Planen");
-    b.setAttribute("aria-pressed", String(planned));
-    b.onclick = e => { e.stopPropagation(); togglePlan(r.id); };
-    c.append(b);
-    c.classList.toggle("card--planned", planned);
-  }
   c.onclick = () => openRecipe(r.id);
   c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openRecipe(r.id); } };
   return c;
 }
 
 /* =========================================================================
-   Zusammen kochen: Rezepte vorschlagen, die dieselben frischen Zutaten nutzen.
-   Gezählt wird nur, was schnell verdirbt – die Liste dazu entsteht in build.py.
+   Aktive Filter
+   Auf dem Handy liegen Tags, Ernährung und Zeit in der eingeklappten
+   Seitenleiste. Ohne diese Anzeige sah man nach dem Schließen nur noch
+   "2 von 51 Rezepten" und wusste nicht, warum Rezepte fehlen.
    ========================================================================= */
-function togglePlan(id) {
-  state.plan.has(id) ? state.plan.delete(id) : state.plan.add(id);
-  render();
+function activeFilters() {
+  const list = [];
+  state.tags.forEach(t => list.push({ label: t, drop: () => state.tags.delete(t) }));
+  state.health.forEach(h => list.push({ label: h, drop: () => state.health.delete(h) }));
+  if (state.maxTime < 120) list.push({ label: `bis ${state.maxTime} min`, drop: () => {
+    state.maxTime = 120; set("#timeRange", n => { n.value = 120; });
+  } });
+  return list;
 }
 
-function planned() {
-  return [...state.plan].map(id => RECIPES.find(r => r.id === id)).filter(Boolean);
-}
-
-function planFresh() {
-  const set = new Set();
-  planned().forEach(r => (r.fresh || []).forEach(f => set.add(f)));
-  return [...set].sort((a, b) => a.localeCompare(b, "de"));
-}
-
-function suggestions() {
-  const wanted = new Set(planFresh());
-  if (!wanted.size) return [];
-  return RECIPES
-    .filter(r => !state.plan.has(r.id))
-    .map(r => ({ recipe: r, shared: (r.fresh || []).filter(f => wanted.has(f)) }))
-    .filter(x => x.shared.length > 0)
-    .sort((a, b) => b.shared.length - a.shared.length ||
-                    a.recipe.time - b.recipe.time ||
-                    a.recipe.title.localeCompare(b.recipe.title, "de"))
-    .slice(0, 6);
-}
-
-function renderPlan() {
-  const bar = $("#planbar"), sug = $("#suggest");
-  if (!bar || !sug) return;
-  if (!state.planning || !state.plan.size) {
-    bar.hidden = true; sug.hidden = true;
-    bar.innerHTML = ""; sug.innerHTML = "";
-    return;
-  }
-  const fresh = planFresh();
-  bar.hidden = false;
-  bar.innerHTML = `
-    <div class="planbar__row">
-      <span class="planbar__label">Geplant</span>
-      <div class="planbar__items">${planned().map(r =>
-        `<button class="planchip" data-drop="${r.id}">${esc(r.title)}<span aria-hidden="true">×</span></button>`).join("")}</div>
-      <button class="ghost-btn" data-clear>Auswahl leeren</button>
-    </div>
-    <p class="planbar__fresh">${fresh.length
-      ? `Frisch einzukaufen: ${fresh.map(f => `<span>${esc(f)}</span>`).join("")}`
-      : "Diese Auswahl braucht nichts, was schnell verdirbt."}</p>`;
-  bar.querySelectorAll("[data-drop]").forEach(b =>
-    b.onclick = () => togglePlan(b.dataset.drop));
-  bar.querySelector("[data-clear]").onclick = () => { state.plan.clear(); render(); };
-
-  const hits = suggestions();
-  sug.hidden = false;
-  sug.innerHTML = `<h2 class="suggest__title">Passt dazu</h2>`;
-  if (!hits.length) {
-    sug.innerHTML += `<p class="suggest__empty">Kein anderes Rezept teilt diese frischen Zutaten.</p>`;
-    return;
-  }
-  const wrap = el("div", "grid");
-  hits.forEach(({ recipe, shared }) => {
-    const c = card(recipe);
-    c.classList.add("card--suggested");
-    const note = el("p", "card__shared",
-      `teilt ${shared.length}: ${shared.map(f => esc(f)).join(", ")}`);
-    c.insertBefore(note, c.querySelector(".card__spec"));
-    wrap.append(c);
+function renderActiveFilters(count) {
+  const filters = activeFilters();
+  set("#filterToggle", n => {
+    const open = $("#rail")?.classList.contains("open");
+    n.textContent = open ? "Schließen" : filters.length ? `Filter · ${filters.length}` : "Filter";
+    n.setAttribute("aria-pressed", String(filters.length > 0));
   });
-  sug.append(wrap);
+  set("#railDone", n => { n.textContent = count === 1 ? "1 Rezept anzeigen" : `${count} Rezepte anzeigen`; });
+  const host = $("#activeFilters");
+  if (!host) return;
+  host.hidden = !filters.length;
+  host.innerHTML = "";
+  filters.forEach(f => {
+    const b = el("button", "activechip", `${esc(f.label)}<span aria-hidden="true">×</span>`);
+    b.setAttribute("aria-label", `Filter ${f.label} entfernen`);
+    b.onclick = () => { f.drop(); render(); };
+    host.append(b);
+  });
+  if (filters.length > 1) {
+    const all = el("button", "activechip activechip--all", "Alle lösen");
+    all.onclick = () => {
+      state.tags.clear(); state.health.clear(); state.maxTime = 120;
+      set("#timeRange", n => { n.value = 120; });
+      render();
+    };
+    host.append(all);
+  }
 }
 
 function render() {
@@ -413,7 +461,6 @@ function render() {
   const grid = $("#grid");
   grid.innerHTML = "";
   list.forEach(r => grid.append(card(r)));
-  set("#empty", n => { n.hidden = list.length > 0; });
   set("#count", n => {
     n.textContent = list.length === RECIPES.length
       ? `${list.length} Rezepte`
@@ -426,11 +473,8 @@ function render() {
   set("#searchClear", n => { n.hidden = !state.q; });
   document.body.classList.toggle("has-query", !!state.q);
   set("#timeOut", n => { n.textContent = state.maxTime >= 120 ? "beliebig" : `${state.maxTime} min`; });
-  set("#planToggle", n => {
-    n.setAttribute("aria-pressed", String(state.planning));
-    n.textContent = state.planning ? `Zusammen kochen (${state.plan.size})` : "Zusammen kochen";
-  });
-  renderPlan();
+  renderActiveFilters(list.length);
+  renderEmpty(list.length);
 }
 
 
@@ -480,12 +524,82 @@ function menuPatch(id, patch) {
   if (state.view === "list") render();
 }
 
+/* Entfernen ohne Rückfrage, aber mit Rückgängig – ein Fehltipper auf das
+   kleine Kreuz soll nichts kosten. */
 function menuRemove(id) {
   const i = menu.findIndex(x => x.id === id);
-  if (i > -1) menu.splice(i, 1);
+  if (i < 0) return;
+  const [entry] = menu.splice(i, 1);
   saveMenu();
   renderMenu();
   if (state.view === "list") render();
+  toast(`„${entry.title}“ entfernt`, "Rückgängig", () => {
+    menu.splice(Math.min(i, menu.length), 0, entry);
+    saveMenu();
+    renderMenu();
+    if (state.view === "list") render();
+    if (state.open) renderSheet();
+  });
+}
+
+/* =========================================================================
+   Zusammen kochen – Teil des Essensplans
+   Was im Plan steht, bestimmt die frischen Zutaten. Vorgeschlagen werden
+   Rezepte, die dieselben schnell verderblichen Zutaten aufbrauchen. Früher
+   war das ein eigener Auswahlmodus in der Rezeptliste – zwei Arten zu planen
+   nebeneinander, die nichts voneinander wussten.
+   Gezählt wird nur, was schnell verdirbt – die Liste dazu entsteht in build.py.
+   ========================================================================= */
+function menuRecipes() {
+  return menuOpen().map(e => RECIPES.find(r => r.id === e.recipe)).filter(Boolean);
+}
+
+function menuFresh() {
+  const all = new Set();
+  menuRecipes().forEach(r => (r.fresh || []).forEach(f => all.add(f)));
+  return [...all].sort((a, b) => a.localeCompare(b, "de"));
+}
+
+function menuSuggestions() {
+  const wanted = new Set(menuFresh());
+  if (!wanted.size) return [];
+  const planned = new Set(menuRecipes().map(r => r.id));
+  return RECIPES
+    .filter(r => !planned.has(r.id))
+    .map(r => ({ recipe: r, shared: (r.fresh || []).filter(f => wanted.has(f)) }))
+    .filter(x => x.shared.length > 0)
+    .sort((a, b) => b.shared.length - a.shared.length ||
+                    a.recipe.time - b.recipe.time ||
+                    a.recipe.title.localeCompare(b.recipe.title, "de"))
+    .slice(0, 6);
+}
+
+function renderMenuSuggest() {
+  const host = $("#menuSuggest");
+  if (!host) return;
+  const fresh = menuFresh();
+  host.innerHTML = "";
+  if (!menuRecipes().length) return;
+  host.append(el("div", "menu__fresh", `
+    <h2 class="block__title">Frisch einzukaufen</h2>
+    <p class="menu__freshlist">${fresh.length
+      ? fresh.map(f => `<span>${esc(f)}</span>`).join("")
+      : "Nichts davon verdirbt schnell – der Plan kann warten."}</p>`));
+  const hits = menuSuggestions();
+  if (!hits.length) return;
+  host.append(el("h2", "block__title menu__sugtitle", "Passt dazu – verbraucht dieselben frischen Zutaten"));
+  const wrap = el("div", "grid");
+  hits.forEach(({ recipe, shared }) => {
+    const c = card(recipe);
+    c.classList.add("card--suggested");
+    c.insertBefore(el("p", "card__shared",
+      `teilt ${shared.length}: ${shared.map(f => esc(f)).join(", ")}`), c.querySelector(".card__spec"));
+    const b = el("button", "plan-btn", "+ Einplanen");
+    b.onclick = e => { e.stopPropagation(); menuAdd(recipe.title, recipe.id); renderMenu(); };
+    c.append(b);
+    wrap.append(c);
+  });
+  host.append(wrap);
 }
 
 function mealRow(e, archived) {
@@ -517,6 +631,8 @@ function renderMenu() {
        <ul class="meals">${list.map(e => mealRow(e, false)).join("")}</ul>`
     : `<p class="menu__empty">Noch nichts geplant. Oben ein Rezept auswählen oder frei eintippen – der Plan bleibt auf diesem Gerät.</p>`;
 
+  renderMenuSuggest();
+
   const done = menuDone();
   doneHost.innerHTML = done.length
     ? `<h2 class="block__title menu__arch">Archiv <span class="menu__n">${done.length}</span></h2>
@@ -545,6 +661,8 @@ function setView(view, skipHistory) {
   document.body.classList.toggle("view-plan", view === "plan");
   set("#menuview", n => { n.hidden = view !== "plan"; });
   set("#viewToggle", n => { n.firstChild.nodeValue = view === "plan" ? "Rezepte" : "Essensplan"; });
+  // Titel und Knopf hießen im Plan beide "Rezepte" – der Titel sagt, wo man ist.
+  set(".topbar__brand", n => { n.textContent = view === "plan" ? "Essensplan" : "Rezepte"; });
   document.querySelectorAll("[data-view]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.view === view)));
   $("#rail")?.classList.remove("open");
@@ -552,7 +670,8 @@ function setView(view, skipHistory) {
     const target = view === "plan" ? "#/plan" : location.pathname + location.search;
     if (location.hash !== (view === "plan" ? "#/plan" : "")) history.pushState({ view }, "", target);
   }
-  if (view === "plan") renderMenu();
+  // Im Plan Eingeplantes trägt in der Liste sofort sein "geplant".
+  if (view === "plan") renderMenu(); else render();
   window.scrollTo(0, 0);
 }
 
@@ -560,20 +679,39 @@ function setView(view, skipHistory) {
 /* =========================================================================
    Rezeptansicht
    ========================================================================= */
+/* Wer beim Kochen kurz in ein anderes Rezept schaut, soll beim Zurückkommen
+   seine Haken, Portionen und den Kochmodus wiederfinden. Gilt für die
+   Sitzung, nicht dauerhaft – beim nächsten Kochen beginnt alles von vorn. */
+const progress = new Map();
+
+function saveProgress() {
+  if (!state.open) return;
+  progress.set(state.open, {
+    servings: state.servings,
+    checkedIng: new Set(state.checkedIng),
+    checkedStep: new Set(state.checkedStep),
+    cook: state.cook,
+  });
+}
+
 function openRecipe(id) {
   const r = RECIPES.find(x => x.id === id);
   if (!r) return;
+  saveProgress();
+  const saved = progress.get(id);
   state.open = id;
-  state.servings = r.servings || 1;
-  state.checkedIng = new Set();
-  state.checkedStep = new Set();
-  state.cook = false;
+  state.servings = saved ? saved.servings : (r.servings || 1);
+  state.checkedIng = saved ? new Set(saved.checkedIng) : new Set();
+  state.checkedStep = saved ? new Set(saved.checkedStep) : new Set();
+  state.cook = saved ? saved.cook : false;
+  if (state.cook) requestWakeLock();
   document.body.classList.add("locked");
   if (location.hash !== "#/r/" + id) history.pushState({ id }, "", "#/r/" + id);
   renderSheet();
 }
 
 function closeRecipe(pop) {
+  saveProgress();
   state.open = null;
   $("#sheet").hidden = true;
   $("#sheet").innerHTML = "";
@@ -596,13 +734,20 @@ function renderSheet() {
   const totalSteps = r.stepGroups.reduce((n, g) => n + g.items.length, 0);
   const doneSteps = state.checkedStep.size;
 
+  /* Auf dem Handy passen vier Knöpfe nicht in eine Zeile – die Leiste brach
+     zweizeilig um und kostete beim Kochen dauerhaft Platz. Dort bleiben nur
+     Zurück und Kochmodus sichtbar, der Rest liegt hinter "⋯". */
   sheet.innerHTML = `
     <div class="sheet__bar">
       <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
       <div class="sheet__bar-actions">
-        <button data-act="menu" class="ghost-btn nowrap" aria-pressed="${onMenu(r.id)}">${onMenu(r.id) ? "Im Essensplan ✓" : "Einplanen"}</button>
-        <a class="ghost-btn nowrap bring" href="${bringLink(r)}" target="_blank" rel="noopener">In Bring! öffnen</a>
         <button data-act="cook" class="ghost-btn nowrap" aria-pressed="${state.cook}">Kochmodus${totalSteps ? ` (${doneSteps}/${totalSteps})` : ""}</button>
+        <button class="ghost-btn sheet__more" data-act="more" aria-expanded="false" aria-controls="sheetMenu" aria-label="Weitere Aktionen">⋯</button>
+        <div class="sheet__menu" id="sheetMenu">
+          <button data-act="menu" class="ghost-btn nowrap" aria-pressed="${onMenu(r.id)}">${onMenu(r.id) ? "Im Essensplan ✓" : "Einplanen"}</button>
+          <a class="ghost-btn nowrap bring" href="${bringLink(r)}" target="_blank" rel="noopener">In Bring! öffnen</a>
+          <button data-act="share" class="ghost-btn nowrap">Teilen</button>
+        </div>
       </div>
     </div>
     <div class="sheet__wrap">
@@ -622,9 +767,17 @@ function renderSheet() {
         ${(r.tags || []).length ? `<p class="sheet__tags">${r.tags.map(t => `<span>${esc(t)}</span>`).join("")}</p>` : ""}
       </header>
 
+      <!-- Mobil stehen Zutaten und Schritte untereinander; die Zubereitung
+           begann erst zwei Bildschirme tiefer. Die Sprungmarken kürzen das ab. -->
+      <nav class="jump" aria-label="Abschnitte">
+        <button data-jump="ingBlock">Zutaten</button>
+        <button data-jump="stepBlock">Zubereitung</button>
+        ${r.nutrition.length ? `<button data-jump="nutriBlock">Nährwerte</button>` : ""}
+      </nav>
+
       <div class="cols">
         <div class="panel">
-          <div class="block">
+          <div class="block" id="ingBlock">
             <h2 class="block__title">Zutaten</h2>
             <div class="servings">
               <div>
@@ -653,7 +806,7 @@ function renderSheet() {
         </div>
 
         <div>
-          <div class="block">
+          <div class="block" id="stepBlock">
             <h2 class="block__title">Zubereitung</h2>
             ${r.stepGroups.map((g, gi) => `
               <div class="sgroup">
@@ -675,7 +828,7 @@ function renderSheet() {
           </div>` : ""}
 
           ${r.nutrition.length ? `
-          <div class="block">
+          <div class="block" id="nutriBlock">
             <h2 class="block__title">Nährwerte</h2>
             <table class="nutri">
               ${r.nutritionNote ? `<caption>${esc(r.nutritionNote)}</caption>` : ""}
@@ -752,6 +905,11 @@ function renderSheet() {
       if (!f.hidden) f.querySelector("textarea").focus();
     }
     if (a === "cook") { state.cook = !state.cook; state.cook ? requestWakeLock() : releaseWakeLock(); renderSheet(); }
+    if (a === "more") {
+      const open = sheet.querySelector(".sheet__menu").classList.toggle("open");
+      b.setAttribute("aria-expanded", String(open));
+    }
+    if (a === "share") shareRecipe(r);
     /* Einmal drücken plant ein; ein zweites Mal nimmt den offenen Eintrag
        wieder heraus. Archivierte Einträge bleiben unberührt. */
     if (a === "menu") {
@@ -766,6 +924,22 @@ function renderSheet() {
       renderSheet();
       sheet.querySelectorAll(".ing__amt em, .step__amt").forEach(n => n.classList.add("flash"));
     }
+  });
+  /* Das Menü hinter "⋯" schließt bei jedem Tipp daneben – und nach jeder
+     Aktion darin, damit es nicht offen über dem Rezept stehen bleibt. */
+  sheet.onclick = e => {
+    const m = sheet.querySelector(".sheet__menu.open");
+    if (!m || e.target.closest('[data-act="more"]')) return;
+    m.classList.remove("open");
+    sheet.querySelector('[data-act="more"]')?.setAttribute("aria-expanded", "false");
+  };
+  sheet.querySelectorAll("[data-jump]").forEach(b => b.onclick = () => {
+    const target = sheet.querySelector("#" + b.dataset.jump);
+    const bar = sheet.querySelector(".sheet__bar");
+    if (target) sheet.scrollTo({
+      top: target.getBoundingClientRect().top + sheet.scrollTop - (bar ? bar.offsetHeight : 0) - 12,
+      behavior: "smooth",
+    });
   });
   sheet.querySelectorAll("[data-ing]").forEach(b => b.onclick = () => {
     const k = b.dataset.ing;
@@ -796,6 +970,35 @@ function renderSheet() {
 /* =========================================================================
    Kleinkram
    ========================================================================= */
+
+/* Teilen über das Teilen-Menü des Handys; wo es das nicht gibt (Desktop),
+   landet der Link in der Zwischenablage. */
+async function shareRecipe(r) {
+  const url = location.origin + location.pathname + "#/r/" + encodeURIComponent(r.id);
+  if (navigator.share) {
+    try { await navigator.share({ title: r.title, url }); } catch { /* abgebrochen */ }
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    toast("Link kopiert");
+  } catch {
+    toast(url);
+  }
+}
+
+/* Kurze Meldung am unteren Rand, optional mit einer Aktion ("Rückgängig"). */
+let toastTimer;
+function toast(message, actionLabel, action) {
+  const host = $("#toast");
+  if (!host) return;
+  clearTimeout(toastTimer);
+  host.innerHTML = `<span>${esc(message)}</span>${actionLabel ? `<button type="button">${esc(actionLabel)}</button>` : ""}`;
+  host.hidden = false;
+  const btn = host.querySelector("button");
+  if (btn) btn.onclick = () => { host.hidden = true; clearTimeout(toastTimer); action(); };
+  toastTimer = setTimeout(() => { host.hidden = true; }, actionLabel ? 6000 : 2500);
+}
 
 
 /* =========================================================================
@@ -940,6 +1143,8 @@ function renderTimers() {
     if (!t.done && !t.paused && t.endsAt - Date.now() <= 0) { t.done = true; alarm(); }
   });
   host.hidden = timers.length === 0;
+  // Meldungen ("Rückgängig") rücken über die Timerleiste statt darunter.
+  document.documentElement.style.setProperty("--timers-h", host.hidden ? "0px" : host.offsetHeight + 8 + "px");
   host.innerHTML = timers.map(t => {
     const left = (t.paused ? t.remaining : t.endsAt - Date.now()) / 1000;
     return `<div class="timer${t.done ? " timer--done" : ""}${t.paused ? " timer--paused" : ""}">
@@ -989,11 +1194,6 @@ set("#searchClear", n => n.addEventListener("click", () => {
   setQuery("");
   input.focus();
 }));
-set("#planToggle", n => n.addEventListener("click", () => {
-  state.planning = !state.planning;
-  if (!state.planning) state.plan.clear();
-  render();
-}));
 $("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
 $("#timeRange").addEventListener("input", e => { state.maxTime = +e.target.value; render(); });
 set("#viewToggle", n => n.addEventListener("click", () =>
@@ -1017,8 +1217,14 @@ set("#menuAdd", form => form.addEventListener("submit", e => {
 $("#filterToggle").addEventListener("click", e => {
   const open = $("#rail").classList.toggle("open");
   e.currentTarget.setAttribute("aria-expanded", String(open));
-  e.currentTarget.textContent = open ? "Schließen" : "Filter";
+  renderActiveFilters(sorted(RECIPES.filter(matches)).length);
 });
+set("#railDone", n => n.addEventListener("click", () => {
+  $("#rail").classList.remove("open");
+  set("#filterToggle", t => t.setAttribute("aria-expanded", "false"));
+  render();
+  window.scrollTo(0, 0);
+}));
 
 /* Android friert Zeitgeber im Hintergrund ein. Kommt die Seite zurück, wird
    deshalb sofort nachgerechnet: abgelaufene Timer melden sich dann hier, auch
@@ -1050,7 +1256,6 @@ window.addEventListener("popstate", () => {
 function resetFilters() {
   state.q = ""; state.terms = []; state.cat = null; state.maxTime = 120; state.sort = "title";
   state.health.clear(); state.tags.clear();
-  state.planning = false; state.plan.clear();
   set("#search", n => { n.value = ""; });
   set("#timeRange", n => { n.value = 120; });
   set("#sort", n => { n.value = "title"; });

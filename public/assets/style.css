@@ -260,44 +260,32 @@ mark.hit {
 .quickchip__n { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
 .quickchip[aria-pressed="true"] .quickchip__n { color: var(--surface-2); opacity: .7; }
 
-/* Zusammen kochen */
-.planbar {
-  padding: 16px 18px; margin-bottom: 20px;
-  background: var(--surface-2); border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--saffron); border-radius: var(--radius);
+/* Aktive Filter als lösbare Chips unter der Suche – nur mobil, auf dem
+   Desktop steht die Seitenleiste ohnehin offen daneben. */
+.activefilters { display: none; }
+.activechip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border: 1px solid var(--ink); border-radius: 999px;
+  background: var(--ink); color: var(--surface-2); cursor: pointer;
+  font-family: var(--mono); font-size: 12px;
 }
-.planbar__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.planbar__label {
-  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-  letter-spacing: .12em; color: var(--ink-3);
-}
-.planbar__items { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
-.planchip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--paper); cursor: pointer;
-  font-family: var(--display); font-size: 13px;
-}
-.planchip:hover { border-color: var(--ember); color: var(--ember); }
-.planbar__fresh {
-  margin: 12px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2);
-}
-.planbar__fresh span {
-  display: inline-block; margin: 3px 4px 0 0; padding: 2px 8px;
-  background: var(--paper); border-radius: 999px;
-}
+.activechip span { opacity: .7; font-size: 14px; line-height: 1; }
+.activechip--all { background: transparent; color: var(--ink-2); border-color: var(--line); }
+.rail__done { display: none; }
 
-.suggest { margin-bottom: 30px; }
-.suggest__title {
-  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
-  letter-spacing: .14em; color: var(--ink-3); margin-bottom: 14px;
+/* Zusammen kochen – im Essensplan */
+.menu__fresh { margin: 34px 0 30px; }
+.menu__freshlist { margin: 0; font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+.menu__freshlist span {
+  display: inline-block; margin: 0 6px 6px 0; padding: 4px 10px;
+  background: var(--surface-2); border: 1px solid var(--line-soft); border-radius: 999px; color: var(--ink);
 }
-.suggest__empty { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
+.menu__sugtitle { margin-bottom: 14px; }
 .card__shared {
   margin: 0; font-family: var(--mono); font-size: 11px; color: var(--basil);
 }
 .card--suggested { border-color: var(--line); }
-.card--planned { border-color: var(--saffron); }
+.card--suggested .card__top { padding-right: 96px; }
 .plan-btn {
   position: absolute; top: 12px; right: 12px;
   padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
@@ -307,7 +295,6 @@ mark.hit {
 }
 .plan-btn:hover { border-color: var(--ink); color: var(--ink); }
 .plan-btn[aria-pressed="true"] { background: var(--saffron); border-color: var(--saffron); color: #fff; }
-.card__top { padding-right: 76px; }
 
 .toolbar {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -628,71 +615,6 @@ body.locked { overflow: hidden; }
 
 @media (max-width: 520px) {
   .grid { grid-template-columns: minmax(0, 1fr); }
-  /* Kategorie-Schnellfilter unter der Suche */
-.quickfilter { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
-.quickchip {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--surface-2); cursor: pointer;
-  font-family: var(--display); font-size: 14px; font-weight: 500;
-  transition: background .14s, border-color .14s, color .14s;
-}
-.quickchip:hover { border-color: var(--ink-3); }
-.quickchip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface-2); }
-.quickchip__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot, var(--ink-3)); }
-.quickchip__n { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
-.quickchip[aria-pressed="true"] .quickchip__n { color: var(--surface-2); opacity: .7; }
-
-/* Zusammen kochen */
-.planbar {
-  padding: 16px 18px; margin-bottom: 20px;
-  background: var(--surface-2); border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--saffron); border-radius: var(--radius);
-}
-.planbar__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.planbar__label {
-  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-  letter-spacing: .12em; color: var(--ink-3);
-}
-.planbar__items { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
-.planchip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--paper); cursor: pointer;
-  font-family: var(--display); font-size: 13px;
-}
-.planchip:hover { border-color: var(--ember); color: var(--ember); }
-.planbar__fresh {
-  margin: 12px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2);
-}
-.planbar__fresh span {
-  display: inline-block; margin: 3px 4px 0 0; padding: 2px 8px;
-  background: var(--paper); border-radius: 999px;
-}
-
-.suggest { margin-bottom: 30px; }
-.suggest__title {
-  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
-  letter-spacing: .14em; color: var(--ink-3); margin-bottom: 14px;
-}
-.suggest__empty { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
-.card__shared {
-  margin: 0; font-family: var(--mono); font-size: 11px; color: var(--basil);
-}
-.card--suggested { border-color: var(--line); }
-.card--planned { border-color: var(--saffron); }
-.plan-btn {
-  position: absolute; top: 12px; right: 12px;
-  padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--paper); cursor: pointer;
-  font-family: var(--mono); font-size: 10.5px; color: var(--ink-2);
-  transition: background .14s, color .14s, border-color .14s;
-}
-.plan-btn:hover { border-color: var(--ink); color: var(--ink); }
-.plan-btn[aria-pressed="true"] { background: var(--saffron); border-color: var(--saffron); color: #fff; }
-.card__top { padding-right: 76px; }
-
-.toolbar { align-items: flex-start; flex-direction: column; }
   .sheet__bar-actions .ghost-btn { padding: 7px 11px; font-size: 12px; }
   .sheet.cook { --step: 21px; }
   .sheet__bar .lbl { display: none; }
@@ -971,4 +893,98 @@ body.view-plan #menuCount { display: none; }
   .meal { padding: 16px 2px; }
   .meal__actions { width: 100%; margin-left: 0; justify-content: flex-start; }
   .meal__x { margin-left: auto; }
+}
+
+/* ===========================================================
+   Rezeptansicht: Aktionsmenü und Sprungmarken
+   Desktop: alle Aktionen nebeneinander. Mobil: nur Kochmodus
+   sichtbar, Einplanen / Bring! / Teilen hinter "⋯".
+   =========================================================== */
+.sheet__bar-actions { position: relative; align-items: center; }
+.sheet__more { display: none; }
+.sheet__menu { display: contents; }
+.jump { display: none; }
+
+/* Meldung mit "Rückgängig" – über der Timerleiste, falls eine läuft */
+.toast {
+  position: fixed; z-index: 90;
+  left: 12px; right: 12px;
+  bottom: calc(12px + var(--timers-h, 0px) + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px;
+  background: var(--ink); color: var(--surface-2);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  font-size: 14px;
+}
+.toast[hidden] { display: none; }
+.toast span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.toast button {
+  flex: none; border: 0; background: none; cursor: pointer;
+  color: var(--saffron); font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; padding: 6px 4px;
+}
+@media (min-width: 900px) {
+  .toast { left: auto; right: 24px; width: 360px; bottom: calc(24px + var(--timers-h, 0px)); }
+}
+
+.empty__fix {
+  border: 0; background: none; padding: 0; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--ink);
+  text-decoration: underline; text-decoration-color: var(--saffron); text-underline-offset: 3px;
+}
+
+@media (max-width: 1080px) {
+  .jump {
+    display: flex; gap: 6px; margin: -14px 0 26px;
+  }
+  .jump button {
+    flex: 1; padding: 9px 6px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2);
+    font-family: var(--mono); font-size: 12px; color: var(--ink); cursor: pointer;
+  }
+  .sheet.cook .jump { display: none; }
+}
+
+@media (max-width: 900px) {
+  /* Aktive Filter und der Knopf, der die Seitenleiste mit Trefferzahl schließt */
+  .activefilters:not([hidden]) { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  body.searching .activefilters { display: none; }
+  #filterToggle[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface-2); }
+  /* Spalte, damit der Knopf am unteren Rand sitzt, auch wenn die Filter kürzer sind */
+  .rail.open { display: flex; flex-direction: column; padding-bottom: 0; }
+  .rail.open .rail__inner { flex: 1 0 auto; }
+  .rail__done {
+    display: block; position: sticky; bottom: 0;
+    width: calc(100% + 40px); margin: 30px -20px 0; padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px));
+    border: 0; border-top: 1px solid var(--line);
+    background: var(--ink); color: var(--surface-2);
+    font-family: var(--display); font-size: 16px; font-weight: 600; cursor: pointer;
+  }
+
+  /* Zählung und Sortierung in einer Zeile statt drei */
+  .toolbar { flex-direction: row; flex-wrap: nowrap; align-items: center; padding-bottom: 12px; margin-bottom: 16px; }
+  .toolbar .select > span { display: none; }
+
+  /* Kompakte Rezeptleiste: Zurück links, Kochmodus und "⋯" rechts */
+  .sheet__bar-actions { flex-wrap: nowrap; }
+  .sheet__more { display: inline-block; padding: 5px 12px; font-size: 16px; line-height: 1; }
+  .sheet__menu {
+    display: none; position: absolute; top: calc(100% + 8px); right: 0; z-index: 5;
+    flex-direction: column; align-items: stretch; gap: 6px;
+    min-width: 190px; padding: 8px;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .sheet__menu.open { display: flex; }
+  .sheet__menu .ghost-btn { text-align: left; justify-content: flex-start; padding: 10px 12px; font-size: 13px; }
+
+  /* Bild klein neben dem Titel statt groß darüber */
+  .sheet__head--illustrated {
+    display: grid; grid-template-columns: minmax(0, 1fr) 92px; column-gap: 14px; align-items: start;
+  }
+  .sheet__head--illustrated > * { grid-column: 1 / -1; }
+  .sheet__head--illustrated .sheet__eyebrow { grid-column: 1; grid-row: 1; align-self: end; }
+  .sheet__head--illustrated .sheet__title { grid-column: 1; grid-row: 2; }
+  .sheet__head--illustrated .sheet__figure { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+  .sheet__figure img { width: 92px; height: 92px; }
 }
