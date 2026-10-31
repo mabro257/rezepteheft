@@ -2865,7 +2865,7 @@ window.RECIPES = [
    "Petersilie",
    "Thymian"
   ],
-  "image": "",
+  "image": "bilder/blumenkohl-curry-vom-blech.jpg?v=f98a9bdb",
   "tags": [
    "Ofengericht",
    "Orientalisch"
@@ -3807,7 +3807,7 @@ window.RECIPES = [
    "Thymian",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/bulgur-spinat-auflauf-mit-kichererbsen-und-feta.jpg?v=d716e00a",
   "tags": [
    "Meal Prep",
    "Ofengericht"
@@ -4967,7 +4967,7 @@ window.RECIPES = [
    "Petersilie",
    "Pilze"
   ],
-  "image": "",
+  "image": "bilder/champignon-kaese-flammkuchen.jpg?v=fe6305d0",
   "tags": [
    "Ofengericht",
    "Pfannengericht"
@@ -5796,7 +5796,7 @@ window.RECIPES = [
    "Rosmarin",
    "Thymian"
   ],
-  "image": "",
+  "image": "bilder/chili-reispfanne-aus-dem-ofen.jpg?v=7cc8f61d",
   "tags": [
    "Meal Prep",
    "Ofengericht",
@@ -6662,7 +6662,7 @@ window.RECIPES = [
    "Tofu",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/couscous-bowl-mit-fetacreme.jpg?v=060dffe9",
   "tags": [
    "Bowl & Salat",
    "Meal Prep",
@@ -8718,7 +8718,7 @@ window.RECIPES = [
    "Paprika",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/djuvec-reis-mit-gemuese.jpg?v=b5f26eab",
   "tags": [
    "Meal Prep",
    "Pfannengericht"
@@ -9514,7 +9514,7 @@ window.RECIPES = [
    "Petersilie",
    "Ricotta"
   ],
-  "image": "",
+  "image": "bilder/farfalle-mit-brokkolisauce.jpg?v=ea321d60",
   "tags": [
    "Pasta",
    "Schnell"
@@ -9991,7 +9991,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/flammkuchen-mit-tomaten-und-rucola.jpg?v=8066c67a",
   "tags": [
    "Brot & Teig",
    "Ofengericht",
@@ -10538,7 +10538,7 @@ window.RECIPES = [
   "fresh": [
    "Sahne"
   ],
-  "image": "",
+  "image": "bilder/flammkuchen-mit-ziegenkaese-und-birne.jpg?v=a450e384",
   "tags": [
    "Brot & Teig",
    "Ofengericht"
@@ -12156,7 +12156,7 @@ window.RECIPES = [
    "Joghurt",
    "Koriander"
   ],
-  "image": "",
+  "image": "bilder/gemuese-masala-bowl-mit-spinat-hirse-und-gurken-joghurt-dip.jpg?v=b6a2062a",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",
@@ -12856,7 +12856,7 @@ window.RECIPES = [
    "Petersilie",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/gemuese-paella-mit-cashewkernen.jpg?v=d5ae4fc5",
   "tags": [
    "Orientalisch",
    "Pfannengericht"
@@ -13922,7 +13922,7 @@ window.RECIPES = [
    "Milch",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/gemuesewaffeln-mit-huettenkaese.jpg?v=8820c60d",
   "tags": [
    "Frühstück",
    "Meal Prep",
