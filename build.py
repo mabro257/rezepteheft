@@ -228,7 +228,9 @@ def parse_nutrition(lines):
 NO_QUANTITY = ("nach Bedarf", "nach Geschmack", "nach Belieben", "etwas", "optional", "")
 
 KNOWN_CATEGORIES = {"Hauptspeise", "Vorspeise", "Backen", "Snack", "Dessert", "Zutat"}
-KNOWN_HEALTH = {"Gesund", "Ausgewogen", "Genussrezept"}
+# "Gesundheitswert" (Gesund / Ausgewogen / Genussrezept) wurde auf Wunsch
+# entfernt. Steht die Zeile noch in einer Datei, wird sie ignoriert; neue
+# Rezepte bekommen sie nicht mehr.
 
 
 def validate(r):
@@ -240,10 +242,6 @@ def validate(r):
         w.append("Portionen fehlen – Portionsrechner startet bei 1")
     if r["category"] not in KNOWN_CATEGORIES:
         w.append(f"Kategorie '{r['category']}' ist neu – Farbe in ACCENTS (assets/app.js) ergänzen")
-    if r["health"] and r["health"] not in KNOWN_HEALTH:
-        w.append(f"Gesundheitswert '{r['health']}' unbekannt – erwartet: {', '.join(KNOWN_HEALTH)}")
-    if not r["health"]:
-        w.append("Gesundheitswert fehlt – Rezept taucht im Ernährungsfilter nicht auf")
     if not r["ingredientCount"]:
         w.append("keine Zutaten erkannt – Tabellenform '| Menge | Zutat |' prüfen")
     if not r["stepGroups"]:
@@ -803,7 +801,6 @@ def parse_file(path):
 
     sections = split_sections("\n".join(lines[i:]))
     caps = sections.get("_captions", {})
-    health = meta.get("Gesundheitswert", "")
 
     kcal = None
     for row in parse_nutrition(sections.get("nutrition", [])):
@@ -817,8 +814,6 @@ def parse_file(path):
         "id": slugify(title),
         "title": title,
         "category": meta.get("Kategorie", "Sonstiges"),
-        "health": re.sub(r"^[^\w]+", "", health).strip(),
-        "healthIcon": health.split(" ")[0] if health else "",
         "servings": int(re.sub(r"\D", "", meta.get("Portionen", "0")) or 0),
         "time": int(re.sub(r"\D", "", meta.get("Zubereitungszeit", "0")) or 0),
         "source": meta.get("Quelle", ""),

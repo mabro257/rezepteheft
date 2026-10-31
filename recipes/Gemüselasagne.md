@@ -1,6 +1,5 @@
 # Gemüselasagne
 
-Gesundheitswert: ⚖️ Ausgewogen
 Kategorie: Hauptspeise
 Portionen: 4
 Quelle: Gaumenfreundin (gaumenfreundin.de)

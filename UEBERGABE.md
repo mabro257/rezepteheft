@@ -66,7 +66,6 @@ Spezifikation inklusive Vorlage, Beispiel und Checkliste. Kurzfassung:
 ```markdown
 # Titel
 
-Gesundheitswert: ⚖️ Ausgewogen      # 🥦 Gesund | ⚖️ Ausgewogen | 🍰 Genussrezept
 Kategorie: Hauptspeise              # Hauptspeise|Vorspeise|Backen|Snack|Dessert|Zutat
 Portionen: 2
 Quelle: Rezeptheft
@@ -79,7 +78,10 @@ Zubereitungszeit: 30
 ## 📊 Nährwerte (pro Portion)
 ```
 
-Ein Feld `Schwierigkeitsgrad` gab es früher, es wurde bewusst entfernt.
+Die Felder `Schwierigkeitsgrad` und `Gesundheitswert` (Gesund / Ausgewogen /
+Genussrezept, „Ernährung“ in der Seitenleiste) gab es früher, beide wurden auf
+Wunsch entfernt. Ältere Dateien enthalten die Zeile `Gesundheitswert:` noch,
+`build.py` ignoriert sie. Neue Rezepte bekommen sie nicht.
 
 ## 5. Was build.py macht — und warum
 
@@ -180,7 +182,7 @@ werden nur noch exakt verglichen.
 
 `build.py` meldet fehlende Angaben, unbekannte Kategorien und nicht skalierbare
 Mengen. Die Hinweise brechen den Build **nicht** ab; `--strict` erzwingt einen
-Abbruch. Aktuell ist genau ein Hinweis offen (siehe Abschnitt 9).
+Abbruch. Aktuell ist kein Hinweis offen.
 
 ### 5.6 Cache-Hashes (`stamp_assets`)
 
@@ -215,7 +217,7 @@ einem `state`-Objekt, alles rendert aus `RECIPES`.
   Buchstaben Abstand vor („Meintest du Zucchini?“).
 - **Kategorie-Schnellfilter** als Chips direkt unter der Suche, mobil als
   wischbare Leiste
-- **Seitenleiste** mit Tags, Ernährung, Zeit-Regler, Zurücksetzen. Mobil zeigt
+- **Seitenleiste** mit Tags, Zeit-Regler, Zurücksetzen. Mobil zeigt
   der Knopf die Zahl aktiver Filter („Filter · 2“), unter der Suche stehen sie
   als lösbare Chips, und unten in der Leiste schließt „N Rezepte anzeigen“.
 - **Sortierung** A–Z, Zeit, Kalorien, Anzahl Zutaten
@@ -280,7 +282,9 @@ Zugangscode ein Rezept einreichen. Der Weg im Sheet (`newStep`):
    Ein geprüfter Code wird gemerkt, beim nächsten Mal entfällt der Schritt.
    Ändert sich der Code, fragt die App beim Absenden neu – das Eingetippte
    bleibt erhalten (`formDraft`).
-2. **Auswahl:** „Aus dem Netz übernehmen“ oder „Selbst aufschreiben“.
+2. **Auswahl:** „Aus dem Netz übernehmen“, „Foto hochladen“ oder „Selbst
+   aufschreiben“. Instagram wird dort bewusst nicht als Beispiel genannt, weil
+   es nur über eingefügten Text geht.
 3. **Aus dem Netz:** Link einfügen, die Funktion holt die Seite
    (`action: "import"`) und liest das schema.org-Rezept (Titel, Portionen,
    Zeit, Zutaten, Schritte, Kategorie geraten). Pinterest: über den Link des
@@ -292,6 +296,13 @@ Zugangscode ein Rezept einreichen. Der Weg im Sheet (`newStep`):
    Quelle ist schon eingetragen. Zerlegt wird der Text erst im Chat.
 4. **Selbst aufschreiben:** Titel, Kategorie, Portionen, Minuten, Zutaten
    (eine pro Zeile), Schritte (einer pro Zeile), optional Tipps.
+5. **Foto hochladen:** Titel, Kategorie, bis zu 4 Fotos (auf dem Handy auch
+   direkt mit der Kamera). Die App verkleinert sie vor dem Senden auf 1600 px
+   (JPEG), weil Netlify-Funktionen höchstens 6 MB je Aufruf annehmen. Die
+   Funktion legt sie als `entwuerfe/<id>-foto-N.jpg` in den Branch; im Chat
+   werden sie abgetippt und danach mit dem Entwurf gelöscht. Auf dem Gerät
+   bleibt nur eine kleine Vorschau. Scheitert das Senden, bleibt das Formular
+   offen (volle Fotos passen nicht in den Gerätespeicher).
    Alle Wege enden mit Quelle, Anmerkung, Name und „Einreichen“.
 
 **Ablauf (Vorgabe von Marcel):**
@@ -301,11 +312,13 @@ Zugangscode ein Rezept einreichen. Der Weg im Sheet (`newStep`):
 2. Auf dem einreichenden Gerät steht das Rezept als **Entwurf** über der Liste
    (`localStorage`, Schlüssel `entwuerfe.v1`; Zugangscode und Name werden
    gemerkt). Kam die Einreichung nicht an, heißt es „Nicht gesendet“ und lässt
-   sich erneut senden. Entwürfe erscheinen nicht in Suche und Filtern.
+   sich erneut senden. Entwürfe werden in der Suche und über die Kategorie
+   gefunden; sind Tags oder Zeit gefiltert, bleiben sie weg (die haben sie
+   noch nicht).
 3. **Überarbeitet wird im Chat, nicht per API.** Branch auschecken, Entwurf in
    das Rezeptformat bringen (Zutatentabelle, Mengen in den Schritten,
-   Gesundheitswert, Tags, Nährwerte), nach `recipes/` verschieben, Entwurf
-   löschen, `build.py` laufen lassen.
+   Tags, Nährwerte), nach `recipes/` verschieben, Entwurf und Fotos löschen,
+   `build.py` laufen lassen.
 4. **Für jedes neue Rezept einen neuen Gemini-Bildprompt erstellen** und
    Marcel geben (Vorlage unten). Das Bild kommt als `public/bilder/<id>.jpg`.
 5. **Freigabe durch Marcel**, dann Merge. Sobald das Rezept mit derselben ID in
@@ -403,8 +416,7 @@ command = "python3 build.py"
 
 ## 9. Offene Punkte
 
-- **Pasta-Teig mit Hartweizengriess** hat keinen `Gesundheitswert` und fehlt
-  deshalb im Ernährungsfilter. Eine Zeile in der Markdown-Datei.
+
 - **Lebensmittelmarken** stehen noch in drei Rezepten („Uncle Bens Reis
   Mexican", „LikeHack", „Vegeta"). Gerätemarken sind entfernt, Lebensmittel
   bewusst nicht.

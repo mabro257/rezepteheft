@@ -1,6 +1,5 @@
 # Neapolitanische Pizza
 
-Gesundheitswert: ⚖️ Ausgewogen
 Kategorie: Hauptspeise
 Portionen: 6
 Quelle: Rezeptheft
@@ -17,8 +16,8 @@ Zubereitungszeit: 60
 | 25 g | Feines Meersalz |
 | 15 g | Olivenöl |
 | nach Bedarf | Hartweizengrieß (zum Ausbreiten) |
-| 1 Kugel | Mozzarella (pro Pizza) |
-| 2 EL | Pizza-Soße (pro Pizza) |
+| 3 Kugeln | Mozzarella (½ Kugel pro Pizza) |
+| 12 EL | Pizzasauce (2 EL pro Pizza) |
 | nach Bedarf | Basilikum & Olivenöl (zum Garnieren) |
 
 ## 👨‍🍳 Zubereitung
@@ -44,9 +43,9 @@ Zubereitungszeit: 60
 1. 3 Stunden vor Verarbeitung den Teig aus dem Kühlschrank nehmen und luftdicht bei Raumtemperatur gehen lassen.
 2. Ein üppiges Hartweizengrieß-Bett auslegen.
 3. Teigling darin wenden und aus der Mitte heraus eine Pizza formen – den Rand dabei auslassen.
-4. Sauce (2 große Löffel) von innen heraus verstreichen.
+4. Je 2 EL Pizzasauce von innen heraus verstreichen.
 5. Optional Olivenöl drüber.
-6. Mozzarella zupfen und gleichmäßig verteilen.
+6. Je ½ Kugel Mozzarella zupfen und gleichmäßig verteilen.
 7. Pizza bei hoher Temperatur kross backen.
 8. Mit Basilikum und etwas Öl garnieren.
 

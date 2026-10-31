@@ -19,7 +19,7 @@ function fold(text) {
 const RECIPES = (window.RECIPES || []).map(r => ({
   ...r,
   search: [
-    r.title, r.category, r.health, r.source, ...(r.tags || []),
+    r.title, r.category, r.source, ...(r.tags || []),
     ...r.ingredientGroups.flatMap(g => [g.name, ...g.items.map(i => i.name)]),
     ...r.stepGroups.flatMap(g => [g.name, ...g.items.map(s => s.label + " " + s.text)]),
     ...r.tips
@@ -31,7 +31,7 @@ RECIPES.forEach(r => {
      gefunden wurde – ein Treffer im Titel zählt mehr als einer im Fließtext. */
   r.find = {
     title: fold(r.title),
-    tags: fold([r.category, r.health, ...(r.tags || [])].join(" ")),
+    tags: fold([r.category, ...(r.tags || [])].join(" ")),
     ingredients: r.ingredientGroups.flatMap(g => g.items.map(i => i.name)),
     steps: fold(r.stepGroups.flatMap(g => g.items.map(s => s.label + " " + s.text)).join(" ")),
   };
@@ -66,7 +66,6 @@ const state = {
   q: "",
   terms: [],           // Suchwörter, gefaltet – alle müssen passen
   cat: null,
-  health: new Set(),
   maxTime: 120,
   tags: new Set(),
   sort: "title",
@@ -320,7 +319,6 @@ function renderEmpty(count) {
 function matches(r) {
   if (state.terms.length && !state.terms.every(t => alts(t).some(a => r.search.includes(a)))) return false;
   if (state.cat && r.category !== state.cat) return false;
-  if (state.health.size && !state.health.has(r.health)) return false;
   if (r.time > state.maxTime) return false;
   if (state.tags.size && ![...state.tags].every(t => (r.tags || []).includes(t))) return false;
   return true;
@@ -358,16 +356,6 @@ function renderFacets() {
   cats.forEach(c => catList.append(mk(c, c, RECIPES.filter(r => r.category === c).length, accent(c))));
   catList.scrollLeft = scrolled;
 
-  const chips = (host, values, chosen) => {
-    if (!host) return;
-    host.innerHTML = "";
-    values.forEach(v => {
-      const b = el("button", "chip", esc(v));
-      b.setAttribute("aria-pressed", String(chosen.has(v)));
-      b.onclick = () => { chosen.has(v) ? chosen.delete(v) : chosen.add(v); render(); };
-      host.append(b);
-    });
-  };
   const tagCounts = new Map();
   RECIPES.forEach(r => (r.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)));
   const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "de"));
@@ -380,9 +368,6 @@ function renderFacets() {
     b.onclick = () => { state.tags.has(tag) ? state.tags.delete(tag) : state.tags.add(tag); render(); };
     tagHost.append(b);
   });
-
-  const healths = [...new Set(RECIPES.map(r => r.health))].filter(Boolean);
-  chips($("#healthList"), healths, state.health);
 }
 
 function card(r) {
@@ -394,8 +379,7 @@ function card(r) {
     ${r.image ? `<figure class="card__figure"><img src="${esc(r.image)}" alt="" loading="lazy" decoding="async"></figure>` : ""}
     <div class="card__top">
       <span class="card__cat">${esc(r.category)}</span>
-      ${r.health ? `<span class="card__health">${esc(r.health)}</span>` : ""}
-    </div>
+   </div>
     <h3 class="card__title">${mark(r.title)}${onMenu(r.id) ? ` <span class="card__onmenu">geplant</span>` : ""}</h3>
     ${state.terms.length && hitHint(r) ? `<p class="card__hit">${hitHint(r)}</p>` : ""}
     ${(r.tags || []).length ? `<p class="card__tags">${r.tags.slice(0, 3).map(t => `<span>${esc(t)}</span>`).join("")}</p>` : ""}
@@ -420,7 +404,6 @@ function card(r) {
 function activeFilters() {
   const list = [];
   state.tags.forEach(t => list.push({ label: t, drop: () => state.tags.delete(t) }));
-  state.health.forEach(h => list.push({ label: h, drop: () => state.health.delete(h) }));
   if (state.maxTime < 120) list.push({ label: `bis ${state.maxTime} min`, drop: () => {
     state.maxTime = 120; set("#timeRange", n => { n.value = 120; });
   } });
@@ -448,7 +431,7 @@ function renderActiveFilters(count) {
   if (filters.length > 1) {
     const all = el("button", "activechip activechip--all", "Alle lösen");
     all.onclick = () => {
-      state.tags.clear(); state.health.clear(); state.maxTime = 120;
+      state.tags.clear(); state.maxTime = 120;
       set("#timeRange", n => { n.value = 120; });
       render();
     };
@@ -467,16 +450,18 @@ function render() {
       ? `${list.length} Rezepte`
       : `${list.length} von ${RECIPES.length} Rezepten`;
   });
+  const shownDrafts = drafts.filter(draftMatches);
+  const hits = list.length + shownDrafts.length;
   set("#searchCount", n => {
     n.hidden = !state.q;
-    n.textContent = list.length === 1 ? "1 Treffer" : `${list.length} Treffer`;
+    n.textContent = hits === 1 ? "1 Treffer" : `${hits} Treffer`;
   });
   set("#searchClear", n => { n.hidden = !state.q; });
   document.body.classList.toggle("has-query", !!state.q);
   set("#timeOut", n => { n.textContent = state.maxTime >= 120 ? "beliebig" : `${state.maxTime} min`; });
   renderActiveFilters(list.length);
-  renderEmpty(list.length);
-  renderDrafts();
+  renderEmpty(hits);
+  renderDrafts(shownDrafts);
 }
 
 
@@ -672,7 +657,7 @@ const CATEGORIES = ["Hauptspeise", "Vorspeise", "Backen", "Snack", "Dessert", "Z
 let drafts = store.get(DRAFT_KEY, []);
 if (!Array.isArray(drafts)) drafts = [];
 drafts = drafts.filter(d => !RECIPES.some(r => r.id === d.id));
-const saveDrafts = () => store.set(DRAFT_KEY, drafts);
+const saveDrafts = () => store.set(DRAFT_KEY, drafts.map(({ search, ...d }) => d));
 saveDrafts();
 let formDraft = null;   // halb ausgefülltes Formular, überlebt ein versehentliches Zurück
 
@@ -698,27 +683,36 @@ function draftCard(d) {
       <span class="card__cat">${esc(d.category)}</span>
       <span class="card__draft">${d.status === "sent" ? "Entwurf" : "Nicht gesendet"}</span>
     </div>
-    <h3 class="card__title">${esc(d.title)}</h3>
+    <h3 class="card__title">${mark(d.title)}</h3>
     <p class="card__spec">
       ${d.time ? `<span>${d.time} min</span><span class="card__sep">/</span>` : ""}
       ${d.servings ? `<span>${d.servings} Port.</span><span class="card__sep">/</span>` : ""}
-      <span>${d.ingredients.length ? `${d.ingredients.length} Zutaten` : "als Text eingefügt"}</span>
+      <span>${d.ingredients.length ? `${d.ingredients.length} Zutaten`
+        : d.photos?.length ? (d.photos.length === 1 ? "als Foto" : `${d.photos.length} Fotos`) : "als Text eingefügt"}</span>
     </p>`;
   c.onclick = () => openDraft(d.id);
   c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDraft(d.id); } };
   return c;
 }
 
-/* Nur in der ungefilterten Liste – in Suchtreffern hätten Entwürfe ohne
-   aufbereitete Zutaten und Tags nichts verloren. */
-function renderDrafts() {
+/* Entwürfe zählen bei Suche und Kategorie mit – wer sein eingereichtes
+   Rezept sucht, soll es finden. Tags und Zeit haben sie noch nicht; ist
+   einer dieser Filter aktiv, bleiben sie deshalb weg. */
+function draftMatches(d) {
+  if (state.tags.size || state.maxTime < 120) return false;
+  if (state.cat && d.category !== state.cat) return false;
+  if (!state.terms.length) return true;
+  d.search ??= fold([d.title, d.category, d.source, ...d.ingredients, ...d.steps, ...d.tips, d.text || ""].join(" "));
+  return state.terms.every(t => alts(t).some(a => d.search.includes(a)));
+}
+
+function renderDrafts(list) {
   const host = $("#drafts");
   if (!host) return;
-  const show = drafts.length && !state.q && !state.cat && !activeFilters().length;
-  host.hidden = !show;
-  if (!show) return;
+  host.hidden = !list.length;
+  if (!list.length) return;
   host.innerHTML = `<h2 class="drafts__title">Eingereicht · wartet auf Freigabe</h2><div class="grid drafts__grid"></div>`;
-  drafts.forEach(d => host.querySelector(".drafts__grid").append(draftCard(d)));
+  list.forEach(d => host.querySelector(".drafts__grid").append(draftCard(d)));
 }
 
 function openPanel(panel, hash) {
@@ -773,6 +767,7 @@ const TITLES = {
   link: "Aus dem Netz übernehmen",
   form: "Rezept eintragen",
   text: "Rezepttext einfügen",
+  photo: "Foto hochladen",
 };
 
 function renderNew() {
@@ -832,7 +827,11 @@ function renderNew() {
         <div class="newrecipe__choices">
           <button type="button" class="newrecipe__choice" data-act="link">
             <strong>Aus dem Netz übernehmen</strong>
-            <span>Link zu einem Rezept einfügen – von einer Webseite, aus Pinterest oder Instagram</span>
+            <span>Link zu einem Rezept einfügen – von einer Rezeptseite oder aus Pinterest</span>
+          </button>
+          <button type="button" class="newrecipe__choice" data-act="photo">
+            <strong>Foto hochladen</strong>
+            <span>Rezept aus Kochbuch, Zeitschrift oder von einem Zettel fotografieren oder ein Bild auswählen</span>
           </button>
           <button type="button" class="newrecipe__choice" data-act="form">
             <strong>Selbst aufschreiben</strong>
@@ -878,6 +877,16 @@ function renderNew() {
           <span>Rezepttext <em>einfach alles einfügen, Marcel sortiert es</em></span>
           <textarea name="text" rows="12" required placeholder="Zutaten und Zubereitung, so wie sie im Beitrag stehen">${v("text")}</textarea>
         </label>${tail}`,
+    photo: `${title}
+        <div class="newrecipe__row newrecipe__row--text">${category}</div>
+        <div class="newrecipe__field">
+          <span>Fotos <em>bis zu ${MAX_PHOTOS}, z. B. für eine Doppelseite</em></span>
+          <div class="newrecipe__photos" id="photoList"></div>
+          <label class="ghost-btn newrecipe__pick" tabindex="0">
+            <input type="file" accept="image/*" multiple id="photoInput" class="newrecipe__file">
+            <span id="pickLabel">Foto aufnehmen oder auswählen</span>
+          </label>
+        </div>${tail}`,
   };
 
   sheet.innerHTML = `
@@ -889,7 +898,6 @@ function renderNew() {
         <header class="sheet__head">
           <p class="sheet__eyebrow">Neues Rezept</p>
           <h1 class="sheet__title" id="sheetTitle">${TITLES[newStep]}</h1>
-          ${newStep === "choice" ? `<p class="newrecipe__intro">Marcel bringt jedes Rezept in Form und gibt es frei. Bis dahin steht es hier als Entwurf.</p>` : ""}
         </header>
         ${back}
         ${newNotice ? `<p class="newrecipe__notice">${esc(newNotice)}</p>` : ""}
@@ -918,7 +926,7 @@ function renderNew() {
     const a = b.dataset.act;
     if (a === "close") closeRecipe();
     if (a === "choice") goStep("choice");
-    if (a === "link" || a === "form") {
+    if (a === "link" || a === "form" || a === "photo") {
       formDraft = { ...formDraft, step: a };
       goStep(a);
     }
@@ -926,11 +934,48 @@ function renderNew() {
   const first = form.querySelector("input:not([type=hidden]):not(.feedback__trap), textarea");
   if (first && (newStep === "code" || newStep === "link")) first.focus();
 
+  // Fotos: Vorschau mit ×, auf dem Handy bietet die Auswahl auch die Kamera an.
+  const photoInput = form.querySelector("#photoInput");
+  const renderPhotos = () => {
+    const list = formDraft?.photos || [];
+    const host = form.querySelector("#photoList");
+    host.innerHTML = list.map((p, i) => `
+      <figure class="newrecipe__photo">
+        <img src="${p.thumb}" alt="Foto ${i + 1}">
+        <button type="button" data-drop="${i}" aria-label="Foto ${i + 1} entfernen">×</button>
+      </figure>`).join("");
+    host.querySelectorAll("[data-drop]").forEach(b => b.onclick = () => {
+      formDraft.photos.splice(+b.dataset.drop, 1);
+      renderPhotos();
+    });
+    form.querySelector(".newrecipe__pick").hidden = list.length >= MAX_PHOTOS;
+    form.querySelector("#pickLabel").textContent = list.length ? "Weiteres Foto" : "Foto aufnehmen oder auswählen";
+  };
+  if (photoInput) {
+    renderPhotos();
+    photoInput.onchange = async () => {
+      const files = [...photoInput.files];
+      photoInput.value = "";
+      const room = MAX_PHOTOS - (formDraft?.photos?.length || 0);
+      status.textContent = "Fotos werden vorbereitet …";
+      let failed = false;
+      for (const file of files.slice(0, room)) {
+        try {
+          const photo = await preparePhoto(file);
+          formDraft = { ...formDraft, step: "photo", photos: [...(formDraft?.photos || []), photo] };
+        } catch { failed = true; }
+      }
+      status.textContent = failed ? "Ein Bild ließ sich nicht öffnen."
+        : files.length > room ? `Höchstens ${MAX_PHOTOS} Fotos – die übrigen wurden weggelassen.` : "";
+      renderPhotos();
+    };
+  }
+
   form.onsubmit = async e => {
     e.preventDefault();
     if (newStep === "code") return checkCode(form, status);
     if (newStep === "link") return importLink(form, status);
-    if (newStep === "form" || newStep === "text") return submitNew(form, status, read());
+    if (newStep === "form" || newStep === "text" || newStep === "photo") return submitNew(form, status, read());
   };
   sheet.scrollTop = 0;
 }
@@ -997,15 +1042,55 @@ async function importLink(form, status) {
       : `Auf ${d.host || "der Seite"} war kein Rezept zu finden, das die App lesen kann. Kopiere den Rezepttext von der Seite und füge ihn hier ein.`);
 }
 
+/* Fotos werden schon im Browser verkleinert: Handyfotos haben 3–8 MB, die
+   Funktion nimmt höchstens 6 MB je Aufruf. 1600 px reichen zum Abtippen.
+   Die kleine Fassung bleibt als Vorschau beim Entwurf auf dem Gerät. */
+const MAX_PHOTOS = 4;
+const MAX_UPLOAD = 5_400_000;
+
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("bild")); };
+    img.src = url;
+  });
+}
+
+function scaledJpeg(img, max, quality) {
+  const s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement("canvas");
+  c.width = Math.round(img.naturalWidth * s);
+  c.height = Math.round(img.naturalHeight * s);
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff";
+  g.fillRect(0, 0, c.width, c.height);
+  g.drawImage(img, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", quality);
+}
+
+async function preparePhoto(file) {
+  const img = await loadImage(file);
+  return { full: scaledJpeg(img, 1600, .82), thumb: scaledJpeg(img, 360, .7) };
+}
+
 async function submitNew(form, status, data) {
-  const text = newStep === "text";
+  const mode = newStep;   // "form", "text" oder "photo"
+  const photos = mode === "photo" ? (formDraft?.photos || []) : [];
   const missing = !data.title.trim() ? "title"
-    : text ? (data.text.trim().length < 20 ? "text" : null)
+    : mode === "text" ? (data.text.trim().length < 20 ? "text" : null)
+    : mode === "photo" ? (photos.length ? null : "photo")
     : !splitLines(data.ingredients).length ? "ingredients" : !splitLines(data.steps).length ? "steps" : null;
   if (missing) {
     status.textContent = { title: "Bitte einen Titel eintragen.", text: "Bitte den Rezepttext einfügen.",
+      photo: "Bitte mindestens ein Foto hinzufügen.",
       ingredients: "Bitte mindestens eine Zutat eintragen.", steps: "Bitte mindestens einen Schritt eintragen." }[missing];
-    form.elements[missing].focus();
+    (form.elements[missing] || form.querySelector(".newrecipe__pick"))?.focus();
+    return;
+  }
+  if (photos.reduce((n, p) => n + p.full.length, 0) > MAX_UPLOAD) {
+    status.textContent = "Die Fotos sind zusammen zu groß. Bitte eins weglassen.";
     return;
   }
   const id = slugify(data.title);
@@ -1016,21 +1101,30 @@ async function submitNew(form, status, data) {
   }
   const button = form.querySelector('[type="submit"]');
   button.disabled = true;
-  status.textContent = "Wird eingereicht …";
+  status.textContent = photos.length ? "Wird eingereicht, Fotos werden hochgeladen …" : "Wird eingereicht …";
+  const typed = mode === "form";
   const draft = {
     id, title: data.title.trim(), category: data.category,
-    servings: text ? 0 : parseInt(data.servings, 10) || 0, time: text ? 0 : parseInt(data.time, 10) || 0,
-    ingredients: text ? [] : splitLines(data.ingredients), steps: text ? [] : splitLines(data.steps),
-    tips: text ? [] : splitLines(data.tips), text: text ? data.text.trim() : "",
+    servings: typed ? parseInt(data.servings, 10) || 0 : 0, time: typed ? parseInt(data.time, 10) || 0 : 0,
+    ingredients: typed ? splitLines(data.ingredients) : [], steps: typed ? splitLines(data.steps) : [],
+    tips: typed ? splitLines(data.tips) : [], text: mode === "text" ? data.text.trim() : "",
+    photos: photos.map(p => p.thumb),
     source: data.source.trim(), note: data.note.trim(), from: data.from.trim(),
-    imported: text ? "" : (formDraft?.imported || ""),
+    imported: typed ? (formDraft?.imported || "") : "",
     submittedAt: Date.now(), status: "failed",
   };
   store.set(FROM_KEY, draft.from);
-  const result = await sendDraft(draft, store.get(CODE_KEY, ""), data.website);
+  const result = await sendDraft(draft, store.get(CODE_KEY, ""), data.website, photos.map(p => p.full));
   button.disabled = false;
   if (result === "code") return codeExpired();
   if (result === "invalid") { status.textContent = "Das Rezept ist unvollständig. Bitte Titel und Inhalt prüfen."; return; }
+  /* Fotos in voller Größe passen nicht in den Gerätespeicher. Scheitert das
+     Senden, bleibt das Formular deshalb offen, statt einen Entwurf anzulegen,
+     der sich nicht mehr vollständig nachsenden ließe. */
+  if (result === "failed" && photos.length) {
+    status.textContent = "Hat nicht geklappt – bitte gleich nochmal versuchen. Deine Angaben bleiben stehen.";
+    return;
+  }
   drafts.unshift(draft);
   saveDrafts();
   formDraft = null;
@@ -1041,12 +1135,12 @@ async function submitNew(form, status, data) {
 /* Schickt einen Entwurf ab und setzt seinen Status. Rückgabe: "sent",
    "code" (Code falsch), "invalid" (Angaben fehlen) oder "failed" (kein Netz,
    Server nicht erreichbar – der Entwurf bleibt und kann erneut gesendet werden). */
-async function sendDraft(draft, code, website = "") {
+async function sendDraft(draft, code, website = "", photos = []) {
   try {
     const { status } = await api({
       code, website, title: draft.title, category: draft.category,
       servings: draft.servings, time: draft.time, source: draft.source, from: draft.from, note: draft.note,
-      imported: draft.imported || "", text: draft.text || "",
+      imported: draft.imported || "", text: draft.text || "", photos,
       ingredients: draft.ingredients.join("\n"), steps: draft.steps.join("\n"), tips: draft.tips.join("\n"),
     });
     if (status === 403) return "code";
@@ -1089,6 +1183,11 @@ function renderDraft(id) {
         </div>
         <p class="draft__status" id="draftStatus" role="status"></p>
       </header>
+      ${d.photos?.length ? `
+      <div class="block">
+        <h2 class="block__title">Fotos</h2>
+        <div class="draft__photos">${d.photos.map((src, i) => `<img src="${src}" alt="Foto ${i + 1}">`).join("")}</div>
+      </div>` : ""}
       ${d.text ? `
       <div class="block">
         <h2 class="block__title">Rezepttext</h2>
@@ -1248,7 +1347,7 @@ function renderSheet() {
     <div class="sheet__wrap">
       <header class="sheet__head${r.image ? " sheet__head--illustrated" : ""}">
         ${r.image ? `<figure class="sheet__figure"><img src="${esc(r.image)}" alt="" decoding="async"></figure>` : ""}
-        <p class="sheet__eyebrow">${esc(r.category)}${r.health ? " · " + esc(r.health) : ""}</p>
+        <p class="sheet__eyebrow">${esc(r.category)}</p>
         <h1 class="sheet__title" id="sheetTitle">${esc(r.title)}</h1>
         <div class="spec">
           <div class="spec__cell"><span class="spec__k">Zeit</span><span class="spec__v">${r.time} min</span></div>
@@ -1760,7 +1859,7 @@ window.addEventListener("popstate", () => {
    setzen, damit garantiert kein Filter aktiv ist. */
 function resetFilters() {
   state.q = ""; state.terms = []; state.cat = null; state.maxTime = 120; state.sort = "title";
-  state.health.clear(); state.tags.clear();
+  state.tags.clear();
   set("#search", n => { n.value = ""; });
   set("#timeRange", n => { n.value = 120; });
   set("#sort", n => { n.value = "title"; });

@@ -6,7 +6,9 @@
      import  Rezept von einer Webseite holen (schema.org/Recipe) und als
              Vorschlag fürs Formular zurückgeben; Pinterest über den Link
              des Pins zur Originalseite
-     (leer)  Einreichen: legt das Rezept als Pull Request im Repository an
+     (leer)  Einreichen: legt das Rezept als Pull Request im Repository an,
+             auf Wunsch mit bis zu 4 Fotos (JPEG, in der App verkleinert),
+             die im Chat abgetippt werden
 
    Eingereicht wird als Datei unter entwuerfe/, nicht unter recipes/. build.py
    liest nur recipes/, ein Entwurf erscheint also nie ungeprüft in der Sammlung,
@@ -26,7 +28,10 @@ export const config = { path: "/api/rezept-einreichen" };
 
 const REPO = process.env.GITHUB_REPO || "mabro257/rezepteheft";
 const CATEGORIES = ["Hauptspeise", "Vorspeise", "Backen", "Snack", "Dessert", "Zutat"];
-const MAX_BODY = 60_000;
+// Netlify nimmt höchstens 6 MB je Aufruf an; Fotos brauchen den Großteil.
+const MAX_BODY = 5_800_000;
+const MAX_PHOTOS = 4;
+const MAX_PHOTO_BYTES = 2_500_000;
 const MAX_PAGE = 3_000_000;
 
 /* Dieselbe Rezept-ID wie in build.py (slugify), damit die App einen
@@ -238,11 +243,13 @@ function draftMarkdown(r, today) {
     r.imported ? `Übernommen von: ${r.imported}` : null,
     "",
     "> Offen vor der Freigabe:",
-    "> - [ ] Im Chat ins Rezeptformat überarbeiten (Zutatentabelle, Mengen in den Schritten, Gesundheitswert, Tags, Nährwerte)",
+    r.photos.length ? "> - [ ] Fotos im Chat abtippen" : null,
+    "> - [ ] Im Chat ins Rezeptformat überarbeiten (Zutatentabelle, Mengen in den Schritten, Tags, Nährwerte)",
     "> - [ ] Neuen Bildprompt für Gemini erstellen (Stil: UEBERGABE.md, Abschnitt Neue Rezepte aus der App)",
     `> - [ ] Bild ablegen als public/bilder/${r.id}.jpg`,
-    "> - [ ] Datei nach recipes/ verschieben, Entwurf löschen, build.py laufen lassen",
+    "> - [ ] Datei nach recipes/ verschieben, Entwurf und Fotos löschen, build.py laufen lassen",
   ];
+  if (r.photos.length) out.push("", "## Fotos (wie hochgeladen)", "", ...r.photos.map((_, i) => `![Foto ${i + 1}](${photoName(r.id, i)})`));
   if (r.ingredients.length) out.push("", "## 🛒 Zutaten (wie eingereicht)", "", ...r.ingredients.map(l => `- ${l}`));
   if (r.steps.length) out.push("", "## 👨‍🍳 Zubereitung (wie eingereicht)", "", ...r.steps.map((l, i) => `${i + 1}. ${l}`));
   if (r.tips.length) out.push("", "## 💡 Tipps (wie eingereicht)", "", ...r.tips.map(l => `- ${l}`));
@@ -250,6 +257,8 @@ function draftMarkdown(r, today) {
   if (r.note) out.push("", "## Anmerkung der einreichenden Person", "", r.note);
   return out.filter(l => l !== null).join("\n") + "\n";
 }
+
+const photoName = (id, i) => `${id}-foto-${i + 1}.jpg`;
 
 async function submit(input, token) {
   const title = clean(input.title, 120);
@@ -268,9 +277,14 @@ async function submit(input, token) {
     tips: lines(input.tips, 20, 600),
     // Frei eingefügter Text (z. B. aus Instagram), wird erst im Chat zerlegt.
     text: String(input.text ?? "").replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, " ").trim().slice(0, 15000),
+    // Fotos eines Rezepts (Kochbuch, Zettel). Nur JPEG, wie es die App liefert.
+    photos: [].concat(input.photos || []).slice(0, MAX_PHOTOS)
+      .map(p => Buffer.from(String(p).replace(/^data:image\/jpeg;base64,/, ""), "base64"))
+      .filter(b => b.length > 1000 && b.length <= MAX_PHOTO_BYTES && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff),
   };
   if (title.length < 3 || !r.id) return json(422, { ok: false, error: "title" });
-  if (r.text.length < 20 && (!r.ingredients.length || !r.steps.length)) return json(422, { ok: false, error: "content" });
+  if (input.photos?.length && r.photos.length !== Math.min(input.photos.length, MAX_PHOTOS)) return json(422, { ok: false, error: "photo" });
+  if (!r.photos.length && r.text.length < 20 && (!r.ingredients.length || !r.steps.length)) return json(422, { ok: false, error: "content" });
 
   const now = new Date();
   const today = now.toISOString().slice(0, 10);
@@ -292,6 +306,12 @@ async function submit(input, token) {
         branch,
       }),
     });
+    for (const [i, photo] of r.photos.entries()) {
+      await gh(`/contents/entwuerfe/${photoName(r.id, i)}`, token, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Entwurf: ${r.title}, Foto ${i + 1}`, content: photo.toString("base64"), branch }),
+      });
+    }
     const pr = await gh("/pulls", token, {
       method: "POST",
       body: JSON.stringify({
@@ -300,9 +320,11 @@ async function submit(input, token) {
         base: "main",
         body: [
           `Eingereicht über die App am ${today}${r.from ? ` von ${r.from}` : ""}`
-            + (r.imported ? `, übernommen von ${r.imported}.` : r.text ? ", als eingefügter Text." : ", selbst geschrieben."),
+            + (r.imported ? `, übernommen von ${r.imported}.` : r.photos.length ? `, als Foto (${r.photos.length}).`
+              : r.text ? ", als eingefügter Text." : ", selbst geschrieben."),
           "",
           "Wird im Chat überarbeitet, nicht per API. Vor dem Merge:",
+          ...(r.photos.length ? ["- [ ] Fotos abtippen"] : []),
           "- [ ] Ins Rezeptformat überarbeiten und nach `recipes/` verschieben",
           "- [ ] **Neuen Bildprompt für Gemini erstellen**",
           `- [ ] Bild als \`public/bilder/${r.id}.jpg\` ablegen`,
