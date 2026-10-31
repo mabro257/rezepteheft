@@ -1,6 +1,6 @@
 # Rezepte-App — Übergabe und Projektwissen
 
-Stand: 52 Rezepte, live unter `rezepteheft.netlify.app`.
+Stand: 80 Rezepte, live unter `rezepteheft.netlify.app`.
 
 Dieses Dokument richtet sich an jemanden, der das Projekt zum ersten Mal sieht
 und daran weiterarbeiten soll. Es beschreibt nicht nur *was* gebaut ist, sondern
@@ -120,7 +120,7 @@ Die Regeln darin sind allesamt Antworten auf echte Fehler:
 | Mengen pro Stück (`à`, `je`, `pro`, `Patties`, …) skalieren nicht | „125 g große Patties" wurde zu 250 g |
 | Zeiten, Temperaturen, Stufen bleiben unberührt | Einheitenliste `UNIT_RE` enthält bewusst kein `Minuten`, `°C`, `cm` |
 
-Ergebnis heute: 362 verknüpfte Mengen über 52 Rezepte, ohne bekannte Fehlzuordnung.
+Ergebnis heute: 719 verknüpfte Mengen über 80 Rezepte, ohne bekannte Fehlzuordnung.
 
 **Hervorheben ohne Menge (Schritt 2c):** Jede weitere Nennung einer Zutat wird
 markiert, auch ohne Menge – optionale Zutaten, „nach Bedarf“, zweite
@@ -341,13 +341,21 @@ Rezept als „Nicht gesendet“.
 **Bildprompt-Vorlage** (Stil der vorhandenen Bilder, Beispiel Gözleme):
 
 ```
-Black and white pen-and-ink engraving illustration, vintage cookbook etching
-style with fine cross-hatching and stippling. A single round ceramic plate seen
-from a slight three-quarter angle, holding <Gericht mit sichtbaren Zutaten>.
-<Details: Anschnitt, Garnitur>. Three thin curling wisps of steam rising above.
-Pure white background, no shadow on the background, no table, no text, no
-color, isolated centered composition, square format 1:1.
+Strictly black-and-white pen-and-ink engraving illustration, monochrome black
+ink on white paper only, vintage cookbook etching style with fine
+cross-hatching and stippling. A single round ceramic plate seen from a slight
+three-quarter angle, holding <Gericht mit sichtbaren Zutaten>. <Details:
+Anschnitt, Garnitur>. Three thin curling wisps of steam rising above. Pure
+white background, no shadow on the background, no table, no text, isolated
+centered composition, square format 1:1. Absolutely no color anywhere: no
+colored food, no sepia, no beige or cream paper tone, no tinted highlights, no
+gray watercolor washes - only black ink lines, hatching and dots on pure white.
 ```
+
+Der Schluss gegen Farbe ist auf Marcels Wunsch bewusst so ausführlich: Die
+Bilder sollen ausschließlich schwarz-weiß sein. Ein Farbton oder cremefarbenes
+Papier würde außerdem von `mix-blend-mode: multiply` nicht ausgeblendet und
+passte nicht zu den übrigen Bildern.
 
 Die Funktion ruft nur öffentliche Adressen ab (keine lokalen oder internen
 Hosts) und das nur mit gültigem Code, damit sie kein offener Abrufdienst wird.
@@ -446,8 +454,22 @@ command = "python3 build.py"
 
 ## 11. Zahlen zum Stand
 
-- 52 Rezepte: 29 Hauptspeise, 7 Zutat, 5 Backen, 5 Vorspeise, 5 Snack, 1 Dessert
-- 14 Tags, häufigste: Schnell 22, Ofengericht 20, Pfannengericht 20, Vegan 13, Meal Prep 13
-- 326 Mengen im Fließtext verknüpft
+- 80 Rezepte: 54 Hauptspeise, 7 Backen, 7 Zutat, 6 Snack, 5 Vorspeise, 1 Dessert
+- 14 Tags, häufigste: Pfannengericht 39, Schnell 34, Ofengericht 32, Meal Prep 26, Vegan 22
+- 719 Mengen im Fließtext verknüpft
+
+28 Rezepte stammen aus dem Pinterest-Abschnitt „Ausprobiert und Lecker :)“
+(lorenabrockmann/essen). Die Pins liefert Pinterests öffentliche Resource-API
+(`BoardSectionResource` für die ID, dann `BoardSectionPinsResource`, page_size
+höchstens 50); die Rezepte kamen aus schema.org-Daten bzw. dem Seitentext.
+Fleisch wurde vegetarisch ersetzt (Speck → Räuchertofu, Hähnchen → Tofu bzw.
+vegane Hähnchenstücke, Hühnerbrühe → Gemüsebrühe). Nicht übertragbar, weil die
+Seite weg ist, hinter einem Login liegt oder das Archiv blockte:
+Limette-Basilikum-Risotto mit Burrata, Kartoffel-Halloumi-Auflauf,
+Kichererbsen-Masala, Blumenkohl-Wings mit Honig-Senf-Dip, Ofengemüse mit
+Ziegenkäse, Kürbissuppe mit Kokosmilch, Afrikanischer Erdnusseintopf,
+Kartoffel-Brokkoli-Pfanne mit Feta, Kichererbsen-Pfanne mit Feta,
+Kürbisgemüse mit karamellisiertem Ziegenkäse, Auberginen-Reispfanne mit Feta,
+Flammkuchen mit Pesto.
 - Alle Rezepte mit Nährwerten
 - Code: ~900 Zeilen `build.py`, ~600 `app.js`, ~700 CSS
