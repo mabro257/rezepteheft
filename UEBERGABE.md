@@ -273,9 +273,26 @@ es nicht mehr.
 ### 6.2 Neue Rezepte aus der App
 
 Über „+ Rezept“ in der Leiste über der Liste (`#/neu`) kann jeder mit dem
-Zugangscode ein Rezept einreichen: Titel, Kategorie, Portionen, Minuten,
-Zutaten (eine pro Zeile), Schritte (einer pro Zeile), optional Tipps, Quelle,
-Anmerkung, Name.
+Zugangscode ein Rezept einreichen. Der Weg im Sheet (`newStep`):
+
+1. **Zugangscode** – kommt zuerst und wird sofort geprüft (`action: "check"`),
+   damit niemand ein ganzes Rezept tippt und erst beim Absenden scheitert.
+   Ein geprüfter Code wird gemerkt, beim nächsten Mal entfällt der Schritt.
+   Ändert sich der Code, fragt die App beim Absenden neu – das Eingetippte
+   bleibt erhalten (`formDraft`).
+2. **Auswahl:** „Aus dem Netz übernehmen“ oder „Selbst aufschreiben“.
+3. **Aus dem Netz:** Link einfügen, die Funktion holt die Seite
+   (`action: "import"`) und liest das schema.org-Rezept (Titel, Portionen,
+   Zeit, Zutaten, Schritte, Kategorie geraten). Pinterest: über den Link des
+   Pins zur Originalseite. Ergebnis landet vorausgefüllt im Formular.
+   Getestet: Bianca Zapatka, Chefkoch, lecker.de, utopia.de, essenrezept.de
+   klappen; Pins ohne Originallink und Seiten ohne Rezeptdaten nicht.
+   Instagram, TikTok, Facebook und alles ohne lesbare Daten führen zu
+   **„Rezepttext einfügen“**: Titel, Kategorie und ein freies Textfeld, die
+   Quelle ist schon eingetragen. Zerlegt wird der Text erst im Chat.
+4. **Selbst aufschreiben:** Titel, Kategorie, Portionen, Minuten, Zutaten
+   (eine pro Zeile), Schritte (einer pro Zeile), optional Tipps.
+   Alle Wege enden mit Quelle, Anmerkung, Name und „Einreichen“.
 
 **Ablauf (Vorgabe von Marcel):**
 1. Die Funktion `/api/rezept-einreichen` legt einen Branch `entwurf/<id>-<zeit>`
@@ -319,9 +336,11 @@ Pure white background, no shadow on the background, no table, no text, no
 color, isolated centered composition, square format 1:1.
 ```
 
-Ausbaustufen, besprochen, aber noch nicht gebaut: Import per Link
-(Rezeptdaten von Webseiten, Pinterest über die verlinkte Quelle), Instagram nur
-über eingefügten Text, Teilen-Ziel auf Android.
+Die Funktion ruft nur öffentliche Adressen ab (keine lokalen oder internen
+Hosts) und das nur mit gültigem Code, damit sie kein offener Abrufdienst wird.
+
+Noch nicht gebaut: Teilen-Ziel auf Android (Link direkt aus Instagram oder
+Chrome in die App teilen).
 
 ### Entfernt (nicht versehentlich, sondern auf Wunsch)
 

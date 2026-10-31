@@ -702,7 +702,7 @@ function draftCard(d) {
     <p class="card__spec">
       ${d.time ? `<span>${d.time} min</span><span class="card__sep">/</span>` : ""}
       ${d.servings ? `<span>${d.servings} Port.</span><span class="card__sep">/</span>` : ""}
-      <span>${d.ingredients.length} Zutaten</span>
+      <span>${d.ingredients.length ? `${d.ingredients.length} Zutaten` : "als Text eingefügt"}</span>
     </p>`;
   c.onclick = () => openDraft(d.id);
   c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDraft(d.id); } };
@@ -729,47 +729,128 @@ function openPanel(panel, hash) {
   if (location.hash !== hash) history.pushState({ panel }, "", hash);
 }
 
-function openForm() {
-  openPanel("form", "#/neu");
-  renderForm();
-}
-
 function openDraft(id) {
   if (!drafts.some(d => d.id === id)) return;
   openPanel("draft:" + id, "#/e/" + encodeURIComponent(id));
   renderDraft(id);
 }
 
-function renderForm() {
+/* Der Weg zum neuen Rezept, Schritt für Schritt im selben Sheet:
+     code → choice → link → form (vorausgefüllt) oder text (eingefügt)
+                   → form (selbst geschrieben)
+   Der Code kommt zuerst, damit niemand ein ganzes Rezept tippt und erst beim
+   Absenden erfährt, dass er nicht einreichen darf. Ein einmal geprüfter Code
+   wird gemerkt. */
+let newStep = "code";
+let newNotice = "";
+
+async function api(body) {
+  const res = await fetch("/api/rezept-einreichen", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return { status: res.status, data: await res.json().catch(() => ({})) };
+}
+
+function openForm() {
+  openPanel("form", "#/neu");
+  newStep = store.get(CODE_KEY, "") ? (formDraft?.step || "choice") : "code";
+  newNotice = "";
+  renderNew();
+}
+
+function goStep(step, notice = "") {
+  newStep = step;
+  newNotice = notice;
+  if (formDraft) formDraft.step = step === "code" ? formDraft.step : step;
+  renderNew();
+}
+
+const TITLES = {
+  code: "Rezept einreichen",
+  choice: "Wie kommt das Rezept rein?",
+  link: "Aus dem Netz übernehmen",
+  form: "Rezept eintragen",
+  text: "Rezepttext einfügen",
+};
+
+function renderNew() {
   const f = formDraft || {};
+  const v = k => esc(f[k] || "");
   const sheet = $("#sheet");
   sheet.hidden = false;
   sheet.onclick = null;
   sheet.classList.remove("cook");
   sheet.style.setProperty("--accent", "var(--saffron)");
-  const v = k => esc(f[k] || "");
-  sheet.innerHTML = `
-    <div class="sheet__bar">
-      <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
-    </div>
-    <div class="sheet__wrap">
-      <form class="newrecipe" id="newRecipeForm" novalidate>
-        <header class="sheet__head">
-          <p class="sheet__eyebrow">Neues Rezept</p>
-          <h1 class="sheet__title" id="sheetTitle">Rezept einreichen</h1>
-          <p class="newrecipe__intro">Schreib es auf, wie es dir vorliegt. Marcel bringt es in Form und gibt es frei, bis dahin steht es hier als Entwurf.</p>
-        </header>
+
+  const back = newStep === "code" || newStep === "choice" ? ""
+    : `<button type="button" class="newrecipe__back" data-act="choice">← Andere Art wählen</button>`;
+  const title = `
         <label class="newrecipe__field">
           <span>Titel</span>
           <input type="text" name="title" maxlength="120" required value="${v("title")}" placeholder="z. B. Türkische Linsensuppe">
           <small class="newrecipe__dupe" id="dupeHint" hidden></small>
-        </label>
-        <div class="newrecipe__row newrecipe__row--meta">
+        </label>`;
+  const category = `
           <label class="newrecipe__field">
             <span>Kategorie</span>
             <select name="category">${CATEGORIES.map(c =>
               `<option${(f.category || "Hauptspeise") === c ? " selected" : ""}>${c}</option>`).join("")}</select>
-          </label>
+          </label>`;
+  const tail = `
+        <label class="newrecipe__field">
+          <span>Quelle <em>optional, Name oder Link</em></span>
+          <input type="text" name="source" maxlength="300" value="${v("source")}" placeholder="z. B. Oma, Kochbuch oder https://…">
+        </label>
+        <label class="newrecipe__field">
+          <span>Anmerkung für Marcel <em>optional</em></span>
+          <textarea name="note" rows="2" maxlength="1000">${v("note")}</textarea>
+        </label>
+        <label class="newrecipe__field">
+          <span>Von <em>optional</em></span>
+          <input type="text" name="from" maxlength="60" autocomplete="name" value="${esc(f.from ?? store.get(FROM_KEY, ""))}">
+        </label>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback__trap">
+        <div class="newrecipe__actions">
+          <button type="submit" class="ghost-btn newrecipe__send">Einreichen</button>
+          <span class="newrecipe__status" id="newRecipeStatus" role="status"></span>
+        </div>`;
+
+  const steps = {
+    code: `
+        <p class="newrecipe__intro">Neue Rezepte kann einreichen, wer den Zugangscode kennt. Den bekommst du von Marcel.</p>
+        <label class="newrecipe__field newrecipe__field--narrow">
+          <span>Zugangscode</span>
+          <input type="password" name="code" required autocomplete="off" autocapitalize="off" enterkeyhint="go">
+        </label>
+        <div class="newrecipe__actions">
+          <button type="submit" class="ghost-btn newrecipe__send">Weiter</button>
+          <span class="newrecipe__status" id="newRecipeStatus" role="status"></span>
+        </div>`,
+    choice: `
+        <div class="newrecipe__choices">
+          <button type="button" class="newrecipe__choice" data-act="link">
+            <strong>Aus dem Netz übernehmen</strong>
+            <span>Link zu einem Rezept einfügen – von einer Webseite, aus Pinterest oder Instagram</span>
+          </button>
+          <button type="button" class="newrecipe__choice" data-act="form">
+            <strong>Selbst aufschreiben</strong>
+            <span>Zutaten und Schritte von Hand eintragen – aus dem Kochbuch, von Oma oder aus dem Kopf</span>
+          </button>
+        </div>`,
+    link: `
+        <p class="newrecipe__intro">Füge den Link ein. Die App holt Titel, Zutaten und Schritte von der Seite, danach kannst du alles prüfen.</p>
+        <label class="newrecipe__field">
+          <span>Link</span>
+          <input type="url" name="url" required inputmode="url" autocomplete="off" enterkeyhint="go" value="${v("url")}" placeholder="https://…">
+        </label>
+        <div class="newrecipe__actions">
+          <button type="submit" class="ghost-btn newrecipe__send">Rezept holen</button>
+          <span class="newrecipe__status" id="newRecipeStatus" role="status"></span>
+        </div>`,
+    form: `${title}
+        <div class="newrecipe__row newrecipe__row--meta">${category}
           <label class="newrecipe__field">
             <span>Portionen</span>
             <input type="number" name="servings" min="1" max="24" inputmode="numeric" value="${v("servings")}" placeholder="2">
@@ -790,30 +871,29 @@ function renderForm() {
         <label class="newrecipe__field">
           <span>Tipps <em>optional</em></span>
           <textarea name="tips" rows="2">${v("tips")}</textarea>
-        </label>
+        </label>${tail}`,
+    text: `${title}
+        <div class="newrecipe__row newrecipe__row--text">${category}</div>
         <label class="newrecipe__field">
-          <span>Quelle <em>optional, Name oder Link</em></span>
-          <input type="text" name="source" maxlength="300" value="${v("source")}" placeholder="z. B. Oma, Kochbuch oder https://…">
-        </label>
-        <label class="newrecipe__field">
-          <span>Anmerkung für Marcel <em>optional</em></span>
-          <textarea name="note" rows="2" maxlength="1000">${v("note")}</textarea>
-        </label>
-        <div class="newrecipe__row">
-          <label class="newrecipe__field">
-            <span>Von</span>
-            <input type="text" name="from" maxlength="60" autocomplete="name" value="${esc(f.from ?? store.get(FROM_KEY, ""))}">
-          </label>
-          <label class="newrecipe__field">
-            <span>Zugangscode</span>
-            <input type="password" name="code" required autocomplete="off" value="${esc(f.code ?? store.get(CODE_KEY, ""))}">
-          </label>
-        </div>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback__trap">
-        <div class="newrecipe__actions">
-          <button type="submit" class="ghost-btn newrecipe__send">Einreichen</button>
-          <span class="newrecipe__status" id="newRecipeStatus" role="status"></span>
-        </div>
+          <span>Rezepttext <em>einfach alles einfügen, Marcel sortiert es</em></span>
+          <textarea name="text" rows="12" required placeholder="Zutaten und Zubereitung, so wie sie im Beitrag stehen">${v("text")}</textarea>
+        </label>${tail}`,
+  };
+
+  sheet.innerHTML = `
+    <div class="sheet__bar">
+      <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
+    </div>
+    <div class="sheet__wrap">
+      <form class="newrecipe" id="newRecipeForm" novalidate>
+        <header class="sheet__head">
+          <p class="sheet__eyebrow">Neues Rezept</p>
+          <h1 class="sheet__title" id="sheetTitle">${TITLES[newStep]}</h1>
+          ${newStep === "choice" ? `<p class="newrecipe__intro">Marcel bringt jedes Rezept in Form und gibt es frei. Bis dahin steht es hier als Entwurf.</p>` : ""}
+        </header>
+        ${back}
+        ${newNotice ? `<p class="newrecipe__notice">${esc(newNotice)}</p>` : ""}
+        ${steps[newStep]}
       </form>
     </div>`;
 
@@ -821,56 +901,141 @@ function renderForm() {
   const status = sheet.querySelector("#newRecipeStatus");
   const read = () => Object.fromEntries(new FormData(form));
   const dupe = () => {
+    if (!form.elements.title) return;
     const id = slugify(form.elements.title.value);
     const hit = id && (RECIPES.find(r => r.id === id) || drafts.find(d => d.id === id));
     set("#dupeHint", n => { n.hidden = !hit; n.textContent = hit ? `„${hit.title}“ gibt es schon.` : ""; });
   };
-  form.oninput = () => { formDraft = read(); dupe(); };
+  form.oninput = () => {
+    if (newStep === "code") return;
+    const { code, website, ...values } = read();
+    formDraft = { ...formDraft, ...values, step: newStep };
+    dupe();
+  };
   dupe();
-  sheet.querySelector('[data-act="close"]').onclick = () => closeRecipe();
+
+  sheet.querySelectorAll("[data-act]").forEach(b => b.onclick = () => {
+    const a = b.dataset.act;
+    if (a === "close") closeRecipe();
+    if (a === "choice") goStep("choice");
+    if (a === "link" || a === "form") {
+      formDraft = { ...formDraft, step: a };
+      goStep(a);
+    }
+  });
+  const first = form.querySelector("input:not([type=hidden]):not(.feedback__trap), textarea");
+  if (first && (newStep === "code" || newStep === "link")) first.focus();
 
   form.onsubmit = async e => {
     e.preventDefault();
-    const data = read();
-    const missing = !data.title.trim() ? "title" : !splitLines(data.ingredients).length ? "ingredients"
-      : !splitLines(data.steps).length ? "steps" : !data.code.trim() ? "code" : null;
-    if (missing) {
-      status.textContent = { title: "Bitte einen Titel eintragen.", ingredients: "Bitte mindestens eine Zutat eintragen.",
-        steps: "Bitte mindestens einen Schritt eintragen.", code: "Bitte den Zugangscode eintragen." }[missing];
-      form.elements[missing].focus();
-      return;
-    }
-    const id = slugify(data.title);
-    if (RECIPES.some(r => r.id === id) || drafts.some(d => d.id === id)) {
-      status.textContent = "Ein Rezept mit diesem Titel gibt es schon. Bitte anders benennen.";
-      form.elements.title.focus();
-      return;
-    }
-    const button = form.querySelector('[type="submit"]');
-    button.disabled = true;
-    status.textContent = "Wird eingereicht …";
-    const draft = {
-      id, title: data.title.trim(), category: data.category,
-      servings: parseInt(data.servings, 10) || 0, time: parseInt(data.time, 10) || 0,
-      ingredients: splitLines(data.ingredients), steps: splitLines(data.steps), tips: splitLines(data.tips),
-      source: data.source.trim(), note: data.note.trim(), from: data.from.trim(),
-      submittedAt: Date.now(), status: "failed",
-    };
-    store.set(FROM_KEY, draft.from);
-    const result = await sendDraft(draft, data.code.trim(), data.website);
-    button.disabled = false;
-    if (result === "code" || result === "invalid") {
-      status.textContent = result === "code" ? "Der Zugangscode stimmt nicht."
-        : "Das Rezept ist unvollständig. Bitte Titel, Zutaten und Schritte prüfen.";
-      return;
-    }
-    store.set(CODE_KEY, data.code.trim());
-    drafts.unshift(draft);
-    saveDrafts();
-    formDraft = null;
-    closeRecipe();
-    toast(result === "sent" ? `„${draft.title}“ eingereicht` : "Nicht gesendet – als Entwurf gespeichert");
+    if (newStep === "code") return checkCode(form, status);
+    if (newStep === "link") return importLink(form, status);
+    if (newStep === "form" || newStep === "text") return submitNew(form, status, read());
   };
+  sheet.scrollTop = 0;
+}
+
+async function checkCode(form, status) {
+  const code = form.elements.code.value.trim();
+  if (!code) { status.textContent = "Bitte den Zugangscode eintragen."; form.elements.code.focus(); return; }
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  status.textContent = "Wird geprüft …";
+  try {
+    const { status: s } = await api({ action: "check", code });
+    if (s === 200) {
+      store.set(CODE_KEY, code);
+      goStep(formDraft?.step && formDraft.step !== "code" ? formDraft.step : "choice");
+      return;
+    }
+    status.textContent = s === 403 ? "Der Code stimmt nicht." : "Gerade nicht erreichbar. Bitte später nochmal versuchen.";
+  } catch {
+    status.textContent = "Gerade nicht erreichbar. Bitte später nochmal versuchen.";
+  }
+  button.disabled = false;
+}
+
+/* Gemerkter Code gilt nicht mehr (geändert): zurück zur Abfrage, das
+   bisher Eingetippte bleibt in formDraft erhalten. */
+function codeExpired() {
+  store.set(CODE_KEY, "");
+  goStep("code", "Der Zugangscode hat sich geändert. Bitte neu eingeben – dein Rezept bleibt erhalten.");
+}
+
+async function importLink(form, status) {
+  const url = form.elements.url.value.trim();
+  if (!/^https?:\/\/\S+\.\S+/i.test(url)) { status.textContent = "Bitte einen vollständigen Link einfügen, beginnend mit https://"; return; }
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  status.textContent = "Rezept wird geholt …";
+  let res;
+  try { res = await api({ action: "import", code: store.get(CODE_KEY, ""), url }); }
+  catch { res = { status: 0, data: {} }; }
+  button.disabled = false;
+  if (res.status === 403) return codeExpired();
+  const d = res.data || {};
+  if (res.status === 200 && d.ok) {
+    const r = d.recipe;
+    formDraft = {
+      ...formDraft, step: "form", url, title: r.title, category: r.category,
+      servings: r.servings || "", time: r.time || "",
+      ingredients: r.ingredients.join("\n"), steps: r.steps.join("\n"), tips: "",
+      source: r.source || url, imported: d.host,
+    };
+    goStep("form", `Von ${d.host} übernommen. Bitte kurz prüfen und anpassen, wo nötig.`);
+    return;
+  }
+  if (res.status !== 200) { status.textContent = "Gerade nicht erreichbar. Bitte später nochmal versuchen."; return; }
+  if (d.error === "url") { status.textContent = "Mit diesem Link kann die App nichts anfangen. Bitte den Link prüfen."; return; }
+  // Kein lesbares Rezept: Text einfügen lassen, Quelle steht schon drin.
+  formDraft = { ...formDraft, step: "text", url, source: d.source || url, imported: "" };
+  const network = (d.host || "").replace(/\.[a-z]+$/, "");
+  goStep("text", d.error === "social"
+    ? `${network[0].toUpperCase() + network.slice(1)} gibt Rezepte nicht direkt heraus. Öffne den Beitrag, kopiere den Text und füge ihn hier ein.`
+    : d.error === "pin"
+      ? "Dieser Pin führt zu keiner Rezeptseite. Kopiere den Rezepttext und füge ihn hier ein."
+      : `Auf ${d.host || "der Seite"} war kein Rezept zu finden, das die App lesen kann. Kopiere den Rezepttext von der Seite und füge ihn hier ein.`);
+}
+
+async function submitNew(form, status, data) {
+  const text = newStep === "text";
+  const missing = !data.title.trim() ? "title"
+    : text ? (data.text.trim().length < 20 ? "text" : null)
+    : !splitLines(data.ingredients).length ? "ingredients" : !splitLines(data.steps).length ? "steps" : null;
+  if (missing) {
+    status.textContent = { title: "Bitte einen Titel eintragen.", text: "Bitte den Rezepttext einfügen.",
+      ingredients: "Bitte mindestens eine Zutat eintragen.", steps: "Bitte mindestens einen Schritt eintragen." }[missing];
+    form.elements[missing].focus();
+    return;
+  }
+  const id = slugify(data.title);
+  if (RECIPES.some(r => r.id === id) || drafts.some(d => d.id === id)) {
+    status.textContent = "Ein Rezept mit diesem Titel gibt es schon. Bitte anders benennen.";
+    form.elements.title.focus();
+    return;
+  }
+  const button = form.querySelector('[type="submit"]');
+  button.disabled = true;
+  status.textContent = "Wird eingereicht …";
+  const draft = {
+    id, title: data.title.trim(), category: data.category,
+    servings: text ? 0 : parseInt(data.servings, 10) || 0, time: text ? 0 : parseInt(data.time, 10) || 0,
+    ingredients: text ? [] : splitLines(data.ingredients), steps: text ? [] : splitLines(data.steps),
+    tips: text ? [] : splitLines(data.tips), text: text ? data.text.trim() : "",
+    source: data.source.trim(), note: data.note.trim(), from: data.from.trim(),
+    imported: text ? "" : (formDraft?.imported || ""),
+    submittedAt: Date.now(), status: "failed",
+  };
+  store.set(FROM_KEY, draft.from);
+  const result = await sendDraft(draft, store.get(CODE_KEY, ""), data.website);
+  button.disabled = false;
+  if (result === "code") return codeExpired();
+  if (result === "invalid") { status.textContent = "Das Rezept ist unvollständig. Bitte Titel und Inhalt prüfen."; return; }
+  drafts.unshift(draft);
+  saveDrafts();
+  formDraft = null;
+  closeRecipe();
+  toast(result === "sent" ? `„${draft.title}“ eingereicht` : "Nicht gesendet – als Entwurf gespeichert");
 }
 
 /* Schickt einen Entwurf ab und setzt seinen Status. Rückgabe: "sent",
@@ -878,18 +1043,15 @@ function renderForm() {
    Server nicht erreichbar – der Entwurf bleibt und kann erneut gesendet werden). */
 async function sendDraft(draft, code, website = "") {
   try {
-    const res = await fetch("/api/rezept-einreichen", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        code, website, title: draft.title, category: draft.category,
-        servings: draft.servings, time: draft.time, source: draft.source, from: draft.from, note: draft.note,
-        ingredients: draft.ingredients.join("\n"), steps: draft.steps.join("\n"), tips: draft.tips.join("\n"),
-      }),
+    const { status } = await api({
+      code, website, title: draft.title, category: draft.category,
+      servings: draft.servings, time: draft.time, source: draft.source, from: draft.from, note: draft.note,
+      imported: draft.imported || "", text: draft.text || "",
+      ingredients: draft.ingredients.join("\n"), steps: draft.steps.join("\n"), tips: draft.tips.join("\n"),
     });
-    if (res.status === 403) return "code";
-    if (res.status === 422) return "invalid";
-    if (!res.ok) throw new Error(res.status);
+    if (status === 403) return "code";
+    if (status === 422) return "invalid";
+    if (status < 200 || status >= 300) throw new Error(status);
     draft.status = "sent";
     return "sent";
   } catch {
@@ -922,11 +1084,17 @@ function renderDraft(id) {
         <div class="spec">
           ${d.time ? `<div class="spec__cell"><span class="spec__k">Zeit</span><span class="spec__v">${d.time} min</span></div>` : ""}
           ${d.servings ? `<div class="spec__cell"><span class="spec__k">Portionen</span><span class="spec__v">${d.servings}</span></div>` : ""}
-          <div class="spec__cell"><span class="spec__k">Zutaten</span><span class="spec__v">${d.ingredients.length}</span></div>
+          ${d.ingredients.length ? `<div class="spec__cell"><span class="spec__k">Zutaten</span><span class="spec__v">${d.ingredients.length}</span></div>` : ""}
           ${d.source ? `<div class="spec__cell"><span class="spec__k">Quelle</span><span class="spec__v">${esc(d.source)}</span></div>` : ""}
         </div>
         <p class="draft__status" id="draftStatus" role="status"></p>
       </header>
+      ${d.text ? `
+      <div class="block">
+        <h2 class="block__title">Rezepttext</h2>
+        <p class="draft__text">${esc(d.text)}</p>
+      </div>` : ""}
+      ${d.ingredients.length ? `
       <div class="cols">
         <div class="panel">
           <div class="block">
@@ -943,7 +1111,8 @@ function renderDraft(id) {
             <div class="tips">${d.tips.map(t => `<p class="tip"><span>${esc(t)}</span></p>`).join("")}</div></div>` : ""}
           ${d.note ? `<div class="block"><h2 class="block__title">Anmerkung</h2><p class="draft__note">${esc(d.note)}</p></div>` : ""}
         </div>
-      </div>
+      </div>` : d.note ? `
+      <div class="block"><h2 class="block__title">Anmerkung</h2><p class="draft__note">${esc(d.note)}</p></div>` : ""}
     </div>`;
 
   sheet.onclick = null;
