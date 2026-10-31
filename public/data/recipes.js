@@ -6575,7 +6575,7 @@ window.RECIPES = [
    "Paprika",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/gemueselasagne.jpg?v=178c0986",
   "tags": [
    "Italienisch",
    "Meal Prep",
