@@ -988,3 +988,66 @@ body.view-plan #menuCount { display: none; }
   .sheet__head--illustrated .sheet__figure { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
   .sheet__figure img { width: 92px; height: 92px; }
 }
+
+
+/* ===========================================================
+   Neue Rezepte: Einreichen und Entwürfe
+   =========================================================== */
+.toolbar__new { font-weight: 600; }
+
+.drafts { margin-bottom: 28px; }
+.drafts__title {
+  margin: 0 0 12px; font-family: var(--mono); font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3);
+}
+.card--draft { border-style: dashed; background: transparent; }
+.card__draft {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  padding: 2px 7px; border-radius: 999px; border: 1px dashed var(--ink-3); color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.newrecipe { display: grid; gap: 16px; max-width: 640px; }
+.newrecipe .sheet__head { margin-bottom: 4px; }
+.newrecipe__intro { margin: 10px 0 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+.newrecipe__row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; }
+.newrecipe__row--meta { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1fr); grid-auto-flow: row; }
+.newrecipe__field { display: grid; gap: 6px; align-content: start; }
+.newrecipe__field > span {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--ink-3);
+}
+.newrecipe__field > span em { font-style: normal; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+.newrecipe__field textarea,
+.newrecipe__field input,
+.newrecipe__field select {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.45; resize: vertical;
+}
+.newrecipe__field textarea::placeholder,
+.newrecipe__field input::placeholder { color: var(--ink-3); }
+.newrecipe__field textarea:focus,
+.newrecipe__field input:focus,
+.newrecipe__field select:focus { outline: none; border-color: var(--ink); }
+.newrecipe__dupe { font-family: var(--mono); font-size: 12px; color: var(--ember); }
+.newrecipe__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-bottom: 40px; }
+.newrecipe__send { padding: 10px 20px; background: var(--ink); border-color: var(--ink); color: var(--surface-2); font-size: 13px; }
+.newrecipe__send:hover { background: var(--ink-2); }
+.newrecipe__send:disabled { opacity: .5; cursor: default; }
+.newrecipe__status { font-family: var(--mono); font-size: 12px; color: var(--ember); }
+
+.draft__status:empty { display: none; }
+.draft__status { font-family: var(--mono); font-size: 12px; color: var(--ember); margin: 12px 0 0; }
+.draft__list { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 16px; line-height: 1.5; }
+.draft__list--steps li::marker { font-family: var(--mono); color: var(--accent); }
+.draft__note { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+
+@media (max-width: 520px) {
+  .toolbar__actions { flex-wrap: nowrap; }
+  .toolbar__new { padding: 6px 11px; }
+  /* Zahl, Neues Rezept und Sortierung müssen in eine Zeile passen */
+  .toolbar__count { white-space: nowrap; }
+  .toolbar .select select { max-width: 128px; text-overflow: ellipsis; }
+}

@@ -12,9 +12,9 @@ zurückgebaut würden.
 
 ## 1. Was das ist
 
-Eine private Rezeptsammlung als statische Website. Kein Backend, keine
-Datenbank, keine Build-Tools, keine Abhängigkeiten außer der
-Python-Standardbibliothek. Quelle der Rezepte sind die Markdown-Dateien in
+Eine private Rezeptsammlung als statische Website. Keine Datenbank, keine
+Build-Tools, keine Abhängigkeiten außer der Python-Standardbibliothek. Einzige
+Serverfunktion ist das Einreichen neuer Rezepte (Abschnitt 6.2). Quelle der Rezepte sind die Markdown-Dateien in
 `recipes/` im Repository; daraus entstehen die Daten fürs Frontend.
 
 Es gab früher einen Notion-Sync (`sync_notion.py`), der die Dateien aus einer
@@ -52,8 +52,10 @@ lassen, committen, pushen.
 | `public/index.html` | Statisches Grundgerüst, alles Weitere rendert JavaScript |
 | `public/assets/app.js` | Filter, Suche, Rezeptansicht, Portionsrechner, Planungsmodus, Feedback |
 | `public/assets/style.css` | Design-Tokens und Layout |
-| `netlify.toml` | Build-Befehl, Cache-Header |
+| `netlify.toml` | Build-Befehl, Funktionsordner, Cache-Header |
+| `netlify/functions/rezept-einreichen.mjs` | Nimmt neue Rezepte an und legt sie als Pull Request an (6.2) |
 | `recipes/*.md` | Die Rezepte |
+| `entwuerfe/*.md` | Eingereichte Rezepte, nur in den Pull-Request-Branches, nie auf `main` |
 | `.env.example`, `sync.sh` | Lokaler Sync-Komfort |
 
 ## 4. Format der Rezeptdateien
@@ -268,6 +270,59 @@ Blobs) — dann ist es keine rein statische Seite mehr.
 `menuSuggestions`. Die früheren `state.plan`, `planbar` und `togglePlan` gibt
 es nicht mehr.
 
+### 6.2 Neue Rezepte aus der App
+
+Über „+ Rezept“ in der Leiste über der Liste (`#/neu`) kann jeder mit dem
+Zugangscode ein Rezept einreichen: Titel, Kategorie, Portionen, Minuten,
+Zutaten (eine pro Zeile), Schritte (einer pro Zeile), optional Tipps, Quelle,
+Anmerkung, Name.
+
+**Ablauf (Vorgabe von Marcel):**
+1. Die Funktion `/api/rezept-einreichen` legt einen Branch `entwurf/<id>-<zeit>`
+   an, darin `entwuerfe/<id>.md` **genau so wie eingereicht**, und öffnet einen
+   Pull Request „Neues Rezept: …“ mit Checkliste.
+2. Auf dem einreichenden Gerät steht das Rezept als **Entwurf** über der Liste
+   (`localStorage`, Schlüssel `entwuerfe.v1`; Zugangscode und Name werden
+   gemerkt). Kam die Einreichung nicht an, heißt es „Nicht gesendet“ und lässt
+   sich erneut senden. Entwürfe erscheinen nicht in Suche und Filtern.
+3. **Überarbeitet wird im Chat, nicht per API.** Branch auschecken, Entwurf in
+   das Rezeptformat bringen (Zutatentabelle, Mengen in den Schritten,
+   Gesundheitswert, Tags, Nährwerte), nach `recipes/` verschieben, Entwurf
+   löschen, `build.py` laufen lassen.
+4. **Für jedes neue Rezept einen neuen Gemini-Bildprompt erstellen** und
+   Marcel geben (Vorlage unten). Das Bild kommt als `public/bilder/<id>.jpg`.
+5. **Freigabe durch Marcel**, dann Merge. Sobald das Rezept mit derselben ID in
+   der Sammlung steht, verschwindet der Entwurf auf dem Gerät von selbst. Die ID
+   kommt aus `slugify()` – die Kopien in `app.js` und in der Funktion müssen zu
+   `build.py` passen. Wird der Titel bei der Überarbeitung geändert, bleibt der
+   Entwurf stehen, bis man ihn entfernt.
+
+`entwuerfe/` liest `build.py` nicht. Ein versehentlich unbearbeitet
+gemergter Entwurf taucht also nicht in der Sammlung auf.
+
+**Einrichtung (einmalig, nur im Netlify-Dashboard):**
+- `GITHUB_TOKEN`: Fine-grained Token, nur Repository `rezepteheft`,
+  Berechtigungen *Contents* und *Pull requests* jeweils Read and write.
+- `REZEPT_CODE`: Zugangscode für Einreichende.
+- Optional `GITHUB_REPO` (Standard `mabro257/rezepteheft`).
+Fehlt eine Variable, antwortet die Funktion mit 503, und die App speichert das
+Rezept als „Nicht gesendet“.
+
+**Bildprompt-Vorlage** (Stil der vorhandenen Bilder, Beispiel Gözleme):
+
+```
+Black and white pen-and-ink engraving illustration, vintage cookbook etching
+style with fine cross-hatching and stippling. A single round ceramic plate seen
+from a slight three-quarter angle, holding <Gericht mit sichtbaren Zutaten>.
+<Details: Anschnitt, Garnitur>. Three thin curling wisps of steam rising above.
+Pure white background, no shadow on the background, no table, no text, no
+color, isolated centered composition, square format 1:1.
+```
+
+Ausbaustufen, besprochen, aber noch nicht gebaut: Import per Link
+(Rezeptdaten von Webseiten, Pinterest über die verlinkte Quelle), Instagram nur
+über eingefügten Text, Teilen-Ziel auf Android.
+
 ### Entfernt (nicht versehentlich, sondern auf Wunsch)
 
 Einkaufsliste, Favoriten/Merken, „Überrasch mich", Aufwand/Schwierigkeitsgrad,
@@ -339,7 +394,9 @@ command = "python3 build.py"
 ## 10. Arbeitsanweisungen für Folgechats
 
 1. **Neues Rezept?** Skill `rezept-erstellen` verwenden. Er enthält Format,
-   Vorlage, Beispiel und Checkliste.
+   Vorlage, Beispiel und Checkliste. Eingereichte Rezepte aus der App nach 6.2
+   bearbeiten – immer mit neuem Gemini-Bildprompt, Merge erst nach Marcels
+   Freigabe.
 2. **Nach jeder Änderung an Rezepten oder Regeln `python3 build.py` laufen
    lassen** und die Hinweise abarbeiten.
 3. **Nach Regeländerungen an Tags die `Tags:`-Zeilen neu erzeugen.** Sonst

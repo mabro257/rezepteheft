@@ -3,6 +3,9 @@
   # Quelle der Rezepte sind die Markdown-Dateien in recipes/. build.py erzeugt
   # daraus die Daten, die Bring!-Seiten und die Cache-Hashes.
   command = "python3 build.py"
+  # Einzige Serverfunktion: neue Rezepte als Pull Request einreichen.
+  # Braucht GITHUB_TOKEN und REZEPT_CODE in den Umgebungsvariablen.
+  functions = "netlify/functions"
 
 [build.environment]
   PYTHON_VERSION = "3.11"

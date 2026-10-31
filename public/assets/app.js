@@ -72,6 +72,7 @@ const state = {
   sort: "title",
   view: "list",        // "list" oder "plan"
   open: null,          // aktuelles Rezept
+  panel: null,         // "form" oder "draft:<id>" – Formular bzw. Entwurf im Sheet
   servings: 0,
   checkedIng: new Set(),
   checkedStep: new Set(),
@@ -475,6 +476,7 @@ function render() {
   set("#timeOut", n => { n.textContent = state.maxTime >= 120 ? "beliebig" : `${state.maxTime} min`; });
   renderActiveFilters(list.length);
   renderEmpty(list.length);
+  renderDrafts();
 }
 
 
@@ -654,6 +656,328 @@ function renderMenu() {
     b.onclick = () => openRecipe(b.dataset.open));
 }
 
+/* =========================================================================
+   Neue Rezepte
+
+   Eingereicht wird über eine Netlify-Funktion, die das Rezept als Pull
+   Request anlegt. In die Sammlung kommt es erst nach Überarbeitung und
+   Freigabe – bis dahin steht es auf dem einreichenden Gerät als Entwurf,
+   so wie es eingetippt wurde. Steht das fertige Rezept (gleiche ID) in der
+   Sammlung, verschwindet der Entwurf von selbst.
+   ========================================================================= */
+const DRAFT_KEY = "entwuerfe.v1";
+const CODE_KEY = "rezeptcode.v1";
+const FROM_KEY = "rezeptvon.v1";
+const CATEGORIES = ["Hauptspeise", "Vorspeise", "Backen", "Snack", "Dessert", "Zutat"];
+let drafts = store.get(DRAFT_KEY, []);
+if (!Array.isArray(drafts)) drafts = [];
+drafts = drafts.filter(d => !RECIPES.some(r => r.id === d.id));
+const saveDrafts = () => store.set(DRAFT_KEY, drafts);
+saveDrafts();
+let formDraft = null;   // halb ausgefülltes Formular, überlebt ein versehentliches Zurück
+
+/* Wie slugify() in build.py – daran erkennt die App das freigegebene Rezept. */
+function slugify(text) {
+  let t = String(text).toLowerCase();
+  for (const [a, b] of [["ä", "ae"], ["ö", "oe"], ["ü", "ue"], ["ß", "ss"],
+                        ["ı", "i"], ["ş", "s"], ["ç", "c"], ["ğ", "g"]]) t = t.split(a).join(b);
+  t = t.normalize("NFKD").replace(/[̀-ͯ]/g, "");
+  return t.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+const splitLines = s => String(s || "").split(/\r?\n/)
+  .map(l => l.trim().replace(/^(?:[-*•]|\d+[.)])\s+/, "")).filter(Boolean);
+
+function draftCard(d) {
+  const c = el("article", "card card--draft");
+  c.style.setProperty("--accent", accent(d.category));
+  c.tabIndex = 0;
+  c.setAttribute("role", "button");
+  c.innerHTML = `
+    <div class="card__top">
+      <span class="card__cat">${esc(d.category)}</span>
+      <span class="card__draft">${d.status === "sent" ? "Entwurf" : "Nicht gesendet"}</span>
+    </div>
+    <h3 class="card__title">${esc(d.title)}</h3>
+    <p class="card__spec">
+      ${d.time ? `<span>${d.time} min</span><span class="card__sep">/</span>` : ""}
+      ${d.servings ? `<span>${d.servings} Port.</span><span class="card__sep">/</span>` : ""}
+      <span>${d.ingredients.length} Zutaten</span>
+    </p>`;
+  c.onclick = () => openDraft(d.id);
+  c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDraft(d.id); } };
+  return c;
+}
+
+/* Nur in der ungefilterten Liste – in Suchtreffern hätten Entwürfe ohne
+   aufbereitete Zutaten und Tags nichts verloren. */
+function renderDrafts() {
+  const host = $("#drafts");
+  if (!host) return;
+  const show = drafts.length && !state.q && !state.cat && !activeFilters().length;
+  host.hidden = !show;
+  if (!show) return;
+  host.innerHTML = `<h2 class="drafts__title">Eingereicht · wartet auf Freigabe</h2><div class="grid drafts__grid"></div>`;
+  drafts.forEach(d => host.querySelector(".drafts__grid").append(draftCard(d)));
+}
+
+function openPanel(panel, hash) {
+  saveProgress();
+  state.open = null;
+  state.panel = panel;
+  document.body.classList.add("locked");
+  if (location.hash !== hash) history.pushState({ panel }, "", hash);
+}
+
+function openForm() {
+  openPanel("form", "#/neu");
+  renderForm();
+}
+
+function openDraft(id) {
+  if (!drafts.some(d => d.id === id)) return;
+  openPanel("draft:" + id, "#/e/" + encodeURIComponent(id));
+  renderDraft(id);
+}
+
+function renderForm() {
+  const f = formDraft || {};
+  const sheet = $("#sheet");
+  sheet.hidden = false;
+  sheet.onclick = null;
+  sheet.classList.remove("cook");
+  sheet.style.setProperty("--accent", "var(--saffron)");
+  const v = k => esc(f[k] || "");
+  sheet.innerHTML = `
+    <div class="sheet__bar">
+      <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
+    </div>
+    <div class="sheet__wrap">
+      <form class="newrecipe" id="newRecipeForm" novalidate>
+        <header class="sheet__head">
+          <p class="sheet__eyebrow">Neues Rezept</p>
+          <h1 class="sheet__title" id="sheetTitle">Rezept einreichen</h1>
+          <p class="newrecipe__intro">Schreib es auf, wie es dir vorliegt. Marcel bringt es in Form und gibt es frei, bis dahin steht es hier als Entwurf.</p>
+        </header>
+        <label class="newrecipe__field">
+          <span>Titel</span>
+          <input type="text" name="title" maxlength="120" required value="${v("title")}" placeholder="z. B. Türkische Linsensuppe">
+          <small class="newrecipe__dupe" id="dupeHint" hidden></small>
+        </label>
+        <div class="newrecipe__row newrecipe__row--meta">
+          <label class="newrecipe__field">
+            <span>Kategorie</span>
+            <select name="category">${CATEGORIES.map(c =>
+              `<option${(f.category || "Hauptspeise") === c ? " selected" : ""}>${c}</option>`).join("")}</select>
+          </label>
+          <label class="newrecipe__field">
+            <span>Portionen</span>
+            <input type="number" name="servings" min="1" max="24" inputmode="numeric" value="${v("servings")}" placeholder="2">
+          </label>
+          <label class="newrecipe__field">
+            <span>Minuten</span>
+            <input type="number" name="time" min="1" max="1440" inputmode="numeric" value="${v("time")}" placeholder="30">
+          </label>
+        </div>
+        <label class="newrecipe__field">
+          <span>Zutaten <em>eine pro Zeile, Menge zuerst</em></span>
+          <textarea name="ingredients" rows="7" required placeholder="200 g rote Linsen&#10;1 Zwiebel&#10;2 EL Tomatenmark">${v("ingredients")}</textarea>
+        </label>
+        <label class="newrecipe__field">
+          <span>Zubereitung <em>ein Schritt pro Zeile</em></span>
+          <textarea name="steps" rows="7" required placeholder="Zwiebel würfeln und in Öl glasig dünsten.&#10;Linsen und Brühe dazugeben, 20 Minuten köcheln.">${v("steps")}</textarea>
+        </label>
+        <label class="newrecipe__field">
+          <span>Tipps <em>optional</em></span>
+          <textarea name="tips" rows="2">${v("tips")}</textarea>
+        </label>
+        <label class="newrecipe__field">
+          <span>Quelle <em>optional, Name oder Link</em></span>
+          <input type="text" name="source" maxlength="300" value="${v("source")}" placeholder="z. B. Oma, Kochbuch oder https://…">
+        </label>
+        <label class="newrecipe__field">
+          <span>Anmerkung für Marcel <em>optional</em></span>
+          <textarea name="note" rows="2" maxlength="1000">${v("note")}</textarea>
+        </label>
+        <div class="newrecipe__row">
+          <label class="newrecipe__field">
+            <span>Von</span>
+            <input type="text" name="from" maxlength="60" autocomplete="name" value="${esc(f.from ?? store.get(FROM_KEY, ""))}">
+          </label>
+          <label class="newrecipe__field">
+            <span>Zugangscode</span>
+            <input type="password" name="code" required autocomplete="off" value="${esc(f.code ?? store.get(CODE_KEY, ""))}">
+          </label>
+        </div>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback__trap">
+        <div class="newrecipe__actions">
+          <button type="submit" class="ghost-btn newrecipe__send">Einreichen</button>
+          <span class="newrecipe__status" id="newRecipeStatus" role="status"></span>
+        </div>
+      </form>
+    </div>`;
+
+  const form = sheet.querySelector("#newRecipeForm");
+  const status = sheet.querySelector("#newRecipeStatus");
+  const read = () => Object.fromEntries(new FormData(form));
+  const dupe = () => {
+    const id = slugify(form.elements.title.value);
+    const hit = id && (RECIPES.find(r => r.id === id) || drafts.find(d => d.id === id));
+    set("#dupeHint", n => { n.hidden = !hit; n.textContent = hit ? `„${hit.title}“ gibt es schon.` : ""; });
+  };
+  form.oninput = () => { formDraft = read(); dupe(); };
+  dupe();
+  sheet.querySelector('[data-act="close"]').onclick = () => closeRecipe();
+
+  form.onsubmit = async e => {
+    e.preventDefault();
+    const data = read();
+    const missing = !data.title.trim() ? "title" : !splitLines(data.ingredients).length ? "ingredients"
+      : !splitLines(data.steps).length ? "steps" : !data.code.trim() ? "code" : null;
+    if (missing) {
+      status.textContent = { title: "Bitte einen Titel eintragen.", ingredients: "Bitte mindestens eine Zutat eintragen.",
+        steps: "Bitte mindestens einen Schritt eintragen.", code: "Bitte den Zugangscode eintragen." }[missing];
+      form.elements[missing].focus();
+      return;
+    }
+    const id = slugify(data.title);
+    if (RECIPES.some(r => r.id === id) || drafts.some(d => d.id === id)) {
+      status.textContent = "Ein Rezept mit diesem Titel gibt es schon. Bitte anders benennen.";
+      form.elements.title.focus();
+      return;
+    }
+    const button = form.querySelector('[type="submit"]');
+    button.disabled = true;
+    status.textContent = "Wird eingereicht …";
+    const draft = {
+      id, title: data.title.trim(), category: data.category,
+      servings: parseInt(data.servings, 10) || 0, time: parseInt(data.time, 10) || 0,
+      ingredients: splitLines(data.ingredients), steps: splitLines(data.steps), tips: splitLines(data.tips),
+      source: data.source.trim(), note: data.note.trim(), from: data.from.trim(),
+      submittedAt: Date.now(), status: "failed",
+    };
+    store.set(FROM_KEY, draft.from);
+    const result = await sendDraft(draft, data.code.trim(), data.website);
+    button.disabled = false;
+    if (result === "code" || result === "invalid") {
+      status.textContent = result === "code" ? "Der Zugangscode stimmt nicht."
+        : "Das Rezept ist unvollständig. Bitte Titel, Zutaten und Schritte prüfen.";
+      return;
+    }
+    store.set(CODE_KEY, data.code.trim());
+    drafts.unshift(draft);
+    saveDrafts();
+    formDraft = null;
+    closeRecipe();
+    toast(result === "sent" ? `„${draft.title}“ eingereicht` : "Nicht gesendet – als Entwurf gespeichert");
+  };
+}
+
+/* Schickt einen Entwurf ab und setzt seinen Status. Rückgabe: "sent",
+   "code" (Code falsch), "invalid" (Angaben fehlen) oder "failed" (kein Netz,
+   Server nicht erreichbar – der Entwurf bleibt und kann erneut gesendet werden). */
+async function sendDraft(draft, code, website = "") {
+  try {
+    const res = await fetch("/api/rezept-einreichen", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code, website, title: draft.title, category: draft.category,
+        servings: draft.servings, time: draft.time, source: draft.source, from: draft.from, note: draft.note,
+        ingredients: draft.ingredients.join("\n"), steps: draft.steps.join("\n"), tips: draft.tips.join("\n"),
+      }),
+    });
+    if (res.status === 403) return "code";
+    if (res.status === 422) return "invalid";
+    if (!res.ok) throw new Error(res.status);
+    draft.status = "sent";
+    return "sent";
+  } catch {
+    draft.status = "failed";
+    return "failed";
+  }
+}
+
+function renderDraft(id) {
+  const d = drafts.find(x => x.id === id);
+  if (!d) return;
+  const sheet = $("#sheet");
+  sheet.hidden = false;
+  sheet.classList.remove("cook");
+  sheet.style.setProperty("--accent", accent(d.category));
+  const sent = d.status === "sent";
+  const when = new Date(d.submittedAt).toLocaleDateString("de-DE", { day: "numeric", month: "long" });
+  sheet.innerHTML = `
+    <div class="sheet__bar">
+      <button class="icon-btn nowrap" data-act="close">←<span class="lbl"> Zurück</span></button>
+      <div class="sheet__bar-actions">
+        ${sent ? "" : `<button class="ghost-btn nowrap" data-act="resend">Erneut senden</button>`}
+        <button class="ghost-btn nowrap" data-act="drop">Entfernen</button>
+      </div>
+    </div>
+    <div class="sheet__wrap">
+      <header class="sheet__head">
+        <p class="sheet__eyebrow">${esc(d.category)} · ${sent ? `Entwurf vom ${when}, wartet auf Freigabe` : "Entwurf, noch nicht gesendet"}</p>
+        <h1 class="sheet__title" id="sheetTitle">${esc(d.title)}</h1>
+        <div class="spec">
+          ${d.time ? `<div class="spec__cell"><span class="spec__k">Zeit</span><span class="spec__v">${d.time} min</span></div>` : ""}
+          ${d.servings ? `<div class="spec__cell"><span class="spec__k">Portionen</span><span class="spec__v">${d.servings}</span></div>` : ""}
+          <div class="spec__cell"><span class="spec__k">Zutaten</span><span class="spec__v">${d.ingredients.length}</span></div>
+          ${d.source ? `<div class="spec__cell"><span class="spec__k">Quelle</span><span class="spec__v">${esc(d.source)}</span></div>` : ""}
+        </div>
+        <p class="draft__status" id="draftStatus" role="status"></p>
+      </header>
+      <div class="cols">
+        <div class="panel">
+          <div class="block">
+            <h2 class="block__title">Zutaten</h2>
+            <ul class="draft__list">${d.ingredients.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+          </div>
+        </div>
+        <div>
+          <div class="block">
+            <h2 class="block__title">Zubereitung</h2>
+            <ol class="draft__list draft__list--steps">${d.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+          </div>
+          ${d.tips.length ? `<div class="block"><h2 class="block__title">Tipps</h2>
+            <div class="tips">${d.tips.map(t => `<p class="tip"><span>${esc(t)}</span></p>`).join("")}</div></div>` : ""}
+          ${d.note ? `<div class="block"><h2 class="block__title">Anmerkung</h2><p class="draft__note">${esc(d.note)}</p></div>` : ""}
+        </div>
+      </div>
+    </div>`;
+
+  sheet.onclick = null;
+  sheet.querySelectorAll("[data-act]").forEach(b => b.onclick = async () => {
+    const a = b.dataset.act;
+    if (a === "close") closeRecipe();
+    if (a === "drop") {
+      const index = drafts.indexOf(d);
+      drafts.splice(index, 1);
+      saveDrafts();
+      closeRecipe();
+      toast(`„${d.title}“ entfernt`, "Rückgängig", () => {
+        drafts.splice(index, 0, d);
+        saveDrafts();
+        render();
+      });
+    }
+    if (a === "resend") {
+      const code = store.get(CODE_KEY, "");
+      const status = sheet.querySelector("#draftStatus");
+      b.disabled = true;
+      status.textContent = "Wird eingereicht …";
+      const result = code ? await sendDraft(d, code) : "code";
+      saveDrafts();
+      if (result === "sent") { renderDraft(id); toast(`„${d.title}“ eingereicht`); return; }
+      b.disabled = false;
+      status.textContent = result === "code" ? "Der gespeicherte Zugangscode stimmt nicht mehr. Bitte den Entwurf entfernen und neu einreichen."
+        : result === "invalid" ? "Das Rezept ist unvollständig. Bitte entfernen und neu einreichen."
+        : "Hat nicht geklappt – bitte später nochmal versuchen.";
+    }
+  });
+  sheet.scrollTop = 0;
+}
+
 /* Bereich wechseln. Eigener Hash, damit der Zurück-Knopf des Handys aus dem
    Plan zurück in die Liste führt statt die App zu verlassen. */
 function setView(view, skipHistory) {
@@ -700,6 +1024,7 @@ function openRecipe(id) {
   saveProgress();
   const saved = progress.get(id);
   state.open = id;
+  state.panel = null;
   state.servings = saved ? saved.servings : (r.servings || 1);
   state.checkedIng = saved ? new Set(saved.checkedIng) : new Set();
   state.checkedStep = saved ? new Set(saved.checkedStep) : new Set();
@@ -713,6 +1038,7 @@ function openRecipe(id) {
 function closeRecipe(pop) {
   saveProgress();
   state.open = null;
+  state.panel = null;
   $("#sheet").hidden = true;
   $("#sheet").innerHTML = "";
   document.body.classList.remove("locked");
@@ -1195,6 +1521,7 @@ set("#searchClear", n => n.addEventListener("click", () => {
   input.focus();
 }));
 $("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+set("#newRecipe", n => n.addEventListener("click", openForm));
 $("#timeRange").addEventListener("input", e => { state.maxTime = +e.target.value; render(); });
 set("#viewToggle", n => n.addEventListener("click", () =>
   setView(state.view === "plan" ? "list" : "plan")));
@@ -1238,13 +1565,22 @@ document.addEventListener("visibilitychange", () => {
 
 document.addEventListener("keydown", e => {
   if (e.key === "/" && document.activeElement !== $("#search")) { e.preventDefault(); $("#search").focus(); }
-  if (e.key === "Escape" && state.open) closeRecipe();
+  if (e.key === "Escape" && (state.open || state.panel)) closeRecipe();
 });
 
-window.addEventListener("popstate", () => {
+/* Adresse → Ansicht: Rezept, Entwurf oder das Formular für ein neues Rezept. */
+function openFromHash() {
   const m = location.hash.match(/^#\/r\/(.+)$/);
-  if (m) { openRecipe(decodeURIComponent(m[1])); return; }
-  if (state.open) closeRecipe(true);
+  if (m) { openRecipe(decodeURIComponent(m[1])); return true; }
+  const e = location.hash.match(/^#\/e\/(.+)$/);
+  if (e && drafts.some(d => d.id === decodeURIComponent(e[1]))) { openDraft(decodeURIComponent(e[1])); return true; }
+  if (location.hash === "#/neu") { openForm(); return true; }
+  return false;
+}
+
+window.addEventListener("popstate", () => {
+  if (openFromHash()) return;
+  if (state.open || state.panel) closeRecipe(true);
   setView(location.hash === "#/plan" ? "plan" : "list", true);
 });
 
@@ -1270,7 +1606,6 @@ set("#recipeNames", n => {
 render();
 renderMenu();
 setView(location.hash === "#/plan" ? "plan" : "list", true);
-const initial = location.hash.match(/^#\/r\/(.+)$/);
-if (initial) openRecipe(decodeURIComponent(initial[1]));
+openFromHash();
 
 })();
