@@ -656,6 +656,7 @@ body.locked { overflow: hidden; }
 }
 .feedback__intro { margin: 0; font-size: 14px; color: var(--ink-2); }
 .feedback__field { display: grid; gap: 6px; }
+.feedback__field[hidden] { display: none; }
 .feedback__field > span {
   font-family: var(--mono); font-size: 10px; text-transform: uppercase;
   letter-spacing: .12em; color: var(--ink-3);

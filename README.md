@@ -164,13 +164,11 @@ Alle 49 Rezepte haben Nährwerte. Wo sie in der Quelle fehlten, wurden sie aus d
 
 ## Änderungsvorschläge von Nutzern
 
-Am Ende jedes Rezepts steht "Änderung vorschlagen". Die Einsendung geht über **Netlify Forms** — das Formular `rezept-feedback` liegt statisch in `index.html`, damit Netlify es beim Deploy erkennt; die sichtbare Eingabe in der Rezeptansicht wird per `fetch` dorthin geschickt. Rezeptname und ID werden automatisch mitgesendet, sodass jede Meldung eindeutig zuzuordnen ist.
+Am Ende jedes Rezepts steht "Änderung vorschlagen". Die Einsendung geht an die Netlify-Funktion `/api/rezept-einreichen` (`action: "feedback"`) und landet als Markdown-Datei im Repository – im Branch **`vorschlaege`**, Ordner `vorschlaege/`, eine Datei je Vorschlag (`2026-10-31_151802123_<rezept-id>.md` mit Rezept, Art, Absender, Zeitpunkt, Status und Text). Bewusst nicht auf `main`: Jeder Vorschlag würde sonst einen Deploy auslösen.
 
-Einsendungen stehen im Netlify-Dashboard unter **Forms → rezept-feedback**. Damit sie nicht liegen bleiben, dort unter *Form notifications* eine E-Mail-Benachrichtigung einrichten (oder Slack).
+Durchgehen: `git fetch origin vorschlaege` und die Dateien lesen (im Chat gemeinsam). Erledigte Vorschläge im Branch auf `Status: erledigt` setzen oder löschen; die eigentliche Rezeptänderung kommt wie immer über `main`.
 
-Wichtig: Formulare funktionieren nur auf der deployten Seite, nicht lokal — Netlify nimmt die Einsendung an, nicht der lokale Server. Ein Feld namens `bot-field` dient als Spam-Falle: es ist unsichtbar, und wenn ein Bot es ausfüllt, verwirft Netlify die Einsendung.
-
-Das kostenlose Kontingent liegt bei 100 Einsendungen pro Monat.
+Absenden braucht den Zugangscode (wie beim Einreichen neuer Rezepte). Wer ihn schon eingegeben hat, sieht das Feld nicht mehr. Funktioniert nur auf der deployten Seite, nicht lokal. Früher lief das über Netlify Forms (`rezept-feedback`); ältere Einsendungen liegen noch im Netlify-Dashboard unter *Forms*.
 
 ## Illustrationen
 

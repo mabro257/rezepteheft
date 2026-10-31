@@ -1451,9 +1451,13 @@ function renderSheet() {
               </label>
               <label class="feedback__field">
                 <span>Von (optional)</span>
-                <input type="text" name="von" autocomplete="name">
+                <input type="text" name="von" autocomplete="name" value="${esc(store.get(FROM_KEY, ""))}">
               </label>
-              <input type="text" name="bot-field" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback__trap">
+              <label class="feedback__field" id="feedbackCode" ${store.get(CODE_KEY, "") ? "hidden" : ""}>
+                <span>Zugangscode</span>
+                <input type="password" name="code" autocomplete="off" autocapitalize="off">
+              </label>
+              <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback__trap">
               <div class="feedback__actions">
                 <button type="submit" class="ghost-btn">Abschicken</button>
                 <span class="feedback__status" id="feedbackStatus" role="status"></span>
@@ -1464,24 +1468,42 @@ function renderSheet() {
       </div>
     </div>`;
 
+  /* Vorschläge landen als Datei im Repository (Branch "vorschlaege") und
+     werden im Chat gemeinsam durchgegangen – nicht mehr über Netlify Forms.
+     Wer schon einmal ein Rezept eingereicht hat, hat den Zugangscode
+     gemerkt; sonst steht das Feld dafür im Formular. */
   const form = sheet.querySelector("#feedbackForm");
   if (form) {
     form.onsubmit = async e => {
       e.preventDefault();
       const status = sheet.querySelector("#feedbackStatus");
-      const data = new FormData(form);
-      data.append("form-name", "rezept-feedback");
-      data.append("rezept", r.title);
-      data.append("rezept-id", r.id);
+      const data = Object.fromEntries(new FormData(form));
+      const code = store.get(CODE_KEY, "") || (data.code || "").trim();
+      if (!data.nachricht.trim()) { status.textContent = "Bitte einen Vorschlag eintragen."; return; }
+      if (!code) {
+        set("#feedbackCode", n => { n.hidden = false; });
+        status.textContent = "Bitte den Zugangscode eintragen.";
+        form.elements.code.focus();
+        return;
+      }
       status.textContent = "Wird gesendet …";
       try {
-        const res = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(data).toString(),
+        const res = await api({
+          action: "feedback", code, website: data.website,
+          recipe: r.title, recipeId: r.id, kind: data.art, message: data.nachricht, from: data.von,
         });
-        if (!res.ok) throw new Error(res.status);
-        form.reset();
+        if (res.status === 403) {
+          store.set(CODE_KEY, "");
+          set("#feedbackCode", n => { n.hidden = false; });
+          status.textContent = "Der Zugangscode stimmt nicht.";
+          form.elements.code.focus();
+          return;
+        }
+        if (res.status !== 201 && res.status !== 200) throw new Error(res.status);
+        store.set(CODE_KEY, code);
+        store.set(FROM_KEY, (data.von || "").trim());
+        form.elements.nachricht.value = "";
+        set("#feedbackCode", n => { n.hidden = true; });
         status.textContent = "Danke, ist angekommen.";
       } catch {
         status.textContent = "Hat nicht geklappt – bitte später nochmal versuchen.";

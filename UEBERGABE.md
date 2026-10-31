@@ -230,7 +230,7 @@ einem `state`-Objekt, alles rendert aus `RECIPES`.
   Haken, Portionen und Kochmodus bleiben pro Rezept für die Sitzung erhalten
   (`progress`), wer zwischendurch ein anderes Rezept ansieht, verliert nichts.
 - **Bring!-Import** je Rezept
-- **Änderungsvorschlag** je Rezept über Netlify Forms
+- **Änderungsvorschlag** je Rezept, landet als Datei im Repository (6.3)
 - **Essensplan** als eigener Bereich (`#/plan`), siehe 6.1
 
 ### 6.1 Essensplan
@@ -363,6 +363,23 @@ Hosts) und das nur mit gültigem Code, damit sie kein offener Abrufdienst wird.
 Noch nicht gebaut: Teilen-Ziel auf Android (Link direkt aus Instagram oder
 Chrome in die App teilen).
 
+### 6.3 Änderungsvorschläge
+
+„Änderung vorschlagen“ am Ende jedes Rezepts schickt Art, Text und optional
+den Namen an `/api/rezept-einreichen` mit `action: "feedback"`. Die Funktion
+legt je Vorschlag eine Datei `vorschlaege/<Zeitstempel>_<rezept-id>.md` im
+Branch `vorschlaege` an (beim ersten Mal von `main` abgezweigt). **Nicht auf
+`main`**, damit nicht jeder Vorschlag einen Deploy auslöst.
+
+Wunsch von Marcel: Die Vorschläge werden **im Chat gemeinsam durchgegangen**.
+Ablauf: `git fetch origin vorschlaege`, Dateien lesen, Änderung am Rezept auf
+`main` umsetzen (Freigabe wie immer), danach im Branch `vorschlaege` den
+Status auf `erledigt` setzen oder die Datei löschen.
+
+Braucht den Zugangscode wie das Einreichen (gemerkt im Gerät, sonst Feld im
+Formular). Bis Oktober 2026 lief das über Netlify Forms; das versteckte
+Formular in `index.html` ist entfernt.
+
 ### Entfernt (nicht versehentlich, sondern auf Wunsch)
 
 Einkaufsliste, Favoriten/Merken, „Überrasch mich", Aufwand/Schwierigkeitsgrad,
@@ -419,8 +436,8 @@ command = "python3 build.py"
 
   case-insensitiv gelesen). Datenbank-ID steckt als Standardwert im Skript.
 - Assets ein Jahr cachen (Hash-URLs), HTML nie.
-- Feedback-Einsendungen im Netlify-Dashboard unter *Forms → rezept-feedback*;
-  dort E-Mail-Benachrichtigung einrichten, sonst bleiben sie liegen.
+- Änderungsvorschläge liegen im Branch `vorschlaege` (siehe 6.3), nicht mehr
+  in Netlify Forms. Ältere Einsendungen stehen noch im Netlify-Dashboard.
 
 ## 9. Offene Punkte
 

@@ -1,14 +1,17 @@
 /* =========================================================================
    Neues Rezept einreichen
 
-   Eine Funktion, drei Aufgaben (Feld "action"), alle nur mit Zugangscode:
-     check   Code prüfen – die App fragt ihn ab, bevor jemand etwas eintippt
-     import  Rezept von einer Webseite holen (schema.org/Recipe) und als
-             Vorschlag fürs Formular zurückgeben; Pinterest über den Link
-             des Pins zur Originalseite
-     (leer)  Einreichen: legt das Rezept als Pull Request im Repository an,
-             auf Wunsch mit bis zu 4 Fotos (JPEG, in der App verkleinert),
-             die im Chat abgetippt werden
+   Eine Funktion, vier Aufgaben (Feld "action"), alle nur mit Zugangscode:
+     check     Code prüfen – die App fragt ihn ab, bevor jemand etwas eintippt
+     import    Rezept von einer Webseite holen (schema.org/Recipe) und als
+               Vorschlag fürs Formular zurückgeben; Pinterest über den Link
+               des Pins zur Originalseite
+     feedback  "Änderung vorschlagen" aus der Rezeptansicht: eine Datei je
+               Vorschlag unter vorschlaege/ im Branch "vorschlaege" (nicht
+               main – kein Deploy je Vorschlag), im Chat gemeinsam durchgehen
+     (leer)    Einreichen: legt das Rezept als Pull Request im Repository an,
+               auf Wunsch mit bis zu 4 Fotos (JPEG, in der App verkleinert),
+               die im Chat abgetippt werden
 
    Eingereicht wird als Datei unter entwuerfe/, nicht unter recipes/. build.py
    liest nur recipes/, ein Entwurf erscheint also nie ungeprüft in der Sammlung,
@@ -258,6 +261,65 @@ function draftMarkdown(r, today) {
   return out.filter(l => l !== null).join("\n") + "\n";
 }
 
+/* ---------- Änderungsvorschläge ---------- */
+
+const FEEDBACK_BRANCH = "vorschlaege";
+const FEEDBACK_KINDS = ["Menge stimmt nicht", "Schritt ist unklar", "Zutat fehlt", "Tipp oder Idee", "Sonstiges"];
+
+async function feedback(input, token) {
+  const recipeId = String(input.recipeId ?? "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 100);
+  const r = {
+    recipeId,
+    title: clean(input.recipe, 120),
+    kind: FEEDBACK_KINDS.includes(input.kind) ? input.kind : "Sonstiges",
+    from: clean(input.from, 60),
+    message: String(input.message ?? "").replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, " ").trim().slice(0, 4000),
+  };
+  if (!recipeId || r.message.length < 3) return json(422, { ok: false, error: "content" });
+
+  const now = new Date();
+  // Lesbar sortierbar: 2026-10-31_151802123_<rezept>.md (mit Millisekunden,
+  // damit zwei Vorschläge zum selben Rezept nicht denselben Namen bekommen)
+  const stamp = now.toISOString().slice(0, 23).replace("T", "_").replace(/[:.]/g, "");
+  const body = [
+    `# Vorschlag zu: ${r.title || recipeId}`,
+    "",
+    `Rezept-ID: ${recipeId}`,
+    `Art: ${r.kind}`,
+    `Von: ${r.from || "–"}`,
+    `Eingegangen: ${now.toISOString().slice(0, 16).replace("T", " ")} UTC`,
+    "Status: offen",
+    "",
+    r.message,
+    "",
+  ].join("\n");
+
+  try {
+    // Den Sammel-Branch beim ersten Vorschlag von main abzweigen.
+    try { await gh(`/git/ref/heads/${FEEDBACK_BRANCH}`, token); }
+    catch (err) {
+      if (!/: 404\b/.test(err.message)) throw err;
+      const main = await gh("/git/ref/heads/main", token);
+      await gh("/git/refs", token, {
+        method: "POST",
+        body: JSON.stringify({ ref: `refs/heads/${FEEDBACK_BRANCH}`, sha: main.object.sha }),
+      });
+    }
+    await gh(`/contents/vorschlaege/${stamp}_${recipeId}.md`, token, {
+      method: "PUT",
+      body: JSON.stringify({
+        message: `Vorschlag zu ${r.title || recipeId}: ${r.kind}`,
+        content: Buffer.from(body, "utf8").toString("base64"),
+        branch: FEEDBACK_BRANCH,
+      }),
+    });
+    return json(201, { ok: true });
+  } catch (err) {
+    console.error(err.message);
+    return json(502, { ok: false, error: "github" });
+  }
+}
+
 const photoName = (id, i) => `${id}-foto-${i + 1}.jpg`;
 
 async function submit(input, token) {
@@ -357,5 +419,6 @@ export default async (req) => {
 
   if (input.action === "check") return json(200, { ok: true });
   if (input.action === "import") return json(200, await importRecipe(input.url));
+  if (input.action === "feedback") return feedback(input, token);
   return submit(input, token);
 };
