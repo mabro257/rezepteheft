@@ -2031,7 +2031,7 @@ window.RECIPES = [
    "Blumenkohl",
    "Ingwer"
   ],
-  "image": "",
+  "image": "bilder/blumenkohl-curry.jpg?v=cdcbb5ae",
   "tags": [
    "Asiatisch",
    "Meal Prep",
