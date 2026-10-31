@@ -5998,6 +5998,591 @@
   ]
  },
  {
+  "id": "gemueselasagne",
+  "title": "Gemüselasagne",
+  "category": "Hauptspeise",
+  "health": "Ausgewogen",
+  "healthIcon": "⚖️",
+  "servings": 4,
+  "time": 55,
+  "source": "Gaumenfreundin (gaumenfreundin.de)",
+  "kcal": 690,
+  "ingredientGroups": [
+   {
+    "name": "Gemüsesauce",
+    "items": [
+     {
+      "amount": {
+       "raw": "1",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Zwiebel"
+     },
+     {
+      "amount": {
+       "raw": "2 Zehen",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "Zehen",
+       "note": ""
+      },
+      "name": "Knoblauch"
+     },
+     {
+      "amount": {
+       "raw": "1",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Rote Paprika (ca. 200 g)"
+     },
+     {
+      "amount": {
+       "raw": "1",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Zucchini (ca. 250 g)"
+     },
+     {
+      "amount": {
+       "raw": "1",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Möhre (ca. 150 g)"
+     },
+     {
+      "amount": {
+       "raw": "1 EL",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Olivenöl"
+     },
+     {
+      "amount": {
+       "raw": "2 EL",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Tomatenmark"
+     },
+     {
+      "amount": {
+       "raw": "800 g",
+       "prefix": "",
+       "qty": 800.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "geschälte Tomaten (Dose)"
+     },
+     {
+      "amount": {
+       "raw": "2 EL",
+       "prefix": "",
+       "qty": 2.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Petersilie, gehackt (frisch oder TK)"
+     },
+     {
+      "amount": {
+       "raw": "1 EL",
+       "prefix": "",
+       "qty": 1.0,
+       "qtyTo": null,
+       "unit": "EL",
+       "note": ""
+      },
+      "name": "Paprikapulver edelsüß"
+     },
+     {
+      "amount": {
+       "raw": "etwas",
+       "prefix": "",
+       "qty": null,
+       "qtyTo": null,
+       "unit": "etwas",
+       "note": ""
+      },
+      "name": "Salz und Pfeffer"
+     }
+    ]
+   },
+   {
+    "name": "Béchamelsauce",
+    "items": [
+     {
+      "amount": {
+       "raw": "50 g",
+       "prefix": "",
+       "qty": 50.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "Butter"
+     },
+     {
+      "amount": {
+       "raw": "40 g",
+       "prefix": "",
+       "qty": 40.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "Mehl"
+     },
+     {
+      "amount": {
+       "raw": "600 ml",
+       "prefix": "",
+       "qty": 600.0,
+       "qtyTo": null,
+       "unit": "ml",
+       "note": ""
+      },
+      "name": "Milch"
+     }
+    ]
+   },
+   {
+    "name": "Zum Schichten",
+    "items": [
+     {
+      "amount": {
+       "raw": "12",
+       "prefix": "",
+       "qty": 12.0,
+       "qtyTo": null,
+       "unit": "",
+       "note": ""
+      },
+      "name": "Lasagneplatten"
+     },
+     {
+      "amount": {
+       "raw": "150 g",
+       "prefix": "",
+       "qty": 150.0,
+       "qtyTo": null,
+       "unit": "g",
+       "note": ""
+      },
+      "name": "Reibekäse (z. B. Mozzarella)"
+     }
+    ]
+   }
+  ],
+  "ingredientNotes": [
+   "💡 Für eine Auflaufform von etwa 20 × 30 cm. Das Gemüse wird fein püriert – so steckt es unsichtbar in der Sauce."
+  ],
+  "ingredientCount": 16,
+  "stepGroups": [
+   {
+    "name": "",
+    "items": [
+     {
+      "label": "Gemüse vorbereiten",
+      "text": "Zwiebel und Knoblauch fein hacken. Paprika, Zucchini und Möhre grob zerkleinern und im Mixer fein pürieren.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Zwiebel"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "Zehen",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Knoblauch"
+       },
+       {
+        "type": "text",
+        "value": " fein hacken. "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Paprika"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Zucchini"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Möhre"
+       },
+       {
+        "type": "text",
+        "value": " grob zerkleinern und im Mixer fein pürieren."
+       }
+      ]
+     },
+     {
+      "label": "Gemüsesauce",
+      "text": "Olivenöl in einem großen Topf erhitzen, Zwiebel und Knoblauch darin andünsten. Das pürierte Gemüse und das Tomatenmark zugeben und kurz anrösten. Geschälte Tomaten unterheben, mit Petersilie, Paprikapulver, Salz und Pfeffer würzen und alles 5 Minuten bei mittlerer Hitze köcheln lassen.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Olivenöl"
+       },
+       {
+        "type": "text",
+        "value": " in einem großen Topf erhitzen, "
+       },
+       {
+        "type": "item",
+        "value": "Zwiebel"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Knoblauch"
+       },
+       {
+        "type": "text",
+        "value": " darin andünsten. Das pürierte Gemüse und das "
+       },
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Tomatenmark"
+       },
+       {
+        "type": "text",
+        "value": " zugeben und kurz anrösten. "
+       },
+       {
+        "type": "amount",
+        "qty": 800.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Geschälte Tomaten"
+       },
+       {
+        "type": "text",
+        "value": " unterheben, mit "
+       },
+       {
+        "type": "amount",
+        "qty": 2.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Petersilie"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "amount",
+        "qty": 1.0,
+        "qtyTo": null,
+        "unit": "EL",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Paprikapulver"
+       },
+       {
+        "type": "text",
+        "value": ", "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " würzen und alles "
+       },
+       {
+        "type": "time",
+        "seconds": 300,
+        "value": "5 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " bei mittlerer Hitze köcheln lassen."
+       }
+      ]
+     },
+     {
+      "label": "Béchamelsauce",
+      "text": "Butter in einem Topf zerlassen, das Mehl zügig mit dem Schneebesen einrühren. Nach und nach die Milch zugießen und unter ständigem Rühren aufkochen. Unter Rühren köcheln lassen, bis eine cremige Sauce entsteht, dann mit Salz und Pfeffer würzen.",
+      "parts": [
+       {
+        "type": "amount",
+        "qty": 50.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Butter"
+       },
+       {
+        "type": "text",
+        "value": " in einem Topf zerlassen, das "
+       },
+       {
+        "type": "amount",
+        "qty": 40.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Mehl"
+       },
+       {
+        "type": "text",
+        "value": " zügig mit dem Schneebesen einrühren. Nach und nach die "
+       },
+       {
+        "type": "amount",
+        "qty": 600.0,
+        "qtyTo": null,
+        "unit": "ml",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Milch"
+       },
+       {
+        "type": "text",
+        "value": " zugießen und unter ständigem Rühren aufkochen. Unter Rühren köcheln lassen, bis eine cremige Sauce entsteht, dann mit "
+       },
+       {
+        "type": "item",
+        "value": "Salz"
+       },
+       {
+        "type": "text",
+        "value": " und "
+       },
+       {
+        "type": "item",
+        "value": "Pfeffer"
+       },
+       {
+        "type": "text",
+        "value": " würzen."
+       }
+      ]
+     },
+     {
+      "label": "Ofen vorheizen",
+      "text": "Backofen auf 200 °C Ober- und Unterhitze vorheizen.",
+      "parts": [
+       {
+        "type": "text",
+        "value": "Backofen auf 200 °C Ober- und Unterhitze vorheizen."
+       }
+      ]
+     },
+     {
+      "label": "Schichten und backen",
+      "text": "Den Boden der Form mit etwas Gemüsesauce bedecken. Dann abwechselnd Lasagneplatten, Gemüsesauce und Béchamelsauce schichten und mit Sauce abschließen. Mit Reibekäse bestreuen und 30 Minuten goldbraun backen.",
+      "parts": [
+       {
+        "type": "text",
+        "value": "Den Boden der Form mit etwas Gemüsesauce bedecken. Dann abwechselnd "
+       },
+       {
+        "type": "amount",
+        "qty": 12.0,
+        "qtyTo": null,
+        "unit": "",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Lasagneplatten"
+       },
+       {
+        "type": "text",
+        "value": ", Gemüsesauce und Béchamelsauce schichten und mit Sauce abschließen. Mit "
+       },
+       {
+        "type": "amount",
+        "qty": 150.0,
+        "qtyTo": null,
+        "unit": "g",
+        "added": true
+       },
+       {
+        "type": "item",
+        "value": "Reibekäse"
+       },
+       {
+        "type": "text",
+        "value": " bestreuen und "
+       },
+       {
+        "type": "time",
+        "seconds": 1800,
+        "value": "30 Minuten"
+       },
+       {
+        "type": "text",
+        "value": " goldbraun backen."
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "tips": [
+   "Vor dem Anschneiden 5–10 Minuten ruhen lassen, dann lassen sich die Stücke sauber herausheben.",
+   "Das Gemüse lässt sich tauschen: Aubergine, Pilze oder Kürbis passen ebenso, insgesamt etwa 600 g.",
+   "Die Lasagne lässt sich am Vortag schichten und abgedeckt im Kühlschrank aufbewahren; dann etwa 10 Minuten länger backen."
+  ],
+  "nutrition": [
+   {
+    "label": "Kalorien",
+    "value": "ca. 690 kcal"
+   },
+   {
+    "label": "Kohlenhydrate",
+    "value": "77g"
+   },
+   {
+    "label": "Protein",
+    "value": "26g"
+   },
+   {
+    "label": "Fett",
+    "value": "27g"
+   },
+   {
+    "label": "Ballaststoffe",
+    "value": "7g"
+   }
+  ],
+  "nutritionNote": "pro Portion, geschätzt",
+  "file": "Gemüselasagne.md",
+  "fresh": [
+   "Milch",
+   "Paprika",
+   "Zucchini"
+  ],
+  "image": "",
+  "tags": [
+   "Italienisch",
+   "Meal Prep",
+   "Ofengericht",
+   "Pasta"
+  ]
+ },
+ {
   "id": "geroestete-suesskartoffel-bowl-mit-kichererbsen-tahini-zitronen-dressing",
   "title": "Geröstete Süßkartoffel-Bowl mit Kichererbsen & Tahini-Zitronen-Dressing",
   "category": "Hauptspeise",

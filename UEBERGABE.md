@@ -1,6 +1,6 @@
 # Rezepte-App — Übergabe und Projektwissen
 
-Stand: 50 Rezepte, live unter `rezepteheft.netlify.app`.
+Stand: 52 Rezepte, live unter `rezepteheft.netlify.app`.
 
 Dieses Dokument richtet sich an jemanden, der das Projekt zum ersten Mal sieht
 und daran weiterarbeiten soll. Es beschreibt nicht nur *was* gebaut ist, sondern
@@ -118,7 +118,7 @@ Die Regeln darin sind allesamt Antworten auf echte Fehler:
 | Mengen pro Stück (`à`, `je`, `pro`, `Patties`, …) skalieren nicht | „125 g große Patties" wurde zu 250 g |
 | Zeiten, Temperaturen, Stufen bleiben unberührt | Einheitenliste `UNIT_RE` enthält bewusst kein `Minuten`, `°C`, `cm` |
 
-Ergebnis heute: 346 verknüpfte Mengen über 51 Rezepte, ohne bekannte Fehlzuordnung.
+Ergebnis heute: 362 verknüpfte Mengen über 52 Rezepte, ohne bekannte Fehlzuordnung.
 
 **Hervorheben ohne Menge (Schritt 2c):** Jede weitere Nennung einer Zutat wird
 markiert, auch ohne Menge – optionale Zutaten, „nach Bedarf“, zweite
@@ -434,7 +434,7 @@ command = "python3 build.py"
 
 ## 11. Zahlen zum Stand
 
-- 51 Rezepte: 28 Hauptspeise, 7 Zutat, 5 Backen, 5 Vorspeise, 5 Snack, 1 Dessert
+- 52 Rezepte: 29 Hauptspeise, 7 Zutat, 5 Backen, 5 Vorspeise, 5 Snack, 1 Dessert
 - 14 Tags, häufigste: Schnell 22, Ofengericht 20, Pfannengericht 20, Vegan 13, Meal Prep 13
 - 326 Mengen im Fließtext verknüpft
 - Alle Rezepte mit Nährwerten
