@@ -15395,7 +15395,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/halloumi-mit-tabbouleh-und-minzjoghurt.jpg?v=8daab9e1",
   "tags": [
    "Bowl & Salat",
    "Orientalisch",
@@ -17336,7 +17336,7 @@ window.RECIPES = [
    "Petersilie",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/kartoffel-bowl-mit-sriracha-dressing.jpg?v=071ee6d2",
   "tags": [
    "Bowl & Salat",
    "Ofengericht",
@@ -17996,7 +17996,7 @@ window.RECIPES = [
    "Tomaten",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/kichererbsen-tajine.jpg?v=f5fc0988",
   "tags": [
    "Meal Prep",
    "Orientalisch",
@@ -18289,7 +18289,7 @@ window.RECIPES = [
   "fresh": [
    "Petersilie"
   ],
-  "image": "",
+  "image": "bilder/kaese-knoblauch-zupfbrot.jpg?v=3cbf516d",
   "tags": [
    "Brot & Teig",
    "Frühstück",
@@ -18582,7 +18582,7 @@ window.RECIPES = [
    "Frischkaese",
    "Fruehlingszwiebeln"
   ],
-  "image": "",
+  "image": "bilder/kaesewaffeln.jpg?v=f490dd13",
   "tags": [
    "Frühstück",
    "Schnell"
@@ -19159,7 +19159,7 @@ window.RECIPES = [
    "Pilze",
    "Quark"
   ],
-  "image": "",
+  "image": "bilder/kuerbislasagne-mit-spinat-und-salbei.jpg?v=9bdbf66d",
   "tags": [
    "Italienisch",
    "Meal Prep",
@@ -20647,7 +20647,7 @@ window.RECIPES = [
    "Feta",
    "Zucchini"
   ],
-  "image": "",
+  "image": "bilder/mediterrane-zucchini-reis-pfanne.jpg?v=5cede1c0",
   "tags": [
    "Pfannengericht"
   ]
@@ -21339,7 +21339,7 @@ window.RECIPES = [
   "fresh": [
    "Joghurt"
   ],
-  "image": "",
+  "image": "bilder/naan-ohne-hefe.jpg?v=ba51461e",
   "tags": [
    "Brot & Teig",
    "Orientalisch",
@@ -22218,7 +22218,7 @@ window.RECIPES = [
    "Schnittlauch",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/ofen-tortellini.jpg?v=5d33c277",
   "tags": [
    "Italienisch",
    "Ofengericht",
@@ -23220,7 +23220,7 @@ window.RECIPES = [
    "Fruehlingszwiebeln",
    "Petersilie"
   ],
-  "image": "",
+  "image": "bilder/one-pot-taco-pasta.jpg?v=7470bea9",
   "tags": [
    "Meal Prep",
    "Pasta",
@@ -25494,7 +25494,7 @@ window.RECIPES = [
    "Paprika",
    "Petersilie"
   ],
-  "image": "",
+  "image": "bilder/paprika-kartoffel-topf-mit-linsen.jpg?v=0d1a8635",
   "tags": [
    "Meal Prep",
    "Pfannengericht",
@@ -30102,7 +30102,7 @@ window.RECIPES = [
    "Tomaten",
    "Zitrone"
   ],
-  "image": "",
+  "image": "bilder/sommerlicher-couscous-salat.jpg?v=73e115b3",
   "tags": [
    "Bowl & Salat",
    "Meal Prep",
@@ -30691,7 +30691,7 @@ window.RECIPES = [
    "Mango",
    "Tofu"
   ],
-  "image": "",
+  "image": "bilder/sommerrollen-mit-erdnusssauce.jpg?v=ada013f7",
   "tags": [
    "Asiatisch",
    "Pfannengericht",
@@ -32055,7 +32055,7 @@ window.RECIPES = [
    "Fruehlingszwiebeln",
    "Ingwer"
   ],
-  "image": "",
+  "image": "bilder/tantanmen-ramen-mit-veganem-hack.jpg?v=7c54b354",
   "tags": [
    "Asiatisch",
    "Pasta",
@@ -32735,7 +32735,7 @@ window.RECIPES = [
    "Petersilie",
    "Tomaten"
   ],
-  "image": "",
+  "image": "bilder/tikka-masala-curry-mit-blumenkohl-und-kichererbsen.jpg?v=8e8478d3",
   "tags": [
    "Orientalisch",
    "Pfannengericht",
